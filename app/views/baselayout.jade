@@ -1,0 +1,64 @@
+doctype html
+html(lang='en')
+	head
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible' content='IE=edge')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		meta(name='description', content='')
+		meta(name='author', content="Nito\'s Umbrella")
+
+		link(href='css/bootstrap.min.css', rel='stylesheet', type='css')
+		link(href='css/main.css', rel='stylesheet', type='css')
+		link(href='css/jquery.dataTables.min.css', rel='stylesheet', type='css')
+		
+		title HvZ@FSU - #{title}
+		
+		//- Put any CSS specific to the page here
+		block localCSS	
+			
+	body
+		//- Top navagation bar
+		header(class="navbar navbar-inverse navbar-static", role="banner")
+			//- Allways displayed
+			.navbar-header
+				//- Button for collapse
+				button(type='button',class="navbar-toggle collapsed", data-toggle="collapse", data-target="#main-navbar-collapse")
+					span.sr-only Toggle Navigation
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
+				a(href='index', alt="Home",class='navbar-brand')
+					img(src='img/homeBtn.png')
+				a(href='https://www.facebook.com/hvzatfsu', alt="Facebook", class='navbar-brand')
+					img(src='img/FB-f-Logo__blue_29.png')
+			
+			//- Collapsed when on mobile
+			nav(class="collapse navbar-collapse", id="main-navbar-collapse", role="navigation")
+				//- TODO
+		
+		//- Center Page
+		.container(id='content')
+			//- Banner
+			div(id='banner', align='center')
+				img(src='img/banner.png', class='img-responsive')
+				b
+					//- TODO
+			.divider
+			.flashOutput
+				//- TODO
+			center: h3: b.
+				THIS SITE IS UNDER CONSTRUCTION (and does not work!)
+			
+			div(id='pageContent')
+				block content
+				
+		.footer
+
+
+		//- External Javascript
+		script(src='http://code.jquery.com/jquery-1.11.1.min.js')
+		script(src='js/bootstrap.min.js')
+		script(src='js/main.js')
+		
+		//- Put any javascript specific to the page here
+		block localJavascript

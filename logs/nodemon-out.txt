@@ -1,0 +1,65 @@
+21 Dec 16:58:27 - [33m[nodemon] v1.2.1[39m
+21 Dec 16:58:27 - [33m[nodemon] reading config /var/www/node/hvzatfsu/nodemon.json[39m
+21 Dec 16:58:27 - [33m[nodemon] to restart at any time, enter `rs`[39m
+21 Dec 16:58:27 - [33m[nodemon] ignoring: /var/www/node/hvzatfsu/node_modules/**/* log[39m
+21 Dec 16:58:27 - [33m[nodemon] watching: /var/www/node/hvzatfsu/app /var/www/node/hvzatfsu/boot /var/www/node/hvzatfsu/lib /var/www/node/hvzatfsu/.env /var/www/node/hvzatfsu/server.js[39m
+21 Dec 16:58:27 - [33m[nodemon] watching extensions: js,jade,coffee,env[39m
+21 Dec 16:58:27 - [32m[nodemon] starting `node ./server.js`[39m
+21 Dec 16:58:27 - [33m[nodemon] child pid: 3045[39m
+21 Dec 16:58:27 - [33m[nodemon] watching 1,374 files[39m
+21 Dec 16:58:29 - [33m[nodemon] files triggering change check: NODEMON_ERROR[39m
+21 Dec 16:58:29 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 16:58:29 - [33m[nodemon] files triggering change check: NODEMON_ERROR[39m
+21 Dec 16:58:29 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+ENV VARS ->
+> SECRET=rar
+-------------------------------
+Listening on port 5001
+21 Dec 16:59:11 - [33m[nodemon] files triggering change check: NODEMON_ERROR[39m
+21 Dec 16:59:11 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 16:59:15 - [33m[nodemon] files triggering change check: start.sh[39m
+21 Dec 16:59:15 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 16:59:16 - [33m[nodemon] files triggering change check: start.sh[39m
+21 Dec 16:59:16 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 16:59:16 - [33m[nodemon] files triggering change check: start.sh[39m
+21 Dec 16:59:16 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 16:59:16 - [33m[nodemon] files triggering change check: start.sh[39m
+21 Dec 16:59:16 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 16:59:16 - [33m[nodemon] files triggering change check: start.sh[39m
+21 Dec 16:59:16 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 16:59:16 - [33m[nodemon] files triggering change check: start.sh[39m
+21 Dec 16:59:16 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:02:59 - [33m[nodemon] files triggering change check: lib/New folder[39m
+21 Dec 17:02:59 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:02:59 - [33m[nodemon] files triggering change check: lib/New folder[39m
+21 Dec 17:02:59 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:02:59 - [33m[nodemon] files triggering change check: lib/New folder[39m
+21 Dec 17:02:59 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:02:59 - [33m[nodemon] files triggering change check: lib/New folder[39m
+21 Dec 17:02:59 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:03:02 - [33m[nodemon] files triggering change check: lib/New folder[39m
+21 Dec 17:03:02 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:03:02 - [33m[nodemon] files triggering change check: lib/fasdf[39m
+21 Dec 17:03:02 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:03:02 - [33m[nodemon] files triggering change check: lib/fasdf[39m
+21 Dec 17:03:02 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:03:02 - [33m[nodemon] files triggering change check: lib/fasdf[39m
+21 Dec 17:03:02 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:03:02 - [33m[nodemon] files triggering change check: lib/fasdf[39m
+21 Dec 17:03:02 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:10:15 - [33m[nodemon] files triggering change check: .env[39m
+21 Dec 17:10:15 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:10:15 - [33m[nodemon] files triggering change check: .env[39m
+21 Dec 17:10:15 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:10:15 - [33m[nodemon] files triggering change check: .env[39m
+21 Dec 17:10:15 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:10:15 - [33m[nodemon] files triggering change check: .env[39m
+21 Dec 17:10:15 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 17:10:15 - [33m[nodemon] files triggering change check: .env[39m
+21 Dec 17:10:15 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 18:27:44 - [33m[nodemon] files triggering change check: lib/autoload.coffee[39m
+21 Dec 18:27:44 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 18:27:44 - [33m[nodemon] files triggering change check: lib/autoload.coffee[39m
+21 Dec 18:27:44 - [33m[nodemon] changes after filters (before/after): 1/0[39m
+21 Dec 18:27:44 - [33m[nodemon] files triggering change check: lib/autoload.coffee[39m
+21 Dec 18:27:44 - [33m[nodemon] changes after filters (before/after): 1/0[39m

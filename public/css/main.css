@@ -1,0 +1,106 @@
+/* GLOBAL *******************************************************************/
+body {
+	font-family: Tahoma;
+	background-image: url("../img/bodyGridBackground.png");
+	background-repeat: repeat-x|repeat-y;
+	color: #000000;
+}
+
+
+a {text-decoration: none}
+a:link{color: #CC6600}
+a:visited{color: #CC6600}
+a:active{color: #CC6600}
+a:hover{color: #FFD700; text-decoration: underline}
+
+
+/* TOP BAR ******************************************************************/
+/* TODO: make this good for mobile devices */
+
+/* Not in use
+#topBar {
+	background-image: url('../img/topBar.png');
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	float: top;
+	width: 100%;
+	min-width: 100px;
+	height: 25px;
+	background-repeat: repeat-x;	
+	color:#FFFFFF;
+}
+#topBar span {float: left; margin-left: 60px}
+#topBar ul {
+	float: right;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	margin-right: 60px;
+}
+#topBar ul li {display: inline}
+#topBar ul li a:link{color: #FFFFFF}
+#topBar ul li a:visited{color: #FFFFFF}
+#topBar ul li a:active{color: #FFFFFF}
+#topBar ul li a:hover{color: #CC6600}
+*/
+
+/* CONTENT ******************************************************************/
+#content {
+	/*width: 900px;*/
+	/*width:80%;*/
+
+	background-color: #FFFFFF;
+	/*margin-left: auto;
+	margin-right: auto;
+	margin-top: 30px;*/
+
+}
+
+/* header *******************************************************************/
+#banner {
+	padding: 5px;
+}
+div.divider {
+	background-color: #CC6600;
+	width: 100%;
+	height: 15px;
+}
+
+#pageContent {
+	padding: 5px;
+	width: 100%;
+	min-height: 1000px;
+}
+
+
+
+/* FOOTER *******************************************************************/
+/* Not in use
+#footer {
+	padding: 5px;
+	height: 50px;
+	width: 100%;
+}
+*/
+
+
+
+/* New CSS ******************************************************************/
+
+/*
+.navbar-default{
+	background-image: url('../img/topBar.png');
+	background-repeat: no-repeat;	
+	background-size: 100% 100%;
+}
+
+.navbar-inverse{
+	background-image: url('../img/topBar.png');
+	background-repeat: no-repeat;	
+	background-size: 100% 100%;
+}*/
+
+.navbar-brand{
+	padding: 10px 10px;
+}
