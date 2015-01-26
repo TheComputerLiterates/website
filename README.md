@@ -29,4 +29,3 @@ The remake of hvzatfsu.com for the Human vs. Zombies club at FSU.
 * `/mod/game` -- current game management
 * `/mod/dev` -- game/mission creation/deletion/management
 * `/mod/info` -- website general info management + documentation
-
