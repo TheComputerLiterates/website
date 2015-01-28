@@ -10,7 +10,7 @@ module.exports = (app) ->
 				
 		@signup = (req, res) ->
 			res.render 'public/signup',
-				title: 'Signup' 
+				title: 'Sign Up' 
 		
 		@info = (req, res) ->
 			res.render 'public/info',
