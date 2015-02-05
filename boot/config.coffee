@@ -13,6 +13,7 @@ dotenv = require 'dotenv'
 acl = require '../lib/acl'
 flash = require 'express-flash'
 emailTemplates = require 'email-templates'
+mysql = require 'mysql'
 
 # Configuration
 module.exports = (app) ->
@@ -61,6 +62,18 @@ module.exports = (app) ->
 	app.mandrill = new Mandrill.Mandrill process.env.MANDRILL_KEY  
 	# Load email template function
 	app.emailTemplates = emailTemplates
+	
+	# Setup mysql connection (db). Connecting is done implciitly.
+	app.db = 
+		settings:
+			host: process.env.DATABASE_HOSTNAME
+			user: process.env.DATABASE_USERNAME
+			password: process.env.DATABASE_PASSWORD
+			database: process.env.DATABASE_NAME
+	app.db.set = ()->
+		app.db.con = mysql.createConnection app.db.settings
+		console.log 'DB: ' + JSON.stringify app.db.settings
+	app.db.set()
 	
 	###
 	# Sends email using the email-templates and mandrill libraries
