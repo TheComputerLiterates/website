@@ -1,4 +1,39 @@
 extend ../baselayout
 block content
-	.container
-		h1 #{title}
+	.col-md-7
+		.panel.panel-default
+			.panel-body.
+				This will contain the information of the current game <br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+
+	.col-md-5
+		.panel.panel-default
+			.panel-heading
+					h3.panel-title Current Game Information
+			.panel-body
+				b Total Players: 
+				| #{playercount}
+			.panel-body
+				b Humans: 
+				| #{humancount}
+			.panel-body
+				b Zombies: 
+				| #{zombiecount}
+
+		.panel.panel-default
+			.panel-heading
+					h3.panel-title Current Mission
+			.panel-body.
+				This will have a brief overview of the mission<br/>
+				This will display content according to if the player is human or zombie

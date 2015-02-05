@@ -20,25 +20,28 @@ html(lang='en')
 		//- Top navagation bar
 		include includes/top-nav-bar.jade
 					
-					
-
-				
-		
 		//- Center Page
-		.container(id='content')
+		#content.container
 			//- Banner
-			div(id='banner', align='center')
+			#banner(align='center')
 				img(src='/img/banner.png', class='img-responsive')
 				b
 					//- TODO
 			.divider
 			.flashOutput
 				//- TODO
-			center: h3: b.
+
+			//- Uncomment when posting, comment when working
+			//- center: h3: b.
 				THIS SITE IS UNDER CONSTRUCTION (and does not work!)
 			
-			div(id='pageContent')
-				block content
+			
+			#pageContent.container-fluid
+					.row
+						.page-header
+							h1 #{title}
+					.row
+						block content
 				
 		.footer
 

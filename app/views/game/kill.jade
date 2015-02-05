@@ -1,4 +1,8 @@
 extend ../baselayout
 block content
-	.container
-		h1 #{title}
+	//- Create AJAX form for login
+	form#report-kill
+		.form-group
+			label(for = "hvzid") Enter HVZID of human to kill:
+			input#hvzid(type = "text", placeholder = "HVZID").form-control
+		button.btn.btn-default Kill

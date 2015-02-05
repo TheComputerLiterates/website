@@ -1,4 +1,33 @@
 extend ../baselayout
 block content
-	.container
-		h1 #{title}
+	.panel.panel-default
+		.panel-heading
+			h3.panel-title Basic Information
+		.panel-body
+			b.col-sm-2.col-xs-5 First Name:
+			.col-sm-5.col-xs-5.
+				#{firstname}
+		.panel-body
+			b.col-sm-2.col-xs-5 Last Name:
+			.col-sm-5.col-xs-5.
+				#{lastname}
+		.panel-body
+			b.col-sm-2.col-xs-5 E-mail:
+			.col-sm-5.col-xs-5.
+				#{email}
+		.panel-body
+			b.col-sm-2.col-xs-5 Phone:
+			.col-sm-5.col-xs-5.
+				#{phone}
+	.panel.panel-default
+		.panel-heading
+			h3.panel-title HVZ Information
+		.panel-body
+			b.col-sm-2.col-xs-5 HVZID:
+			.col-sm-5.col-xs-5.
+				#{hvzid}
+		.panel-body
+			b.col-sm-2.col-xs-5 Role:
+			.col-sm-5.col-xs-5.
+				#{role}
+			

@@ -1,49 +1,47 @@
-/* GLOBAL *******************************************************************/
+/* Globals*/
 body {
 	font-family: Tahoma;
 	background-image: url("../img/bodyGridBackground.png");
 	background-repeat: repeat-x|repeat-y;
 	color: #000000;
+	padding-top: 5em;
 }
-
-
 a {text-decoration: none}
 a:link{color: #CC6600}
 a:visited{color: #CC6600}
 a:active{color: #CC6600}
 a:hover{color: #FFD700; text-decoration: underline}
 
-
-/* CONTENT ******************************************************************/
+/* Base layout*/
 #content {
-	/*width: 900px;*/
-	/*width:80%;*/
-
 	background-color: #FFFFFF;
-	/*margin-left: auto;
-	margin-right: auto;
-	margin-top: 30px;*/
-
 }
-
-/* Header *******************************************************************/
 #banner {
-	padding: 5px;
+	padding: 1em;
 }
 div.divider {
-	background-color: #CC6600;
+	/*background-color: #CC6600;*/
+	background-color: #9cbebd;	/* pale_blue: #9cbebd; umbrella_red: #C1272D */
 	width: 100%;
 	height: 15px;
 }
-
 #pageContent {
-	padding: 5px;
-	width: 100%;
 	min-height: 1000px;
 }
 
-
-
+/* Navbar */
 .navbar-brand{
 	padding: 0.5em 1em;
+}
+.navbar-inverse {
+	background-color: #2e2b21;
+}
+
+
+.panel {
+	border: 0px;
+}
+
+.panel-body {
+  padding: 0.8em;
 }

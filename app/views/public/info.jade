@@ -1,4 +1,13 @@
 extend ../baselayout
 block content
-	.container
-		h1 #{title}
+	ul.nav.nav-tabs
+		li(role = 'presentation').active
+			a(href = '#about', data-toggle = 'tab') About Us
+		li(role = 'presentation')
+			a(href = '#rules', data-toggle = 'tab') Rules
+
+	.tab-content
+		#about.tab-pane.fade.in.active.
+			This will explain in a little more detail what HvZ at FSU is. 
+		#rules.tab-pane.fade.
+			This is where the rules go

@@ -1,4 +1,11 @@
 extend ../baselayout
 block content
-	.container
-		h1 #{title}
+	//- Create AJAX form for login
+	form#login
+		.form-group
+			label(for = "emailUsername") Username/E-mail:
+			input#emailUsername(type = "text", placeholder = "E-mail").form-control
+		.form-group
+			label(for = "password") Password:
+			input#password(type = "password", placeholder = "Password").form-control
+		button.btn.btn-default Submit

@@ -1,4 +1,26 @@
 extend ../baselayout
 block content
-	.container
-		h1 #{title}
+	//- Create AJAX form for signup
+	form#signup
+		.form-group
+			label(for = "firstname") First Name:
+			input#firstname(type = "text", placeholder = "First Name").form-control
+		.form-group
+			label(for = "lastname") Last Name:
+			input#lastname(type = "text", placeholder = "Last Name").form-control
+		.form-group
+			label(for = "email") Email:
+			input#email(type = "email", placeholder = "E-mail").form-control
+		.form-group
+			label(for = "emailRetype") Confirm Email:
+			input#emailRetype(type = "email", placeholder = "E-mail").form-control
+		.form-group
+			label(for = "username") Username:
+			input#username(type = "text", placeholder = "Username").form-control
+		.form-group
+			label(for = "password") Password:
+			input#password(type = "password", placeholder = "Password").form-control
+		.form-group
+			label(for = "passwordRetype") Confirm Password:
+			input#passwordRetype(type = "password", placeholder = "Password").form-control
+		button.btn.btn-default Submit
