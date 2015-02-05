@@ -5,7 +5,7 @@ module.exports = (app) ->
 				title: 'User - Profile'
 		
 		@forum = (req, res) ->
-			res.render 'user/profile',
+			res.render 'user/forum',
 				title: 'User - Forum'
 		
 		@stats = (req, res) ->

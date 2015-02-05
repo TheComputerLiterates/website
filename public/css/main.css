@@ -14,37 +14,6 @@ a:active{color: #CC6600}
 a:hover{color: #FFD700; text-decoration: underline}
 
 
-/* TOP BAR ******************************************************************/
-/* TODO: make this good for mobile devices */
-
-/* Not in use
-#topBar {
-	background-image: url('../img/topBar.png');
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	float: top;
-	width: 100%;
-	min-width: 100px;
-	height: 25px;
-	background-repeat: repeat-x;	
-	color:#FFFFFF;
-}
-#topBar span {float: left; margin-left: 60px}
-#topBar ul {
-	float: right;
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	margin-right: 60px;
-}
-#topBar ul li {display: inline}
-#topBar ul li a:link{color: #FFFFFF}
-#topBar ul li a:visited{color: #FFFFFF}
-#topBar ul li a:active{color: #FFFFFF}
-#topBar ul li a:hover{color: #CC6600}
-*/
-
 /* CONTENT ******************************************************************/
 #content {
 	/*width: 900px;*/
@@ -57,7 +26,7 @@ a:hover{color: #FFD700; text-decoration: underline}
 
 }
 
-/* header *******************************************************************/
+/* Header *******************************************************************/
 #banner {
 	padding: 5px;
 }
@@ -75,32 +44,6 @@ div.divider {
 
 
 
-/* FOOTER *******************************************************************/
-/* Not in use
-#footer {
-	padding: 5px;
-	height: 50px;
-	width: 100%;
-}
-*/
-
-
-
-/* New CSS ******************************************************************/
-
-/*
-.navbar-default{
-	background-image: url('../img/topBar.png');
-	background-repeat: no-repeat;	
-	background-size: 100% 100%;
-}
-
-.navbar-inverse{
-	background-image: url('../img/topBar.png');
-	background-repeat: no-repeat;	
-	background-size: 100% 100%;
-}*/
-
 .navbar-brand{
-	padding: 10px 10px;
+	padding: 0.5em 1em;
 }

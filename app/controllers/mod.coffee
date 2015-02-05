@@ -17,6 +17,6 @@ module.exports = (app) ->
 				title: 'Mod Tools - Edit Info'
 		
 		@users = (req, res) ->
-			res.render 'mod/index',
+			res.render 'mod/users',
 				title: 'Mod Tools - Manage Users'
 				

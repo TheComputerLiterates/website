@@ -9,7 +9,7 @@ module.exports = (app) ->
 				title: 'Game - Report Kill'
 		
 		@map = (req, res) ->
-			res.render 'game/missions',
+			res.render 'game/map',
 				title: 'Game - Dynamic Map'
 		
 		@missions = (req, res) ->
