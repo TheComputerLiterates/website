@@ -1,0 +1,21 @@
+{
+  "name": "hvzatfsu.com",
+  "version": "0.1.0",
+  "homepage": "hvzatfsu.com",
+  "authors": [
+    "jrdbnntt <jrdbnntt@gmail.com>"
+  ],
+  "description": "Humans vz. Zombies Club at FSU",
+  "license": "Apache 2.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}

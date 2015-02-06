@@ -149,7 +149,7 @@ module.exports = (app) ->
 	# app.use acl
 	
 	#debug crap
-	console.log ("> MANDRILL_KEY=" + process.env.MANDRILL_KEY)
+	console.log ("> MANDRILL_KEY=" + process.env.MANDRILL_API_KEY)
 	console.log ("> SECRET=" + process.env.SECRET)
 	console.log '-------------------------------'
 		

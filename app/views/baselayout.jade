@@ -7,9 +7,10 @@ html(lang='en')
 		meta(name='description', content='')
 		meta(name='author', content="Nito\'s Umbrella")
 
-		link(href='/css/bootstrap.min.css', rel='stylesheet', type='text/css')
-		link(href='/css/main.css', rel='stylesheet', type='text/css')
-		link(href='/css/jquery.dataTables.min.css', rel='stylesheet', type='text/css')
+		link(rel='stylesheet', type='text/css', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
+		link(rel='stylesheet', type='text/css', href='/css/jquery.dataTables.min.css')
+		
+		link(rel='stylesheet', type='text/css', href='/css/main.css')
 		
 		title HvZ@FSU | #{title}
 		
@@ -48,9 +49,10 @@ html(lang='en')
 
 
 		//- External Javascript
-		script(src='http://code.jquery.com/jquery-1.11.1.min.js')
-		script(src='/js/bootstrap.min.js')
-		script(src='/js/main.js')
+		script(type="text/javascript", src='/bower_components/jquery/dist/jquery.min.js')
+		script(type="text/javascript", src='/bower_components/bootstrap/dist/js/bootstrap.min.js')
+		
+		script(type="text/javascript", src='/js/main.js')
 		
 		//- Put any javascript specific to the page here
 		block localJavascript
