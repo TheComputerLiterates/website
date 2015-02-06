@@ -47,4 +47,5 @@ The remake of hvzatfsu.com for the Human vs. Zombies club at FSU.
 #### Things to remember
 * If you are adding a dependency with bower or npm, include the `--save` flag in order to automatically add it to the dependency list.
 * Place local JS and CSS in the folders mimicing the view folder and with filenames like `folder-page.css` and use the blocks to add them to the page.
+* `.coffee` files inside of the public folder must be manually built (`SHIT+ALT+C` with BetterCoffeeScript in Sublime Text 3)
 * *Obey*
