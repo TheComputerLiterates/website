@@ -59,7 +59,7 @@ module.exports = (app) ->
 	app.use flash()
 	
 	# Create Mandrill object TODO: setup mandrill account
-	app.mandrill = new Mandrill.Mandrill process.env.MANDRILL_KEY  
+	app.mandrill = new Mandrill.Mandrill process.env.MANDRILL_API_KEY  
 	# Load email template function
 	app.emailTemplates = emailTemplates
 	
@@ -72,7 +72,7 @@ module.exports = (app) ->
 			database: process.env.DATABASE_NAME
 	app.db.set = ()->
 		app.db.con = mysql.createConnection app.db.settings
-		console.log 'DB: ' + JSON.stringify app.db.settings
+		console.log '> DB CONNECT: ' + JSON.stringify app.db.settings
 	app.db.set()
 	
 	###
@@ -149,10 +149,17 @@ module.exports = (app) ->
 	# app.use acl
 	
 	#debug crap
-	console.log 'ENV VARS ->'
 	console.log ("> MANDRILL_KEY=" + process.env.MANDRILL_KEY)
 	console.log ("> SECRET=" + process.env.SECRET)
 	console.log '-------------------------------'
 		
+	# EXAMPLE EMAIL:
+	# app.emailTemplate 'accountCreated',
+	# 	to_email: 'jrdbnntt@gmail.com'
+	# 	from_email: 'account@hvzatfsu.com'
+	# 	from_name: 'HvZ at FSU'
+	# 	subject: 'Account Created!'
+	# 	locals:
+	# 		firstName: "Jared"
+	# 		lastName: "Bennett"
 		
-			
