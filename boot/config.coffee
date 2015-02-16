@@ -13,17 +13,25 @@ dotenv = require 'dotenv'
 acl = require '../lib/acl'
 flash = require 'express-flash'
 emailTemplates = require 'email-templates'
-mysql = require 'mysql'
+Q = require 'q'
+Mariasql = require 'mariasql'
+
+#JS utility libraries
+util = require 'util'
+vsprintf = require('sprintf-js').vsprintf
 
 # Configuration
 module.exports = (app) ->
+	# Load random utility libraries
+	app.util = util
+	app.vsprintf = vsprintf
 	
-
 	# Load helper functions
 	app.locals.helpers = require __dirname + '/../app/helpers'
 
 	# Autoload controllers
 	autoload 'app/controllers', app
+		
 	
 	# Load .env
 	dotenv.load()
@@ -63,17 +71,43 @@ module.exports = (app) ->
 	# Load email template function
 	app.emailTemplates = emailTemplates
 	
-	# Setup mysql connection (db). Connecting is done implciitly.
+	#setup database, including a global persistent connection
 	app.db = 
-		settings:
+		Client: Mariasql
+		setup:
 			host: process.env.DATABASE_HOSTNAME
 			user: process.env.DATABASE_USERNAME
 			password: process.env.DATABASE_PASSWORD
-			database: process.env.DATABASE_NAME
-	app.db.set = ()->
-		app.db.con = mysql.createConnection app.db.settings
-		console.log '> DB CONNECT: ' + JSON.stringify app.db.settings
-	app.db.set()
+			db: process.env.DATABASE_NAME
+	app.db.newCon = ()->
+			con = new app.db.Client()
+			con.connect app.db.setup
+			con.on 'connect', ()->
+				this.tId = this.threadId #so it isnt deleted
+				console.log '> DB: New connection established with threadId ' + this.threadId
+			.on 'error', (err)->
+				console.log '> DB: Error on threadId ' + this.threadId + '= ' + err
+			.on 'close', (hadError)->
+				if hadError
+					console.log '> DB: Connection closed with old threadId ' + this.tId + ' WITH ERROR!'
+				else
+					console.log '> DB: Connection closed with old threadId ' + this.tId + ' without error'
+			return con
+	app.db.con = app.db.newCon(); #global, persistent connection, others can be made later
+	
+	app.db.con.on 'connect', ()->
+		console.log '> DB: Global connection started'
+	.on 'error', (err)->
+		console.log '> DB: Global connection error: ' + err
+	.on 'close', (hadError)->
+		console.log '> DB: Global connection interrupted, reconnecting..'
+		app.db.con.connect app.db.setup
+	
+	#setup models (must setup db first)
+	app.Q = Q
+	app.models = {}
+	autoload 'app/models', app
+	
 	
 	###
 	# Sends email using the email-templates and mandrill libraries

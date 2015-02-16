@@ -3,21 +3,25 @@ block content
 	//- Create AJAX form for signup
 	form#signup
 		.form-group
-			label(for = "firstname") First Name:
-			input#firstname(type = "text", placeholder = "First Name").form-control
+			label(for="firstName") First Name:
+			input.form-control(type="text", name='firstName', placeholder="First Name")
 		.form-group
-			label(for = "lastname") Last Name:
-			input#lastname(type = "text", placeholder = "Last Name").form-control
+			label(for="lastName") Last Name:
+			input.form-control(type="text", name='lastName', placeholder="Last Name")
 		.form-group
-			label(for = "email") Email:
-			input#email(type = "email", placeholder = "E-mail").form-control
+			label(for="email") Email:
+			input.form-control(type="email", name='email', placeholder="E-mail")
 		.form-group
-			label(for = "emailRetype") Confirm Email:
-			input#emailRetype(type = "email", placeholder = "E-mail").form-control
+			label(for="emailRetype") Confirm Email:
+			input.form-control(type="email", name='emailRetype', placeholder="E-mail")
 		.form-group
-			label(for = "password") Password:
-			input#password(type = "password", placeholder = "Password").form-control
+			label(for="password") Password:
+			input.form-control(type="password", name='password', placeholder="Password")
 		.form-group
-			label(for = "passwordRetype") Confirm Password:
-			input#passwordRetype(type = "password", placeholder = "Password").form-control
+			label(for="passwordRetype") Confirm Password:
+			input.form-control(type="password", name='passwordRetype', placeholder="Password")
 		button.btn.btn-default Submit
+		
+	
+block localJS
+	script(type="text/javascript", src='/js/public/public-signup.js')
