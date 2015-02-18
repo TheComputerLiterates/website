@@ -16,9 +16,11 @@ module.exports = (app) ->
 	
 	# Login
 	app.get '/login', app.PublicController.login
-	
+	app.post '/login', app.PublicController.login_submit
+
 	# Signup
 	app.get '/signup', app.PublicController.signup
+	app.post '/signup', app.PublicController.signup_submit
 	
 	# Info
 	app.get '/info', app.PublicController.info

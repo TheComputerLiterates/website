@@ -9,6 +9,9 @@ block content
 			label(for="lastName") Last Name:
 			input.form-control(type="text", name='lastName', placeholder="Last Name")
 		.form-group
+			label(for="username") Username:
+			input.form-control(type="text", name='username', placeholder="Last Name")
+		.form-group
 			label(for="email") Email:
 			input.form-control(type="email", name='email', placeholder="E-mail")
 		.form-group
@@ -20,8 +23,12 @@ block content
 		.form-group
 			label(for="passwordRetype") Confirm Password:
 			input.form-control(type="password", name='passwordRetype', placeholder="Password")
-		button.btn.btn-default Submit
+		button(type = "submit").btn.btn-default Submit
+
+		//- To be removed, only to test response
+		#test
 		
 	
 block localJS
-	script(type="text/javascript", src='/js/public/public-signup.js')
+	script(src = "/js/cryptojs/sha256.js")
+	script(type = "text/javascript", src = "/js/public/signup.js")

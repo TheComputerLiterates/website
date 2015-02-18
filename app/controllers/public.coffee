@@ -3,18 +3,24 @@ module.exports = (app) ->
 		@index = (req, res) ->
 			res.render 'public/index',
 				title: 'Home' # TODO: replace 'Game' with Zombie/Human
-		
-		@login = (req, res) ->
-			res.render 'public/login',
-				title: 'Login' 
-				
-		
+
 		@info = (req, res) ->
 			res.render 'public/info',
 				title: 'Info' 
+
+		# LOGIN ################################################################
+		# Page (GET)
+		@login = (req, res) ->
+			res.render 'public/login',
+				title: 'Login' 
+
+		# POST
+		@login_submit = (req, res) ->
+			res.send "Data: " + req.body.emailUsername + " " + req.body.password		
 		
+
 		# SIGNUP ###############################################################
-		#page
+		# Page (GET)
 		@signup = (req, res) ->
 
 			# EXAMPLE CREATING NEW USER
@@ -36,8 +42,6 @@ module.exports = (app) ->
 			res.render 'public/signup',
 				title: 'Sign Up' 
 		
-		#post
+		# POST
 		@signup_submit = (req,res) ->
-			
-			
-			
+			res.render 'public/test', { firstName: req.body.firstName }
