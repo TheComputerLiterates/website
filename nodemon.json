@@ -1,0 +1,6 @@
+{
+	"verbose": "true",
+	"ext": "*.coffee",
+	"watch": ["app/*"],
+	"ignore": ["app/views/*"]
+}
