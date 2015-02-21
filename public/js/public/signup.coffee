@@ -10,11 +10,12 @@ $("#signup").submit (e) ->
 	e.preventDefault()
 
 	data =
-		firstName: $("#firstName").val()
-		lastName: $("#lastName").val()
-		username: $("#username").val()
-		email: $("#email").val()
-		password: CryptoJS.SHA256 $("#password").val()
+		firstName: $("[name='firstName']").val()
+		lastName: $("[name='lastName']").val()
+		email: $("[name='email']").val()
+
+	if $("[name='password']").val().length != 0
+		data.password = CryptoJS.SHA256 $("[name='password']").val()
 			.toString CryptoJS.enc.Hex
 
 	$.ajax

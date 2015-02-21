@@ -10,6 +10,7 @@ html(lang='en')
 		link(rel='stylesheet', type='text/css', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
 		link(rel='stylesheet', type='text/css', href='/external/dataTables/css/jquery.dataTables.min.css')
 		
+		<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/amburegul" rel="stylesheet" type="text/css"/> 
 		link(rel='stylesheet', type='text/css', href='/css/main.css')
 		
 		title HvZ@FSU | #{title}
@@ -19,7 +20,7 @@ html(lang='en')
 			
 	body
 		//- Top navagation bar
-		include includes/top-nav-bar.jade
+		include ../includes/top-nav-bar.jade
 					
 		//- Center Page
 		#content.container
@@ -37,11 +38,10 @@ html(lang='en')
 				THIS SITE IS UNDER CONSTRUCTION (and does not work!)
 					
 			#pageContent.container-fluid
-					.row
-						.page-header
-							h1 #{title}
-					.row
-						block content
+				#gameStats.row
+				| hi
+				.row
+					block content
 				
 		.footer
 

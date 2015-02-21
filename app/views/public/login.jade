@@ -1,13 +1,13 @@
-extend ../baselayout
+extend ../layouts/baselayout
 block content
 	//- Create AJAX form for login
 	form#login
 		.form-group
-			label(for = "emailUsername") Username/E-mail:
-			input#emailUsername(type = "text", placeholder = "E-mail").form-control
+			label(for = "email") E-mail:
+			input(type = "email", name="email", placeholder = "E-mail").form-control
 		.form-group
 			label(for = "password") Password:
-			input#password(type = "password", placeholder = "Password").form-control
+			input(type = "password", name="password", placeholder = "Password").form-control
 		button(type = "submit").btn.btn-default Submit
 
 		//- To be removed, only to test response

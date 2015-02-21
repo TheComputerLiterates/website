@@ -16,7 +16,7 @@ module.exports = (app) ->
 
 		# POST
 		@login_submit = (req, res) ->
-			res.send "Data: " + req.body.emailUsername + " " + req.body.password		
+			res.render 'public/test', req.body	
 		
 
 		# SIGNUP ###############################################################
@@ -44,4 +44,4 @@ module.exports = (app) ->
 		
 		# POST
 		@signup_submit = (req,res) ->
-			res.render 'public/test', { firstName: req.body.firstName }
+			res.render 'public/test', req.body

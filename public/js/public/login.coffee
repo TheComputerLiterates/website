@@ -10,8 +10,8 @@ $("#login").submit (e) ->
 	e.preventDefault()
 
 	data =
-		emailUsername: $("#emailUsername").val()
-		password: CryptoJS.SHA256 $("#password").val()
+		email: $("[name='email']").val()
+		password: CryptoJS.SHA256 $("[name='password']").val()
 			.toString CryptoJS.enc.Hex
 
 	$.ajax
