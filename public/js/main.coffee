@@ -6,6 +6,22 @@ been included in the baseloayout.jade file
 ###
 
 
+# Get Current Game Info for information bar
+
+$(document).ready ->
+	getData = ->
+		$.ajax
+			url: "/data/currentgame"
+			type: "POST"
+			ajax: "true"
+			success: (res) ->
+				if res.gameActive == true
+					$("#gameStats").html "Current Game Info | Humans: " + res.humancount + " | Zombies: " + res.zombiecount
+				else
+					$("#gameStats").html "There is no game being played currently"
+	getData()
+	setInterval(getData, 5000)
+
 # Dropdown menu ease in and out on click
 
 # Credit: http://stackoverflow.com/questions/12115833/adding-a-slide-effect-to-bootstrap-dropdown

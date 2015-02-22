@@ -10,7 +10,7 @@ html(lang='en')
 		link(rel='stylesheet', type='text/css', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
 		link(rel='stylesheet', type='text/css', href='/external/dataTables/css/jquery.dataTables.min.css')
 		
-		<link rel="stylesheet" media="screen" href="http://openfontlibrary.org/face/amburegul" rel="stylesheet" type="text/css"/> 
+		
 		link(rel='stylesheet', type='text/css', href='/css/main.css')
 		
 		title HvZ@FSU | #{title}
@@ -27,9 +27,13 @@ html(lang='en')
 			//- Banner
 			#banner(align='center')
 				img(src='/img/banner.png', class='img-responsive')
-				b
-					//- TODO
+
+			//- Display current game info if a game is currently being played
 			.divider
+				if gameInSession || true
+					#gameStats.row
+				else
+
 			.flashOutput
 				//- TODO
 
@@ -38,8 +42,6 @@ html(lang='en')
 				THIS SITE IS UNDER CONSTRUCTION (and does not work!)
 					
 			#pageContent.container-fluid
-				#gameStats.row
-				| hi
 				.row
 					block content
 				

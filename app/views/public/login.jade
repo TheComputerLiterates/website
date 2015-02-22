@@ -1,14 +1,18 @@
 extend ../layouts/baselayout
 block content
 	//- Create AJAX form for login
-	form#login
+	form#login(role = "form").form-horizontal
 		.form-group
-			label(for = "email") E-mail:
-			input(type = "email", name="email", placeholder = "E-mail").form-control
+			label(for = "email").control-label.col-md-2 E-mail:
+			.col-md-5
+				input(type = "email", name="email", placeholder = "E-mail").form-control
 		.form-group
-			label(for = "password") Password:
-			input(type = "password", name="password", placeholder = "Password").form-control
-		button(type = "submit").btn.btn-default Submit
+			label(for = "password").control-label.col-md-2 Password:
+			.col-md-5
+				input(type = "password", name="password", placeholder = "Password").form-control
+		.form-group
+			.col-md-offset-2.col-md-10
+				button(type = "submit").btn.btn-default Submit
 
 		//- To be removed, only to test response
 		#test

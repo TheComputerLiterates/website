@@ -69,6 +69,10 @@ module.exports = (app) ->
 	# Information edit/docs
 	app.get '/mod/info', app.ModController.info
 
+
+	# DATA #######################################################
+	app.post '/data/currentgame', app.DataController.currentGame
+
 	
 	
 	# Page not found (404) #######################################

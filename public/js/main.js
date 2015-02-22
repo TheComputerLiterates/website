@@ -7,6 +7,26 @@ been included in the baseloayout.jade file
  */
 
 (function() {
+  $(document).ready(function() {
+    var getData;
+    getData = function() {
+      return $.ajax({
+        url: "/data/currentgame",
+        type: "POST",
+        ajax: "true",
+        success: function(res) {
+          if (res.gameActive === true) {
+            return $("#gameStats").html("Current Game Info | Humans: " + res.humancount + " | Zombies: " + res.zombiecount);
+          } else {
+            return $("#gameStats").html("There is no game being played currently");
+          }
+        }
+      });
+    };
+    getData();
+    return setInterval(getData, 5000);
+  });
+
   $(".dropdown").on("show.bs.dropdown", function(e) {
     return $(this).find(".dropdown-menu").first().stop(true, true).slideDown(200);
   });
