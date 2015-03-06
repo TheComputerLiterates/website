@@ -1,10 +1,8 @@
 module.exports = (app) ->
 	class app.DataController
 		@currentGame = (req, res)->
-			data = 
+			res.send
 				gameActive: true,
 				playercount: 100,
-				zombiecount: 75,
+				zombiecount: 70,
 				humancount: 25
-			res.send data
-				

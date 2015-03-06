@@ -1,5 +1,5 @@
 doctype html
-html(lang='en')
+html(lang='en', ng-app = "HVZApp")
 	head
 		meta(charset='utf-8')
 		meta(http-equiv='X-UA-Compatible' content='IE=edge')
@@ -26,13 +26,15 @@ html(lang='en')
 		#content.container
 			//- Banner
 			#banner(align='center')
-				img(src='/img/banner.png', class='img-responsive')
+				img(src='/img/banner.png').img-responsive
 
 			//- Display current game info if a game is currently being played
-			.divider
-				if gameInSession || true
-					#gameStats.row
-				else
+			.divider(ng-controller = "GameInfoBarControl")
+				.row
+					#gameStats(ng-if = "data.gameActive")
+						| Current Game Info |  Humans: {{ data.humancount }} | Zombies : {{ data.zombiecount }}
+					#gameStats(ng-if = "!data.gameActive")
+						| No game currently being played
 
 			.flashOutput
 				//- TODO
@@ -42,8 +44,7 @@ html(lang='en')
 				THIS SITE IS UNDER CONSTRUCTION (and does not work!)
 					
 			#pageContent.container-fluid
-				.row
-					block content
+				block content
 				
 		.footer
 
@@ -51,6 +52,7 @@ html(lang='en')
 		//- External Javascript
 		script(type="text/javascript", src='/bower_components/jquery/dist/jquery.min.js')
 		script(type="text/javascript", src='/bower_components/bootstrap/dist/js/bootstrap.min.js')
+		script(type="text/javascript", src='/bower_components/angularjs/angular.min.js')
 		
 		script(type="text/javascript", src='/js/main.js')
 		

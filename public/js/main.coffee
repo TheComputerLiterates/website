@@ -5,22 +5,15 @@ been included in the baseloayout.jade file
 
 ###
 
+# Initiate HVZApp Angular.js
+HVZApp = angular.module "HVZApp" , []
 
 # Get Current Game Info for information bar
+HVZApp.controller "GameInfoBarControl", ($scope, $http) ->
+	$http.post "/data/currentgame", ''
+		.success (data) ->
+			$scope.data = data
 
-$(document).ready ->
-	getData = ->
-		$.ajax
-			url: "/data/currentgame"
-			type: "POST"
-			ajax: "true"
-			success: (res) ->
-				if res.gameActive == true
-					$("#gameStats").html "Current Game Info | Humans: " + res.humancount + " | Zombies: " + res.zombiecount
-				else
-					$("#gameStats").html "There is no game being played currently"
-	getData()
-	setInterval(getData, 5000)
 
 # Dropdown menu ease in and out on click
 
