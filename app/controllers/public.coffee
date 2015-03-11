@@ -4,10 +4,7 @@ module.exports = (app) ->
 			res.render 'public/index',
 				title: 'Home' # TODO: replace 'Game' with Zombie/Human
 		
-		@login = (req, res) ->
-			res.render 'public/login',
-				title: 'Login' 
-				
+		
 		
 		@info = (req, res) ->
 			res.render 'public/info',
@@ -38,6 +35,31 @@ module.exports = (app) ->
 		
 		#post
 		@signup_submit = (req,res) ->
+			#TODO
+			
+		# LOGIN ################################################################
+		#page
+		@login = (req, res) ->
+			
+			#login verifiction example
+			loginData = 
+				email: 'jrdbnntt@gmail.com'
+				password: 'pass'
+			p = app.models.User.checkLogin loginData
+			p.then (success, userData)->
+				if success
+					console.log 'LOGIN VALID!'
+					console.log 'USERDATA: '+ JSON.stringify userData
+				else
+					console.log 'LOGIN INVALID!'
+			.then (error)->
+				#problem executing sql
 			
 			
+			res.render 'public/login',
+				title: 'Login' 
+		
+		#post
+		@login_submit = (req, res) ->
+			#TODO
 			
