@@ -3,40 +3,11 @@ module.exports = (app) ->
 		@index = (req, res) ->
 			res.render 'public/index',
 				title: 'Home' # TODO: replace 'Game' with Zombie/Human
-		
-		
-		
+
 		@info = (req, res) ->
 			res.render 'public/info',
 				title: 'Info' 
-		
-		# SIGNUP ###############################################################
-		#page
-		@signup = (req, res) ->
 
-			# EXAMPLE CREATING NEW USER
-			userData = 
-				email: 'jrdbnntt@gmail.com'
-				password: 'pass'
-				first_name: 'Jared'
-				last_name: 'Bennett'
-				email_subscribed: false
-			
-			p = app.models.User.checkEmailUsed userData.email
-			p.then (used)->
-				if used
-					console.log 'CANNOT CREATE USER BECAUSE EMAIL IN USE'
-				else
-					app.models.User.createNew userData
-			
-			
-			res.render 'public/signup',
-				title: 'Sign Up' 
-		
-		#post
-		@signup_submit = (req,res) ->
-			#TODO
-			
 		# LOGIN ################################################################
 		#page
 		@login = (req, res) ->
@@ -62,4 +33,31 @@ module.exports = (app) ->
 		#post
 		@login_submit = (req, res) ->
 			#TODO
+		
+
+		# SIGNUP ###############################################################
+		# Page (GET)
+		@signup = (req, res) ->
+
+			# EXAMPLE CREATING NEW USER
+			userData = 
+				email: 'jrdbnntt@gmail.com'
+				password: 'pass'
+				first_name: 'Jared'
+				last_name: 'Bennett'
+				email_subscribed: false
 			
+			p = app.models.User.checkEmailUsed userData.email
+			p.then (used)->
+				if used
+					console.log 'CANNOT CREATE USER BECAUSE EMAIL IN USE'
+				else
+					app.models.User.createNew userData
+			
+			
+			res.render 'public/signup',
+				title: 'Sign Up' 
+		
+		# POST
+		@signup_submit = (req,res) ->
+			#todo

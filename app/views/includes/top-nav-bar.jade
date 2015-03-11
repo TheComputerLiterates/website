@@ -12,12 +12,13 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 				img(src='/img/homeBtn.png')
 			a(href='https://www.facebook.com/hvzatfsu', alt="Facebook", class='navbar-brand')
 				img(src='/img/FB-f-Logo__blue_29.png')
-		
+
 		//- Collapsed when on mobile
 		nav(class='collapse navbar-collapse', id='main-navbar-collapse', role='navigation')
 			//- TODO: Get acl going for each section
 
 			ul(class='nav navbar-nav navbar-right')
+
 				li(class = (title == 'Home'?'active':undefined))
 					a(href='/') Home
 				li(class = (title == 'Info'?'active':undefined))
@@ -70,7 +71,7 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 				//- Display if logged in
 				li(class='dropdown')
 					a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-expanded='false')
-						| Profile 
+						| Profile
 						span(class='caret')
 					ul(class='dropdown-menu', role='menu')
 						li(class = (title == 'User - Profile'?'active':undefined))
@@ -80,6 +81,3 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 						li()
 							//- Create onclick function for Log out
 							a(href='#') Log Out
-
-
-			
