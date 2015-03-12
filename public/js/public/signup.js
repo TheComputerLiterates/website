@@ -32,9 +32,6 @@
       emailSubscribed: $("input[name='emailSubscribed']").is(':checked')
     };
     formValid = validateForm(formData);
-    if ($("[name='password']").val().length !== 0) {
-      data.password = CryptoJS.SHA256($("[name='password']").val()).toString(CryptoJS.enc.Hex);
-    }
     if (formValid !== true) {
       $('label[for=' + formValid["for"] + ']').addClass('hasInputError');
       $(FORM_ERROR_CLASS).text(formValid.msg);
@@ -54,6 +51,9 @@
       $('#submit').text('Submitting...');
       formData.emailConfirm = void 0;
       formData.passwordConfirm = void 0;
+      formData.password = CryptoJS.SHA3(formData.password, {
+        outputLength: 512
+      }).toString(CryptoJS.enc.Hex);
       $.ajax({
         type: 'POST',
         url: '/signup',

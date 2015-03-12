@@ -8,7 +8,7 @@
   "verbose": false,
   "quiet": true,
   "events": {
-    "restart": "echo \"RESTARTING....\""
+    "restart": "echo -e \"\\n\\033[0;32m*********************************************\\n\\033[1;34m'${FILENAME}' has been changed\\n\\033[0;32m************* RESTARTING NODE ***************\\n\\033[0m\""
   },
   "watch": [
     "app/*",

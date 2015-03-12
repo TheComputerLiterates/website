@@ -11,29 +11,38 @@ module.exports = (app) ->
 		# LOGIN ################################################################
 		#page
 		@login = (req, res) ->
-			
-			#login verifiction example
-			loginData = 
-				email: 'jrdbnntt@gmail.com'
-				password: 'pass'
-			p = app.models.User.checkLogin loginData
-			p.then (success, userData)->
-				if success
-					console.log 'LOGIN VALID!'
-					console.log 'USERDATA: '+ JSON.stringify userData
-				else
-					console.log 'LOGIN INVALID!'
-			.then (error)->
-				#problem executing sql
-			
-			
-			res.render 'public/login',
-				title: 'Login' 
+			if req.session.user? && req.session.user.roleId > 0
+				# already logged in
+				res.redirect '/user/profile'
+			else
+				res.render 'public/login',
+					title: 'Login' 
 		
 		#post
 		@login_submit = (req, res) ->
-			#TODO
-		
+			#TODO form validation
+			if req.body.email? &&
+			req.body.password?
+				loginData = 
+					email: req.body.email
+					password: req.body.password
+					
+				#check creds
+				p = app.models.User.checkLogin loginData
+				p.then (userData)->
+					console.log 'User login success: ' + userData.email
+					#save info in session
+					req.session.user = userData
+						
+					res.send
+						success: true
+						msg: ""
+					
+				, (err)->
+					res.send
+						success: false
+						msg: err
+				
 
 		# SIGNUP ###############################################################
 		# Page (GET)
@@ -44,7 +53,6 @@ module.exports = (app) ->
 		# POST
 		@signup_submit = (req,res) ->
 			#TODO form validation
-			console.log 'SIGNUP: ' + JSON.stringify req.body, undefined, 2
 			if req.body.firstName? &&
 			req.body.lastName? &&
 			req.body.email? &&
@@ -66,6 +74,18 @@ module.exports = (app) ->
 						p = app.models.User.createNew userData
 						p.then ()->
 							console.log 'Account Created with email "' + userData.email + '"'
+							
+							# Send email
+							app.emailTemplate 'accountCreated', 
+								to_email: userData.email
+								from_email: 'do_not_reply@hvzatfsu.com'
+								from_name: 'HvZ @ FSU'
+								subject: 'Account Created!'
+								locals:
+									firstName: userData.first_name
+									lastName: userData.last_name
+							
+							console.log 'rawr'
 							res.send
 								success: true
 								msg: 'Account Created'
@@ -79,7 +99,6 @@ module.exports = (app) ->
 						res.send
 							success: false
 							msg: 'Email already in use'
-												
 			else
 				res.send
 					success: false

@@ -4,6 +4,7 @@
 # @param eData = relevant sending data (see example)
 ###
 emailTemplates = require 'email-templates'
+path = require 'path'
 
 module.exports = (app) ->
 	app.emailTemplates = emailTemplates
@@ -19,8 +20,9 @@ module.exports = (app) ->
 		# 		lastName: "Bennett"
 		# 	success: function(to_email) #called after mandrill success
 		# 	error: function(to_email) #called after mandrill error
-				
-		path = require 'path'
+		def = app.Q.defer()
+		
+		console.log 'Sending email...'	
 		templatesDir = path.resolve(__dirname,'..', 'emails')
 		app.emailTemplates templatesDir,  (err, template) ->
 			if err
@@ -48,15 +50,18 @@ module.exports = (app) ->
 								
 							app.mandrill.messages.send 'message': message, 'async': true, 
 								(result) ->
-									console.log ' > Mandrill - Email Sent Success - eData= ' + JSON.stringify eData
+									console.log ' > Mandrill - Email Sent Success - subject="'+ eData.subject+'" to_email= ' + eData.to_email
 									if eData.success
 										eData.success(eData.to_email)
+										def.resolve()
 								, (e) ->
 									console.log ' > Mandrill - Error: ' + e.name + ' - ' + e.message
 									if eData.error
 										eData.error(eData.to_email)
+									def.reject()
 						else
 							console.log ' > Email-templates - Error: ' + err
+							def.reject()
 							
 					this.batch = (batch) ->
 						batch this.locals, templatesDir, this.send
@@ -70,4 +75,7 @@ module.exports = (app) ->
 						render = new Render(locals)
 						render.batch(batch)
 					return
-		return
+				return
+			return
+		return def.promise
+	return

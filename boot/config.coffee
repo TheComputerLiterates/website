@@ -11,17 +11,21 @@ session = require 'express-session'
 dotenv = require 'dotenv'
 Q = require 'q'
 Mariasql = require 'mariasql'
-emailTemplate = require '../lib/emailTemplate'
 
 #JS utility libraries
 util = require 'util'
 vsprintf = require('sprintf-js').vsprintf
+bcrypt = require 'bcrypt'
+
+#App specific
+hvz = require '../lib/hvz'
 
 # Configuration
 module.exports = (app) ->
 	# Load random utility libraries
 	app.util = util
 	app.vsprintf = vsprintf
+	app.bcrypt = bcrypt
 	
 	# Load helper functions
 	app.locals.helpers = require __dirname + '/../app/helpers'
@@ -32,10 +36,11 @@ module.exports = (app) ->
 	
 	# Load .env
 	dotenv.load()
+	app.env = process.env
 	
 	# Configure app settings
-	env = process.env.NODE_ENV || 'development'
-	app.set 'port', process.env.PORT || 5001
+	env = app.env.NODE_ENV || 'development'
+	app.set 'port', app.env.PORT || 5001
 	app.set 'views', __dirname + '/../app/views'
 	app.set 'view engine', 'jade'
 	app.use require('express').static __dirname + '/../public'
@@ -48,7 +53,7 @@ module.exports = (app) ->
 	#Session settings
 	app.use session 
 		name: 'connect.sid'
-		secret: process.env.SECRET + ' '
+		secret: app.env.SECRET + ' '
 		cookie:
 			maxAge: 172800000		#2 days
 		saveUninitialized: false
@@ -58,26 +63,27 @@ module.exports = (app) ->
 		next();
 
 	# Create Mandrill object TODO: setup mandrill account
-	app.mandrill = new Mandrill.Mandrill process.env.MANDRILL_API_KEY  
+	app.mandrill = new Mandrill.Mandrill app.env.MANDRILL_API_KEY
 	# Load email template function
-	emailTemplate app
+	require('../lib/emailTemplate')?(app)
+	
 	
 	#setup database, including a global persistent connection
 	app.db = 
 		Client: Mariasql
 		setup:
-			host: process.env.DATABASE_HOSTNAME
-			user: process.env.DATABASE_USERNAME
-			password: process.env.DATABASE_PASSWORD
-			db: process.env.DATABASE_NAME
+			host: app.env.DATABASE_HOSTNAME
+			user: app.env.DATABASE_USERNAME
+			password: app.env.DATABASE_PASSWORD
+			db: app.env.DATABASE_NAME
 	app.db.newCon = ()->
 			con = new app.db.Client()
 			con.connect app.db.setup
 			con.on 'connect', ()->
 				this.tId = this.threadId #so it isnt deleted
-				console.log '> DB: New connection established with threadId ' + this.threadId
+				console.log '> DB: New connection established with threadId ' + this.tId
 			.on 'error', (err)->
-				console.log '> DB: Error on threadId ' + this.threadId + '= ' + err
+				console.log '> DB: Error on threadId ' + this.tId + '= ' + err
 			.on 'close', (hadError)->
 				if hadError
 					console.log '> DB: Connection closed with old threadId ' + this.tId + ' WITH ERROR!'
@@ -100,17 +106,13 @@ module.exports = (app) ->
 	
 	
 	#debug crap
-	console.log ("> MANDRILL_KEY=" + process.env.MANDRILL_API_KEY)
-	console.log ("> SECRET=" + process.env.SECRET)
+	console.log ("> MANDRILL_KEY=" + app.env.MANDRILL_API_KEY)
+	console.log ("> SECRET=" + app.env.SECRET)
 	console.log '-------------------------------'
+	
+	
+	
+	# HvZ Config Constants
+	app.hvz = hvz
 		
-	# EXAMPLE EMAIL:
-	# app.emailTemplate 'accountCreated',
-	# 	to_email: 'jrdbnntt@gmail.com'
-	# 	from_email: 'account@hvzatfsu.com'
-	# 	from_name: 'HvZ at FSU'
-	# 	subject: 'Account Created!'
-	# 	locals:
-	# 		firstName: "Jared"
-	# 		lastName: "Bennett"
 		

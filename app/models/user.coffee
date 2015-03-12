@@ -42,36 +42,40 @@ module.exports = (app) ->
 		@createNew: (data) ->
 			#email MUST be checked for existence prior to call
 			def = app.Q.defer()
-			sql = app.vsprintf 'INSERT INTO %s (%s,%s,%s,%s,%s,%s,%s) VALUES ("%s","%s","%s","%s",%i,%s,%s)'
-			, [
-				TNAME
-				
-				COL.email
-				COL.password
-				COL.first_name
-				COL.last_name
-				COL.email_subscribed
-				COL.HVZID
-				COL.created_at
-				
-				data.email
-				data.password
-				data.first_name
-				data.last_name
-				if data.email_subscribed then 1 else 0
-				'genUniqueHVZID()'
-				'NOW()'
-			]
 			
-			#Basic sql call syntax here
-			con = app.db.newCon()
-			con.query sql
-			.on 'error', (err)->
-				console.log "> DB: Error on old threadId " + this.tId + " = " + err
-				def.reject()
-			.on 'end', ()->
-				def.resolve()
-			con.end()
+			#Encrypt password
+			app.bcrypt.genSalt 10, (err,salt)->
+				app.bcrypt.hash data.password, salt, (err, hash)->
+					sql = app.vsprintf 'INSERT INTO %s (%s,%s,%s,%s,%s,%s,%s) VALUES ("%s","%s","%s","%s",%i,%s,%s)'
+					, [
+						TNAME
+						
+						COL.email
+						COL.password
+						COL.first_name
+						COL.last_name
+						COL.email_subscribed
+						COL.HVZID
+						COL.created_at
+						
+						data.email
+						hash
+						data.first_name
+						data.last_name
+						if data.email_subscribed then 1 else 0
+						'genUniqueHVZID()'
+						'NOW()'
+					]
+					
+					#Basic sql call syntax here
+					con = app.db.newCon()
+					con.query sql
+					.on 'error', (err)->
+						console.log "> DB: Error on old threadId " + this.tId + " = " + err
+						def.reject()
+					.on 'end', ()->
+						def.resolve()
+					con.end()
 			
 			return def.promise
 		
@@ -104,38 +108,49 @@ module.exports = (app) ->
 		#checks if it is a valid login
 		@checkLogin: (loginInfo) ->
 			def = app.Q.defer()
-			sql = app.vsprintf 'SELECT * FROM %s WHERE %s = "%s" AND %s = "%s"'
+			sql = app.vsprintf 'SELECT * FROM %s WHERE %s = "%s"'
 			, [
 				'user_credentials_with_role'
 				COL.email
 				loginInfo.email
-				
-				COL.password
-				loginInfo.password
 			]
 			
 			userData = {}
+			passTemp = null
 			con = app.db.newCon()
 			con.query sql
 			.on 'result', (res)->
 				res.on 'row', (row)->
-					#user found!
+					#user found
+					passTemp = row.password
 					userData =
-						user_id: row.user_id
+						userId: row.user_id
 						email: row.email
-						role_id: row.role_id
-						role_name: row.role_name
+						roleId: row.role_id
 						HVZID: row.HVZID
+						firstName: row.first_name
+						lastName: row.last_name
+
 				res.on 'end', (info)->
 					console.log '> DB: info: ' + app.util.inspect info
+					
 					if info.numRows > 0
-						console.log '> DB: Valid login found for "'+userData.email+'"'
-						def.resolve true, userData
+						# check password
+						
+						app.bcrypt.compare loginInfo.password, passTemp, (err, res)->
+							if res #valid password
+								console.log '> DB: Valid login found for "'+userData.email+'"'
+								def.resolve userData
+							else
+								console.log 'LOGIN: Invalid password for "'+userData.email+'"'
+								def.reject 'Invalid login credentials'
+							return
 					else
-						def.resolve false
+						console.log 'LOGIN: Invalid email'
+						def.reject 'Invalid login credentials'
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err
-				def.reject()
+				def.reject 'A problem occured checking login credentials'
 				
 			con.end()
 			return def.promise

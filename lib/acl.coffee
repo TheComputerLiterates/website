@@ -3,40 +3,26 @@
 	Blocks request if not allowed. Only checks for restriced paths
 ###
 
-module.exports = acl = (req,res,next) ->
-	next();
+roles = (require './hvz').roles
+
+module.exports = acl = (req,res,next) ->	
+	isAllowedAccess = true
 	
-	# isAllowedAccess = true
+	path = req.path.split '/'
 	
-	# path = req.path.split '/'
-	
-	# # path[1] = controller
-	
-	# `
-	# switch(path[1]) {
-	# 	case "user":
-	# 		if(res.locals.session.signin != 1)
-	# 			isAllowedAccess = false;
-	# 	break;
-	# 	case "admin":
-	# 		if(res.locals.session.signin != 1 || res.locals.session.isAdmin != true)
-	# 			isAllowedAccess = false;
-	# 	break;
-	# }
-	# `
-	
-	
-	# if isAllowedAccess
-	# 	next()
-	# else
-	# 	# Does not have access to this page
-	# 	req.flash('error', "Access Denied.")
-	# 	res.redirect '/'
-		
-	# 	# res.render 'public/error',
-	# 	# 	title: "Error!"
-	# 	# 	errorData: 
-	# 	# 		msg: "Access Denied. Please sign in to access this page."
-	# 	# 		returnLocation: "/signin"
-	# 	# 		returnMsg: "Sign in"
-	
+	switch path[1]
+		when 'user'
+			if !res.locals.session.user? || res.locals.session.user.roleId < roles.USER.id
+				isAllowedAccess = false
+		when 'game' # Human vs Zombie pages is dertermined by the page
+			if !res.locals.session.user? || res.locals.session.user.roleId < roles.HUMAN.id
+				isAllowedAccess = false
+		when 'mod'
+			if !res.locals.session.user? || res.locals.session.user.roleId < roles.MODERATOR.id
+				isAllowedAccess = false
+				
+	if isAllowedAccess
+		next()
+	else
+		# Does not have access to this page
+		res.redirect '/login'

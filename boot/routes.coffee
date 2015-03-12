@@ -44,6 +44,9 @@ module.exports = (app) ->
 	# Stats
 	app.get '/user/stats', app.UserController.stats
 	
+	# Signout (redirects)
+	app.get '/user/logout', app.UserController.logout
+	
 
 	# GAME (player) PAGES #####################################################
 	# Game home

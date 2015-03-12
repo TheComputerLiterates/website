@@ -29,9 +29,7 @@ $(FORM_ID).submit (e) ->
 		
 	formValid = validateForm formData
 	
-	if $("[name='password']").val().length != 0
-		data.password = CryptoJS.SHA256 $("[name='password']").val()
-			.toString CryptoJS.enc.Hex
+		
 
 	if formValid != true
 		# handle error, dont submit
@@ -55,6 +53,10 @@ $(FORM_ID).submit (e) ->
 		#Remove input confirms
 		formData.emailConfirm = undefined
 		formData.passwordConfirm = undefined
+		
+		#Encrypt password (1st encryption. 2nd is server-side)
+		formData.password = CryptoJS.SHA3 formData.password, {outputLength: 512}
+			.toString CryptoJS.enc.Hex
 		
 		#submit via ajax
 		$.ajax
