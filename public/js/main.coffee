@@ -35,3 +35,19 @@ $(".dropdown").on "hide.bs.dropdown", (e) ->
 	.slideUp 200, () ->
 		$(this).parent()
 		.removeClass "open"
+		
+
+
+###
+jQuery plugin: shakeIt
+shake it sh-sh-shake it
+###
+
+( ($) -> 
+	$.fn.shakeIt = () ->
+		theShakenOne = this
+		theShakenOne.addClass('shakeText')
+		theShakenOne.one 'webkitAnimationEnd oanimationend msAnimationEnd animationend', (e) ->
+			theShakenOne.removeClass('shakeText')
+		return this
+) jQuery

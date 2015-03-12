@@ -1,4 +1,10 @@
 extend ../layout
 block content
-	h1 Test Email for #{firstName} #{lastName}
-	p Lalalalalala
+	.intro Hello #{firstName} #{lastName}!
+	
+	.message
+		| Your account has been created!
+		
+	.signature
+		span Sincerly,
+		span The Nito's Umbrella System

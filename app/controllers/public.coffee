@@ -38,26 +38,50 @@ module.exports = (app) ->
 		# SIGNUP ###############################################################
 		# Page (GET)
 		@signup = (req, res) ->
-
-			# EXAMPLE CREATING NEW USER
-			userData = 
-				email: 'jrdbnntt@gmail.com'
-				password: 'pass'
-				first_name: 'Jared'
-				last_name: 'Bennett'
-				email_subscribed: false
-			
-			p = app.models.User.checkEmailUsed userData.email
-			p.then (used)->
-				if used
-					console.log 'CANNOT CREATE USER BECAUSE EMAIL IN USE'
-				else
-					app.models.User.createNew userData
-			
-			
 			res.render 'public/signup',
-				title: 'Sign Up' 
+				title: 'Sign Up'
 		
 		# POST
 		@signup_submit = (req,res) ->
-			#todo
+			#TODO form validation
+			console.log 'SIGNUP: ' + JSON.stringify req.body, undefined, 2
+			if req.body.firstName? &&
+			req.body.lastName? &&
+			req.body.email? &&
+			req.body.emailSubscribed? &&
+			req.body.password?
+				
+				#set up db storage
+				userData = 
+					email: req.body.email
+					password: req.body.password
+					first_name: req.body.firstName
+					last_name: req.body.lastName
+					email_subscribed: req.body.emailSubscribed
+				
+				
+				p = app.models.User.checkEmailUsed userData.email
+				p.then (inUse)->
+					if !inUse
+						p = app.models.User.createNew userData
+						p.then ()->
+							console.log 'Account Created with email "' + userData.email + '"'
+							res.send
+								success: true
+								msg: 'Account Created'
+								
+						, (err)->
+							res.send
+								success: false
+								msg: 'Account creation error: ' + err
+					else
+						console.log 'CANNOT CREATE USER BECAUSE EMAIL IN USE'
+						res.send
+							success: false
+							msg: 'Email already in use'
+												
+			else
+				res.send
+					success: false
+					msg: 'Invalid parameters'
+			
