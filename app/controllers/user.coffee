@@ -20,5 +20,5 @@ module.exports = (app) ->
 				title: 'User - Statistics'
 		
 		@logout = (req,res)->
-			req.session.user = null
-			res.redirect '/login'
+			req.session.user = undefined
+			res.redirect '/'

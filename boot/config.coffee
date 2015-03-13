@@ -114,5 +114,6 @@ module.exports = (app) ->
 	
 	# HvZ Config Constants
 	app.hvz = hvz
-		
-		
+	app.locals.hvz = 
+		roles: hvz.roles
+				

@@ -36,6 +36,7 @@ module.exports = (app) ->
 	
 	# USER PAGES ##############################################################
 	# Profile
+	app.get '/user/', app.UserController.profile
 	app.get '/user/profile', app.UserController.profile
 	
 	# Forum

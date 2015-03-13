@@ -88,7 +88,7 @@ endInSuccess = () ->
 		sub.text 'Success!'
 		sub.attr 'disabled', 'true'
 		sub.fadeIn(500, ()->)
-		displayEnd 'Signup Complete!', 'You may login now', true
+		displayEnd 'Signup Complete!', 'Redirecting...', true
 	return
 displayEnd = (header, subtext, hide) ->
 	#create message
@@ -102,7 +102,9 @@ displayEnd = (header, subtext, hide) ->
 		$(FORM_ID+' checkbox').attr('disabled','disabled');
 		$(FORM_ID+' select').attr('disabled','disabled');
 		$(FORM_ID+' button').attr('disabled','disabled');
-		$(FORM_ID).fadeTo 1000, 0
+		$(FORM_ID).fadeTo 1000, 0, ()->
+			# Redirect to user profile, since they are logged in
+			window.location.replace '/user/'
 	else
 		$('#submit').removeAttr 'disabled'
 		.text 'Submit'

@@ -97,7 +97,7 @@
       sub.text('Success!');
       sub.attr('disabled', 'true');
       sub.fadeIn(500, function() {});
-      return displayEnd('Signup Complete!', 'You may login now', true);
+      return displayEnd('Signup Complete!', 'Redirecting...', true);
     });
   };
 
@@ -115,7 +115,9 @@
       $(FORM_ID + ' checkbox').attr('disabled', 'disabled');
       $(FORM_ID + ' select').attr('disabled', 'disabled');
       $(FORM_ID + ' button').attr('disabled', 'disabled');
-      $(FORM_ID).fadeTo(1000, 0);
+      $(FORM_ID).fadeTo(1000, 0, function() {
+        return window.location.replace('/user/');
+      });
     } else {
       $('#submit').removeAttr('disabled').text('Submit');
     }

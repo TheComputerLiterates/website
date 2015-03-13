@@ -4,6 +4,10 @@
 
 This is where all of the common custom javascript will be implemented. It has
 been included in the baseloayout.jade file
+
+Dependencies:
+	jQuery
+	AngularJS
  */
 
 (function() {

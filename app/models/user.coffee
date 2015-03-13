@@ -19,22 +19,21 @@ COL =
 	active: 'active'											#BOOL
 	email_subscribed: 'email_subscribed'				#BOOL
 	
-
-# Related tables, Foriegn-This (FK)
-TREL =
-	role: 							app.models.C.TNAME.role							# 1<-* (role_id)
-	forum_post: 					app.models.C.TNAME.forum_post					# *->1
-	geopoint: 						app.models.C.TNAME.geopoint					# *->1
-	clarification_request: 		app.models.C.TNAME.clarification_request	# *->1, *->1
-	users_in_games: 				app.models.C.TNAME.users_in_games			# game<-*->1
-	users_in_missions:			app.models.C.TNAME.users_in_missions		# mission<-*->1
-	player_kill:					app.models.C.TNAME.player_kill				# *->1, *->1
-	android_instance:				app.models.C.TNAME.android_instance 		# 1<-* (android_instance_id)
-	website_instance:				app.models.C.TNAME.website_instance 		# 1<-* (website_instance_id)
-	
-	
 module.exports = (app) ->
 	TNAME = app.models.C.TNAME.user
+	
+	# Related tables, Foriegn-This (FK)
+	TREL =
+		role: 							app.models.C.TNAME.role							# 1<-* (role_id)
+		forum_post: 					app.models.C.TNAME.forum_post					# *->1
+		geopoint: 						app.models.C.TNAME.geopoint					# *->1
+		clarification_request: 		app.models.C.TNAME.clarification_request	# *->1, *->1
+		users_in_games: 				app.models.C.TNAME.users_in_games			# game<-*->1
+		users_in_missions:			app.models.C.TNAME.users_in_missions		# mission<-*->1
+		player_kill:					app.models.C.TNAME.player_kill				# *->1, *->1
+		android_instance:				app.models.C.TNAME.android_instance 		# 1<-* (android_instance_id)
+		website_instance:				app.models.C.TNAME.website_instance 		# 1<-* (website_instance_id)
+	
 	class app.models.User
 		constructor: ()->		
 		
@@ -131,15 +130,13 @@ module.exports = (app) ->
 						firstName: row.first_name
 						lastName: row.last_name
 
-				res.on 'end', (info)->
-					console.log '> DB: info: ' + app.util.inspect info
-					
+				res.on 'end', (info)->					
 					if info.numRows > 0
 						# check password
 						
 						app.bcrypt.compare loginInfo.password, passTemp, (err, res)->
 							if res #valid password
-								console.log '> DB: Valid login found for "'+userData.email+'"'
+								# console.log '> DB: Valid login found for "'+userData.email+'"'
 								def.resolve userData
 							else
 								console.log 'LOGIN: Invalid password for "'+userData.email+'"'
@@ -154,3 +151,32 @@ module.exports = (app) ->
 				
 			con.end()
 			return def.promise
+		
+		# Changes the role of a user
+		@setRole: (user_id, role_id)->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'UPDATE %s SET %s = "%s" WHERE %s = "%s" LIMIT 1'
+			, [
+				TNAME
+				
+				COL.role_id
+				role_id
+				
+				COL.user_id
+				user_id
+			]
+			
+			con = app.db.newCon()
+			con.query sql
+			.on 'end', (info)->
+				if info.numRows
+					deferred.resolve()
+				else
+					deferred.reject 'Invalid user_id'
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+			con.end()
+			
+			return deferred.promise
+			

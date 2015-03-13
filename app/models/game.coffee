@@ -16,18 +16,18 @@ COL =
 	description: 'description'			#TEXT(2000)
 	visible: 'visible'					#BOOL
 	
-#Related tables, Foreign-This
-TREL =
-	users_in_games: 			app.models.C.TNAME.users_in_games			# user<-*->1 (intermediary)
-	player_kill: 				app.models.C.TNAME.player_kill				# *->1
-	mission: 					app.models.C.TNAME.mission						# *->1
-	clarification_request: 	app.models.C.TNAME.clarification_request	# *->1
-	geopoint:					app.models.C.TNAME.geopoint					# *->1
-	geofence: 					app.models.C.TNAME.geofence					# *->1
-	
-	
 module.exports = (app) ->
 	TNAME = app.models.C.TNAME.game
+	#Related tables, Foreign-This
+	TREL =
+		users_in_games: 			app.models.C.TNAME.users_in_games			# user<-*->1 (intermediary)
+		player_kill: 				app.models.C.TNAME.player_kill				# *->1
+		mission: 					app.models.C.TNAME.mission						# *->1
+		clarification_request: 	app.models.C.TNAME.clarification_request	# *->1
+		geopoint:					app.models.C.TNAME.geopoint					# *->1
+		geofence: 					app.models.C.TNAME.geofence					# *->1
+	
+	
 	class app.models.Game
 		constructor: ()->	
 		

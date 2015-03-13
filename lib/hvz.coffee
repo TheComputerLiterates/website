@@ -17,6 +17,9 @@ module.exports =
 		ZOMBIE:
 			id: 3
 			name: 'Zombie'
-		MODERATOR:
+		OZ:
 			id: 4
+			name: 'OZ'
+		MODERATOR:
+			id: 5
 			name: 'Moderator'

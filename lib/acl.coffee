@@ -14,8 +14,8 @@ module.exports = acl = (req,res,next) ->
 		when 'user'
 			if !res.locals.session.user? || res.locals.session.user.roleId < roles.USER.id
 				isAllowedAccess = false
-		when 'game' # Human vs Zombie pages is dertermined by the page
-			if !res.locals.session.user? || res.locals.session.user.roleId < roles.HUMAN.id
+		when 'game' # Human vs Zombie vz OZ dertermined by the page
+			if !res.locals.session.user? || res.locals.session.user.roleId < roles.OZ.id
 				isAllowedAccess = false
 		when 'mod'
 			if !res.locals.session.user? || res.locals.session.user.roleId < roles.MODERATOR.id
