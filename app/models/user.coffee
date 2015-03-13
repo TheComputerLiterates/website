@@ -4,12 +4,11 @@
 ###
 
 #table constants
-TNAME = 'user'
 COL = 
 	id: 'id'														#INT
-	role_id:	'role_id'										#INT
-	android_instance_id: 'android_instance_id'		#INT
-	website_instance_id: 'website_instance_id'		#INT
+	role_id:	'role_id'										#INT - FK
+	android_instance_id: 'android_instance_id'		#INT - FK
+	website_instance_id: 'website_instance_id'		#INT - FK
 	HVZID: 'HVZID'												#INT '123456789'
 	email: 'email'												#VARCHAR(70)
 	password: 'password'										#VARCHAR(128)
@@ -20,25 +19,26 @@ COL =
 	active: 'active'											#BOOL
 	email_subscribed: 'email_subscribed'				#BOOL
 	
+
+# Related tables, Foriegn-This (FK)
+TREL =
+	role: 							app.models.C.TNAME.role							# 1<-* (role_id)
+	forum_post: 					app.models.C.TNAME.forum_post					# *->1
+	geopoint: 						app.models.C.TNAME.geopoint					# *->1
+	clarification_request: 		app.models.C.TNAME.clarification_request	# *->1, *->1
+	users_in_games: 				app.models.C.TNAME.users_in_games			# game<-*->1
+	users_in_missions:			app.models.C.TNAME.users_in_missions		# mission<-*->1
+	player_kill:					app.models.C.TNAME.player_kill				# *->1, *->1
+	android_instance:				app.models.C.TNAME.android_instance 		# 1<-* (android_instance_id)
+	website_instance:				app.models.C.TNAME.website_instance 		# 1<-* (website_instance_id)
+	
 	
 module.exports = (app) ->
+	TNAME = app.models.C.TNAME.user
 	class app.models.User
 		constructor: ()->		
 		
-		#test example, TODO: remove this
-		@getAll: ()->
-			sql = 'SELECT '+COL.email+' FROM ' + TNAME
-			
-			con = app.db.newCon()
-			con.query sql
-			.on 'result', (res)->
-				res.on 'row', (row)->
-					console.log "ROW: " + app.util.inspect row
-			
-			con.end()
-			return
-		
-		# Creates a new user in the database. Returns success/fail
+		# Creates a new user in the database.
 		@createNew: (data) ->
 			#email MUST be checked for existence prior to call
 			def = app.Q.defer()
@@ -63,7 +63,7 @@ module.exports = (app) ->
 						data.first_name
 						data.last_name
 						if data.email_subscribed then 1 else 0
-						'genUniqueHVZID()'
+						app.models.C.RNAME.genUniqueHVZID + '()'
 						'NOW()'
 					]
 					
@@ -110,7 +110,7 @@ module.exports = (app) ->
 			def = app.Q.defer()
 			sql = app.vsprintf 'SELECT * FROM %s WHERE %s = "%s"'
 			, [
-				'user_credentials_with_role'
+				app.models.C.VNAME.user_credentials_with_role
 				COL.email
 				loginInfo.email
 			]
