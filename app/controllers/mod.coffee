@@ -19,4 +19,11 @@ module.exports = (app) ->
 		@users = (req, res) ->
 			res.render 'mod/users',
 				title: 'Mod Tools - Manage Users'
-				
+				userData: [
+					{name: 'rawr'}
+					{name: 'rawr'}
+					{name: 'rawr'}
+					{name: 'rawr'}
+					{name: 'rawr'}
+					{name: 'rawr'}
+				]

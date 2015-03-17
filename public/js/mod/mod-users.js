@@ -12,6 +12,10 @@ Dependencies:
  */
 
 (function() {
-
+  $(document).ready(function() {
+    return HVZApp.controller('Mod_Users', function($scope, $http) {
+      return console.log('USERDATA: ' + JSON.stringify($scope.userData, void 0, 2));
+    });
+  });
 
 }).call(this);

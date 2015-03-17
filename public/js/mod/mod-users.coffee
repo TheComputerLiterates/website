@@ -6,7 +6,10 @@ Handles user management.
 Dependencies:
 	jQuery
 	socket.io
-	AngularJS (initalized with HVZApp)
+	AngularJS 
 
 ###
 
+ModApp
+HVZApp.controller 'Mod_Users', ($scope, $http) ->
+	console.log 'USERDATA: ' + JSON.stringify $scope.userData, undefined, 2

@@ -1,7 +1,12 @@
 extend ../_layouts/baselayout
 block content
-
-
+	h1 User Management
+	br
+	
+	div(ng-controller='Mod_Users', 
+			ng-init='userData=#{JSON.stringify(userData)}')
+		
+		
 
 block localJS
 	script(type="text/javascript", src="/js/mod/mod-users.js")
