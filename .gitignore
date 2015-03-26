@@ -4,3 +4,4 @@ desktop.ini
 .env
 node-debug.log
 public/bower_components
+sftp-config.json
