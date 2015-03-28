@@ -76,6 +76,16 @@ module.exports = (app) ->
 	# Development
 	app.get '/mod/dev', app.ModController.dev
 	
+	app.get '/mod/dev/create/mission/', app.ModController.devCreateMission
+	app.get '/mod/dev/create/game/', app.ModController.devCreateGame
+	app.get '/mod/dev/edit/mission/:missionId', app.ModController.devEditMission
+	app.get '/mod/dev/edit/game/:gameId', app.ModController.devEditGame
+	
+	app.post '/mod/dev/create/mission/', jsonParser, app.ModController.devCreateMission_submit
+	app.post '/mod/dev/create/game/', jsonParser, app.ModController.devCreateGame_submit
+	app.post '/mod/dev/edit/mission/', jsonParser, app.ModController.devEditMission_submit
+	app.post '/mod/dev/edit/game/', jsonParser, app.ModController.devEditGame_submit
+	
 	# Information edit/docs
 	app.get '/mod/info', app.ModController.info
 

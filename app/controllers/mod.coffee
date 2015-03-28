@@ -4,9 +4,7 @@ module.exports = (app) ->
 			res.render 'mod/index',
 				title: 'Mod Tools - Home'
 		
-		@dev = (req, res) ->
-			res.render 'mod/dev',
-				title: 'Mod Tools - Develop Games'
+		
 				
 		@game = (req, res) ->
 			res.render 'mod/game',
@@ -17,7 +15,6 @@ module.exports = (app) ->
 				title: 'Mod Tools - Edit Info'
 		
 		@users = (req, res) ->
-			
 			p = app.models.User.getAllBasic()
 			p.then (userData)->
 				console.log 'Success getting users!'
@@ -54,5 +51,66 @@ module.exports = (app) ->
 			, (err)->
 				console.log 'Error getting users'
 			
+		########################################################################
+		# DEVELOPMENT
+		
+		# Main page
+		@dev = (req, res) ->
+			title = 'Mod Tools - Develop Games'
+			games = []
+			missions = []
+			
+			# Load mission and game data
+			p = app.models.Game.getAll()
+			p.then (gameData)->
+				games = gameData
+				
+				p2 = app.models.Mission.getAll()
+				p2.then (missionData)->
+					missions = missionData
+					
+					console.log 'Success!'
+					res.render 'mod/dev',
+						title: title
+						games: games
+						missions: missions
+						
+				, (err)->
+					console.log 'ERROR: Unable to get missions. ' + err
+					res.render 'mod/dev',
+						title: title
+						games: games
+						missions: missions
+			, (err)->
+				console.log 'ERROR: Unable to get games. ' + err
+				res.render 'mod/dev',
+					title: title
+					games: games
+					missions: missions
+			
+		
+		@devCreateMission = (req, res) ->
+			res.render 'mod/dev/createMission',
+				title: 'Mod Tools - Develop Games - Create New Mission'
+		@devCreateMission_submit = (req, res) ->
+			res.send true
+			
+		@devCreateGame = (req, res) ->
+			res.render 'mod/dev/createGame',
+				title: 'Mod Tools - Develop Games - Create New Game'
+		@devCreateGame_submit = (req, res) ->
+			res.send true
+			
+		@devEditMission = (req, res) ->
+			res.render 'mod/dev/editMission',
+				title: 'Mod Tools - Develop Games - Edit Mission'
+		@devEditMission_submit = (req, res) ->
+			res.send true
+				
+		@devEditGame = (req, res) ->
+			res.render 'mod/dev/editGame',
+				title: 'Mod Tools - Develop Games - Edit Game'
+		@devEditGame_submit = (req, res) ->
+			res.send true
 			
 			

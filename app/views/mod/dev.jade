@@ -1,2 +1,89 @@
 extend ../_layouts/baselayout
 block content
+	h1 Game Development
+	p 
+		| This is the main page for designing games and missions. If you are trying to handle events for the current game, use the 
+		a(href='/mod/game') Current Game Management
+		|  page instead.
+	br
+	
+	#tabs(role='tabpanel')
+		//- Nav tabs
+		ul.nav.nav-tabs(roles='tablist')
+			li.active(role='presentation')
+				a(href='#games', aria-controls='games', role='tab' data-toggle='tab') Games
+			li(role='presentation')
+				a(href='#missions', aria-controls='missions', role='tab' data-toggle='tab') Missions
+		
+		//- Tab panes
+		.tab-content#tabContainer
+			.tab-pane.active#games(role='tabpanel')
+				.row
+					.col-xs-4: button.btn(href='/') Edit Current Game
+					.col-xs-4: button.btn(href='/') Create New Game
+				
+				table.display.dataTable
+					thead
+						tr
+							th Title
+							th Description
+							th Start
+							th End
+							th Status
+							th Actions
+								
+					tbody
+						//- Display each game
+						for game in games
+							tr
+								td #{game.title}
+								td #{game.description}
+								td #{game.startDate}
+								td #{game.endDate}
+								td #{game.status}
+								td TODO
+					tfoot
+						tr
+							th Title
+							th Description
+							th Start
+							th End
+							th Status
+							th Actions
+							
+			.tab-pane.active#games(role='tabpanel')
+				.row
+					.col-xs-4: button.btn(href='/') Create New Mission
+				
+				table.display.dataTable
+					thead
+						tr
+							th Game Title
+							th Title
+							th Description
+							th Start
+							th End
+							th Status
+							th Actions
+								
+					tbody
+						//- Display each game
+						for mission in missions
+							tr
+								td #{mission.gameTitle}
+								td #{mission.title}
+								td #{mission.description}
+								td #{mission.startDate}
+								td #{mission.endDate}
+								td #{mission.status}
+								td TODO
+					tfoot
+						tr
+							th Game Title
+							th Title
+							th Description
+							th Start
+							th End
+							th Status
+							th Actions
+						
