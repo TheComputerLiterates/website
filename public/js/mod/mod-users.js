@@ -8,21 +8,96 @@ Handles user management.
 Dependencies:
 	jQuery
 	socket.io
-	AngularJS
+	AngularJS 
+
+Datatable uses
+	- Can disable certain columns
+	- Can navigate with arrow keys + hit return for easy button calls
+	
+TODO
+	- Make the buttons small icons
+	- Add datatable KeyTable support
  */
 
 (function() {
-  var dtSettings;
+  var $iconLoading, $log, FADE_TIME, action, dtSettings, logEvent;
+
+  FADE_TIME = 100;
+
+  $iconLoading = $('.icon-loading');
 
   dtSettings = {
     order: [[0, 'asc']],
     aLengthMenu: [[25, 50, 75, -1], [25, 50, 75, "All"]],
     iDisplayLength: 25,
-    autoWidth: true
+    autoWidth: true,
+    dom: 'C<"clear">lfrtip',
+    colVis: {
+      buttonText: 'Show/Hide',
+      activate: 'click',
+      exclude: [0, 1]
+    }
   };
 
   $(document).ready(function() {
-    return $('#DT').DataTable(dtSettings);
+    var table;
+    table = $('#DT').DataTable(dtSettings);
   });
+
+  $('.btn-action').click(function() {
+    var act, userId;
+    act = $(this).attr('data-action');
+    userId = $(this).attr('data-userId');
+    console.log('BTN ' + act + ' FOR ' + userId);
+    action[act](userId, $(this));
+  });
+
+  $log = $('#log');
+
+  logEvent = function(text) {
+    var d, h, m, s, time;
+    d = new Date();
+    h = d.getHours();
+    m = d.getMinutes();
+    s = d.getSeconds();
+    h = h < 10 ? '0' + h : h;
+    m = m < 10 ? '0' + m : m;
+    s = s < 10 ? '0' + s : s;
+    time = '<b>[' + h + ':' + m + ':' + s + ']</b> ';
+    $log.append('<span>' + time + text + '</span><br>');
+    return $log.scrollTop($log[0].scrollHeight);
+  };
+
+  logEvent('~~LOG START~~');
+
+  action = {
+    killUser: function(userId, $btn) {
+      $iconLoading.fadeTo(FADE_TIME, 1);
+      logEvent('action= killUser\nuserId= ' + userId);
+      return true;
+    },
+    reviveUser: function(userId, $btn) {
+      return logEvent('action= reviveUser\nuserId= ' + userId);
+    },
+    deleteUser: function(userId, $btn) {
+      return logEvent('action= deleteUser\nuserId= ' + userId);
+    },
+    activateUser: function(userId, $btn) {
+      return logEvent('action= activateUser\nuserId= ' + userId);
+    },
+    deactivateUser: function(userId, $btn) {
+      logEvent('action= deactivateUser\nuserId= ' + userId);
+      return $iconLoading.fadeTo(FADE_TIME, 0);
+    },
+    editUser: function(userId, $btn) {
+      return logEvent('action= editUser\nuserId= ' + userId);
+    },
+    flagUser: function(userId, $btn) {
+      return logEvent('action= flagUser\nuserId= ' + userId);
+    },
+    commentUser: function(userId, $btn) {
+      return logEvent('action= commentUser\nuserId= ' + userId);
+    }
+  };
 
 }).call(this);

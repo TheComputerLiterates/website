@@ -5,16 +5,17 @@ block content
 		
 	//- COUNTS
 	.row
-		.col-xs-3 #{counts.user} Users<br>
+		.col-xs-3 #{counts.user} Normal Users<br>
 			| [#{counts.active} Active]
 		.col-xs-3 #{counts.human + counts.zombie} Players<br>
 			| [#{counts.human} Humans | #{counts.zombie} Zombies]
 		.col-xs-3 #{counts.mod} Mods
 		.col-xs-3
 			.icon-loading
-
+	br
+		
 	//- DATA
-	table#DT
+	table#DT.display
 		thead
 			tr
 				th First Name
@@ -22,21 +23,39 @@ block content
 				th HVZID
 				th Role
 				th Active?
-				th A1
-				th A2
-				th A3
+				th Actions
+
 		tbody
 			for user in userData
-				tr(data-userId='#{user.userId}')
+				tr
 					td #{user.firstName}
 					td #{user.lastName}
 					td #{user.HVZID}
 					td #{user.role}
 					td #{user.active}
-					td ?
-					td ??
-					td ???
-		
+					td.text-right
+						//- Determine action list
+						if user.role == 'U'
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='killUser') Humanize
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='reviveUser') Zombify
+						else if user.role == 'H'
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='killUser') Kill 
+						else if user.role == 'Z'
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='reviveUser') Revive 
+						else if user.role == 'O'
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='killUser') Kill
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='reviveUser') Revive
+						else
+						
+							
+						if user.active == 'Y'
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='deactivateUser') Deactivate
+						else
+							button.btn.btn-action(data-userId='#{user.userId}' data-action='activateUser') Activate
+								
+						button.btn.btn-action(data-userId='#{user.userId}' data-action='editUser') Edit
+						button.btn.btn-action(data-userId='#{user.userId}' data-action='deleteUser') Delete
+
 		tfoot
 			tr
 				th First Name
@@ -44,16 +63,22 @@ block content
 				th HVZID
 				th Role
 				th Active?
-				th A1
-				th A2
-				th A3
+				th Actions
 	
-		
+	br
+	h3 Log
+	p#log
 
 block localCSS
 	link(rel='stylesheet' type='text/css' href='//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css')
+	link(rel='stylesheet' type='text/css' href='//cdn.datatables.net/colvis/1.1.1/css/dataTables.colVis.css')
+	//- link(rel='stylesheet' type='text/css' href='//cdn.datatables.net/keytable/1.2.1/css/dataTables.keyTable.css')
+		
 
 block localJS
 	script(type='text/javascript' src='//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js')
+	script(type='text/javascript' src='//cdn.datatables.net/colvis/1.1.1/js/dataTables.colVis.min.js')
+	//- script(type='text/javascript' src='//cdn.datatables.net/keytable/1.2.1/js/dataTables.keyTable.min.js')
+	
 	script(type='text/javascript' src='/js/mod/mod-users.js')
 	
