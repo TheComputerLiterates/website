@@ -19,8 +19,8 @@ block content
 		.tab-content#tabContainer
 			.tab-pane.active#games(role='tabpanel')
 				.row
-					.col-xs-4: button.btn(href='/') Edit Current Game
-					.col-xs-4: button.btn(href='/') Create New Game
+					.col-xs-4: a.btn(href='/') Edit Current Game
+					.col-xs-4: a.btn(href='/mod/dev/create/game') Create New Game
 				
 				table.display.dataTable
 					thead
@@ -40,8 +40,9 @@ block content
 								td #{game.description}
 								td #{game.startDate}
 								td #{game.endDate}
-								td #{game.status}
 								td TODO
+								td 
+									a.btn(href='/mod/dev/edit/game/#{game.gameId}') Edit
 					tfoot
 						tr
 							th Title
@@ -51,14 +52,14 @@ block content
 							th Status
 							th Actions
 							
-			.tab-pane.active#games(role='tabpanel')
+			.tab-pane#missions(role='tabpanel')
 				.row
-					.col-xs-4: button.btn(href='/') Create New Mission
+					.col-xs-4: a.btn(href='/mod/dev/create/mission') Create New Mission
 				
 				table.display.dataTable
 					thead
 						tr
-							th Game Title
+							th Game
 							th Title
 							th Description
 							th Start
@@ -70,13 +71,14 @@ block content
 						//- Display each game
 						for mission in missions
 							tr
-								td #{mission.gameTitle}
+								td #{mission.gameId}
 								td #{mission.title}
 								td #{mission.description}
 								td #{mission.startDate}
 								td #{mission.endDate}
-								td #{mission.status}
 								td TODO
+								td
+									a.btn(href='/mod/dev/edit/mission/#{mission.missionId}') Edit
 					tfoot
 						tr
 							th Game Title
@@ -86,4 +88,12 @@ block content
 							th End
 							th Status
 							th Actions
-						
+block localCSS
+	link(rel='stylesheet' type='text/css' href='//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css')
+		
+
+block localJS
+	script(type='text/javascript' src='//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js')
+	
+	script(type='text/javascript' src='/js/mod/mod-dev.js')
+	
