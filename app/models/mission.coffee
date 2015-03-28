@@ -25,35 +25,40 @@ module.exports = (app) ->
 		# Creates a new mission in the database. Must have an accurate game_id
 		@createNew: (data) ->
 			def = app.Q.defer()
-			sql = app.vsprintf 'INSERT INTO %s (%s,%s,%s,%s,%s,%s,%s) VALUES (%i,"%s","%s","%s","%s",%i,%i)'
+			sql = app.vsprintf 'SELECT createNewMission(%i,"%s","%s","%s","%s") AS mission_id'
 			, [
-				TNAME
-				
-				COL.game_id
-				COL.start_date
-				COL.end_date
-				COL.title
-				COL.description
-				COL.succeeded
-				COL.visible_to_players
-				
-				data.game_id # MUST BE ACCURATE
-				data.start_date
-				data.end_date
+				data.gameId # MUST BE ACCURATE
 				data.title
 				data.description
-				0 #false
-				0 #false
+				data.startDate
+				data.endDate
 			]
 			
 			#Basic sql call syntax here
 			con = app.db.newCon()
 			con.query sql
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					# Create roles_in_missions
+					roleData = 
+						missionId: parseInt row.mission_id
+						roleIds: []
+					
+					if data.visibility.human
+						roleData.roleIds.push app.hvz.roles.HUMAN.id
+					if data.visibility.zombie
+						roleData.roleIds.push app.hvz.roles.ZOMBIE.id
+					if data.visibility.oz
+						roleData.roleIds.push app.hvz.roles.OZ.id
+						
+					p = app.models.Roles.createNewRM roleData
+					p.then ()->
+						def.resolve()
+					, (err)->
+						def.reject err
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err
-				def.reject()
-			.on 'end', ()->
-				def.resolve()
+				def.reject err
 			con.end()
 			
 			return def.promise

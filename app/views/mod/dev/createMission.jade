@@ -1,4 +1,62 @@
 extend ../../_layouts/baselayout
 block content
-	h1 #{title}
+	h1 Create New Mission
 	
+	if games && roles
+		.formResult
+		form#createMissionForm.form-horizontal(role="form")
+			.form-group
+				label.control-label.col-sm-2(for="gameId") Game
+				.col-sm-7
+					select.form-control(name='gameId' required autofocus)
+						for game in games
+							option(value='#{game.gameId}') #{game.title}
+			.form-group
+				label.control-label.col-sm-2(for="visibility") Visibility
+				.checkbox.col-sm-3
+					label
+						input(type='checkbox' name='visibility' value='#{roles.HUMAN.id}' data-group='human')
+						| #{roles.HUMAN.name}
+				.checkbox.col-sm-3
+					label
+						input(type='checkbox' name='visibility' value='#{roles.ZOMBIE.id}' data-group='zombie')
+						| #{roles.ZOMBIE.name}
+				.checkbox.col-sm-3
+					label
+						input(type='checkbox' name='visibility' value='#{roles.OZ.id}' data-group='oz')
+						| #{roles.OZ.name}
+					
+			br
+			.form-group
+				label.control-label.col-sm-2(for="title") Title
+				.col-sm-7
+					input.form-control(type="text" name="title" placeholder="Visible game title" maxlength='45' required)
+			.form-group
+				label.control-label.col-sm-2(for="description") Description
+				.col-sm-7
+					textarea.form-control(rows='4' name="description" placeholder="Describe the game. You can include html. 2000 char max."  maxlength='2000' required)
+			.form-group
+				label.control-label.col-sm-2(for="startDate") Start
+				.col-sm-7
+					input.form-control(type="datetime-local" name="startDate" required)
+			.form-group
+				label.control-label.col-sm-2(for="endDate") End
+				.col-sm-7
+					input.form-control(type="datetime-local" name="endDate" required)
+			
+			br
+			blockquote: p.
+				Dynamic map elements (Geopoints + Geofences) are to be added later
+			
+			br
+			.form-group
+				.formError.col-sm-5.col-sm-offset-2
+				.col-sm-2
+					button#submit.btn.btn-default(type="submit") Submit
+	else
+		h3 An unexpected error has occured!
+		p There was a problem loading the game list. Try refreshing this page.
+		
+
+block localJS
+	script(type='text/javascript' src='/js/mod/dev/mod-dev-createMission.js')

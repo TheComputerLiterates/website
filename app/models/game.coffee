@@ -44,8 +44,8 @@ module.exports = (app) ->
 				COL.description
 				COL.visible
 				
-				data.start_date
-				data.end_date
+				data.startDate
+				data.endDate
 				data.title
 				data.description
 				0 #false
@@ -56,16 +56,17 @@ module.exports = (app) ->
 			con.query sql
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err
-				def.reject()
+				def.reject err
 			.on 'end', ()->
 				def.resolve()
 			con.end()
 			
 			return def.promise
 		
+		# gets all games
 		@getAll: ()->
 			deferred = app.Q.defer()
-			sql = app.vsprintf 'SELECT %s,%s,%s,%s,%s,%s FROM  %s'
+			sql = app.vsprintf 'SELECT %s,%s,%s,%s,%s,%s FROM %s'
 			, [
 				COL.id
 				COL.start_date
@@ -98,3 +99,35 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
+		
+		# gets all the titles and ids, ordered by most recent
+		@getAllTitles: ()->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT %s,%s FROM %s ORDER BY %s DESC'
+			, [
+				COL.id
+				COL.title
+				
+				TNAME
+				
+				COL.start_date
+			]
+			
+			result = []
+			con = app.db.newCon()
+			con.query sql 
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					result.push 
+						gameId: row.id
+						title: row.title
+				res.on 'end', (info)->
+					console.log 'Got ' + info.numRows + ' rows from ' + TNAME
+					deferred.resolve result
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+			con.end()
+			
+			return deferred.promise
+			

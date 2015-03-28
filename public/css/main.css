@@ -67,6 +67,9 @@ div.divider {
 	overflow-y: scroll;
 }
 
+textarea {
+	resize: vertical;
+}
 
 /*****************************************************************************
  * ICONS
