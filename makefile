@@ -2,4 +2,4 @@
 
 nodemon:
 	coffee -o public/js -cw public/coffee &
-	nodemon --delay 1
+	nodemon --delay 2

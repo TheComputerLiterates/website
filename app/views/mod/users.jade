@@ -2,11 +2,58 @@ extend ../_layouts/baselayout
 block content
 	h1 User Management
 	br
-	
-	div(ng-controller='Mod_Users', 
-			ng-init='userData=#{JSON.stringify(userData)}')
 		
+	//- COUNTS
+	.row
+		.col-xs-3 #{counts.user} Users<br>
+			| [#{counts.active} Active]
+		.col-xs-3 #{counts.human + counts.zombie} Players<br>
+			| [#{counts.human} Humans | #{counts.zombie} Zombies]
+		.col-xs-3 #{counts.mod} Mods
+		.col-xs-3
+			.icon-loading
+
+	//- DATA
+	table#DT
+		thead
+			tr
+				th First Name
+				th Last Name
+				th HVZID
+				th Role
+				th Active?
+				th A1
+				th A2
+				th A3
+		tbody
+			for user in userData
+				tr(data-userId='#{user.userId}')
+					td #{user.firstName}
+					td #{user.lastName}
+					td #{user.HVZID}
+					td #{user.role}
+					td #{user.active}
+					td ?
+					td ??
+					td ???
+		
+		tfoot
+			tr
+				th First Name
+				th Last Name
+				th HVZID
+				th Role
+				th Active?
+				th A1
+				th A2
+				th A3
+	
 		
 
+block localCSS
+	link(rel='stylesheet' type='text/css' href='//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css')
+
 block localJS
-	script(type="text/javascript", src="/js/mod/mod-users.js")
+	script(type='text/javascript' src='//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js')
+	script(type='text/javascript' src='/js/mod/mod-users.js')
+	

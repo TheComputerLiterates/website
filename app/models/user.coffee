@@ -179,4 +179,40 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
+		
+		# Retrieves all useful user data (switching it to camel-case)
+		@getAllBasic: ()->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT %s AS %s, %s AS %s, %s, %s AS %s, %s AS %s, %s FROM  %s'
+			, [
+				COL.id, 'userId'
+				COL.role_id, 'roleId'
+				COL.HVZID
+				COL.first_name, 'firstName'
+				COL.last_name, 'lastName'
+				COL.active
+				
+				TNAME
+			]
 			
+			result = []
+			con = app.db.newCon()
+			con.query sql 
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					result.push 
+						userId: parseInt row.userId
+						role: app.hvz.getRoleById(parseInt row.roleId)[0]
+						HVZID: parseInt row.HVZID
+						firstName: row.firstName
+						lastName: row.lastName
+						active: parseInt row.active
+				res.on 'end', (info)->
+					console.log 'Got ' + info.numRows + ' rows'
+					deferred.resolve result
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+			con.end()
+			
+			return deferred.promise
