@@ -6,7 +6,7 @@ module.exports = (app) ->
 
 		@info = (req, res) ->
 			res.render 'public/info',
-				title: 'Info' 
+				title: 'Info'
 
 		# LOGIN ################################################################
 		#page

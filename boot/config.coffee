@@ -20,6 +20,7 @@ bcrypt = require 'bcrypt'
 
 #App specific
 hvz = require '../lib/hvz'
+global = require '../lib/global'
 
 # Configuration
 module.exports = (app) ->
@@ -75,6 +76,7 @@ module.exports = (app) ->
 		Client: Mariasql
 		setup:
 			host: app.env.DATABASE_HOSTNAME
+			port: app.env.DATABASE_PORT
 			user: app.env.DATABASE_USERNAME
 			password: app.env.DATABASE_PASSWORD
 			db: app.env.DATABASE_NAME
@@ -116,6 +118,11 @@ module.exports = (app) ->
 	
 	# HvZ Config Constants
 	app.hvz = hvz
-	app.locals.hvz = 
-		roles: hvz.roles
+	app.locals.hvz = hvz
+
+	# Global Variables (Shown throughout the site)
+	app.global = global app
+	app.locals.global = app.global
+
+	console.log app.locals.global
 				

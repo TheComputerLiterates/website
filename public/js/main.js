@@ -11,16 +11,6 @@ Dependencies:
  */
 
 (function() {
-  var HVZApp;
-
-  HVZApp = angular.module("HVZApp", []);
-
-  HVZApp.controller("GameInfoBarControl", function($scope, $http) {
-    return $http.post("/data/currentgame", '').success(function(data) {
-      return $scope.data = data;
-    });
-  });
-
   $(".dropdown").on("show.bs.dropdown", function(e) {
     return $(this).find(".dropdown-menu").first().stop(true, true).slideDown(200);
   });

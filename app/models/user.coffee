@@ -130,7 +130,7 @@ module.exports = (app) ->
 						firstName: row.first_name
 						lastName: row.last_name
 
-				res.on 'end', (info)->					
+				res.on 'end', (info)->
 					if info.numRows > 0
 						# check password
 						
@@ -211,7 +211,7 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
-		
+
 		# Retrieves all useful user data (switching it to camel-case)
 		@getAllBasic: ()->
 			deferred = app.Q.defer()
@@ -248,3 +248,30 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
+
+		@getRoleCount: (role_id) ->
+			count = null
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT COUNT(*) AS c FROM %s WHERE %s = %s'
+			, [
+				TNAME
+				COL.role_id
+				role_id
+			]
+
+			con = app.db.newCon()
+			con.query sql
+
+			.on 'result', (res)->
+				res.on 'row', (row) ->
+					count = row.c
+				res.on 'end', (info)->
+					deferred.resolve count
+					console.log count
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+
+			con.end()
+
+			return deferred.promise			
