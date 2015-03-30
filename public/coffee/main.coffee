@@ -10,7 +10,9 @@ Dependencies:
 ###
 
 # Initiate HVZApp Angular.js
-HVZApp = angular.module "HVZApp" , []
+angular.module "HVZApp" , []
+
+HVZApp = angular.module "HVZApp"
 
 # Get Current Game Info for information bar
 HVZApp.controller "GameInfoBarControl", ($scope, $http) ->

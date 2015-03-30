@@ -27,10 +27,10 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 
 				//- - console.log('SESSION: ' + JSON.stringify(session, undefined, 2))
 				if session.user !== undefined && session.user.roleId >= hvz.roles.USER.id
+					li(class = (title == 'User - Forum'?'active':undefined))
+						a(href='/user/forum') Forum
 					//- Display if logged in as a player/Mod
 					if session.roleId >= hvz.roles.HUMAN.id
-						li(class = (title == 'User - Forum'?'active':undefined))
-							a(href='/user/forum') Forum
 						li
 							a(href='/user/logout') Log out
 						li(class='dropdown')

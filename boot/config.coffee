@@ -73,6 +73,7 @@ module.exports = (app) ->
 		Client: Mariasql
 		setup:
 			host: app.env.DATABASE_HOSTNAME
+			port: app.env.DATABASE_PORT
 			user: app.env.DATABASE_USERNAME
 			password: app.env.DATABASE_PASSWORD
 			db: app.env.DATABASE_NAME

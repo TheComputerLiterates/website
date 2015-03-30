@@ -130,7 +130,7 @@ module.exports = (app) ->
 						firstName: row.first_name
 						lastName: row.last_name
 
-				res.on 'end', (info)->					
+				res.on 'end', (info)->
 					if info.numRows > 0
 						# check password
 						
