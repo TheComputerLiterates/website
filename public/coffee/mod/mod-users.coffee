@@ -39,12 +39,7 @@ $(document).ready ()->
 	return
 
 $('.btn-action').click ()->
-	act = $(this).attr 'data-action'
-	userId = $(this).attr 'data-userId'
-	
-	console.log 'BTN ' + act + ' FOR ' + userId	
-	
-	action[act] userId, $(this)
+	runAction $(this)
 	return
 	
 
@@ -67,25 +62,39 @@ logEvent = (text)->
 	$log.scrollTop $log[0].scrollHeight
 logEvent '~~LOG START~~'
 
-action = 
-	killUser: (userId, $btn)->
-		$iconLoading.fadeTo FADE_TIME, 1
-		logEvent 'action= killUser\nuserId= '+userId
-		
-		return true
-	reviveUser: (userId, $btn)->
-		logEvent 'action= reviveUser\nuserId= '+userId
-	deleteUser: (userId, $btn)->
-		logEvent 'action= deleteUser\nuserId= '+userId
-	activateUser: (userId, $btn)->
-		logEvent 'action= activateUser\nuserId= '+userId
-	deactivateUser: (userId, $btn)->
-		logEvent 'action= deactivateUser\nuserId= '+userId
-		$iconLoading.fadeTo FADE_TIME, 0
-	editUser: (userId, $btn)->
-		logEvent 'action= editUser\nuserId= '+userId
-	flagUser: (userId, $btn)->
-		logEvent 'action= flagUser\nuserId= '+userId
-	commentUser: (userId, $btn)->
-		logEvent 'action= commentUser\nuserId= '+userId
+
+runAction = ($btn)->
+	data =
+		action: $btn.attr 'data-action'
+		userId: parseInt $btn.attr 'data-userId'
+	
+	# Disable other buttons for this user
+	$('.btn-action[data-userId="'+data.userId+'"]').attr 'disabled', true
+	$btn.text '...'
+	
+	# Handle additional data collection
+	switch data.action
+		when 'changeRole' then data.roleId = parseInt $btn.attr 'data-roleId'
+	
+	# Log it
+	logEvent '[ACTION_RUN] ' + JSON.stringify data
+	
+	#Call it
+	$.ajax
+		type: 'POST'
+		url: '/mod/users'
+		data: JSON.stringify data
+		contentType: 'application/json'
+		success: (res) ->
+			if res.success
+				logEvent '[ACTION_SUCCESS] action="'+data.action+'" userId='+data.userId
+				$btn.text 'SUCCESS!'
+			else
+				logEvent '[ACTION_ERROR] action="'+data.action+'" userId='+data.userId+' err="'+res.msg+'"'
+				$btn.text 'ERROR!'
+				return
+		error: (err) ->
+			logEvent '[ACTION_ERROR_LOCAL] action="'+data.action+'" userId='+data.userId+' err="'+err+'"'
+			$btn.text 'ERROR!'
+			return
 	

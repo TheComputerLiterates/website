@@ -25,6 +25,8 @@ hvz =
 		MODERATOR:
 			id: 5
 			name: 'Moderator'
+	specialUserIds:	[0,1]							#cannot delete or change role
+	
 
 hvz.getRoleById = (id)->
 	for key, obj of hvz.roles

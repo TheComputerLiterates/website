@@ -69,6 +69,7 @@ module.exports = (app) ->
 	
 	# User management
 	app.get '/mod/users', app.ModController.users
+	app.post '/mod/users', jsonParser, app.ModController.users_submit
 	
 	# Game management
 	app.get '/mod/game', app.ModController.game

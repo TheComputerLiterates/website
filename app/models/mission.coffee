@@ -15,10 +15,15 @@ COL =
 	succeeded: 'succeeded'							#BOOL
 	visible_to_players: 'visible_to_players'	#BOOL
 	
+	role_id: 'role_id'								#INT, TREL
+	mission_id: 'mission_id'						#INT, TREL
+	
 module.exports = (app) ->
 	TNAME = app.models.C.TNAME.mission
 	#Related tables, Foreign-This
-	TREL = null
+	TREL = 
+		roles_in_missions: 'roles_in_missions'
+		
 	class app.models.Mission
 		constructor: ()->	
 		
@@ -87,8 +92,8 @@ module.exports = (app) ->
 					result.push 
 						missionId: row.id
 						gameId: row.game_id
-						startDate: row.start_date
-						endDate: row.end_date
+						startDate: app.moment(row.start_date)
+						endDate: app.moment(row.end_date)
 						title: row.title
 						description: row.description
 						succeeded: (parseInt row.succeeded) == 0
@@ -102,4 +107,47 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
+			
+		@getMissionsByGameRole: (gameId,roleId)->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT * FROM %s AS m INNER JOIN %s AS rm ON %s=%s' +
+				' WHERE m.%s = %i AND rm.%s = %i ORDER BY m.%s DESC'
+			, [
+				TNAME
+				TREL.roles_in_missions
+				COL.id
+				COL.mission_id
+				
+				COL.game_id
+				gameId
+				COL.role_id
+				roleId
+				
+				COL.start_date
+			]
+			console.log 'SQL=['+sql+']'
+			result = []
+			con = app.db.newCon()
+			con.query sql 
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					result.push
+						missionId: row.id
+						startDate: app.moment(row.start_date)
+						endDate: app.moment(row.end_date)
+						title: row.title
+						description: row.description
+						succeeded: (parseInt row.succeeded) == 0
+						visibleToPlayers: (parseInt row.visible_to_players) == 0
+				res.on 'end', (info)->
+					console.log 'Got ' + info.numRows + ' rows from ' + TNAME
+					deferred.resolve result
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+			con.end()
+			
+			return deferred.promise
+		
+			
 		

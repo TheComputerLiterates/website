@@ -11,6 +11,7 @@ session = require 'express-session'
 dotenv = require 'dotenv'
 Q = require 'q'
 Mariasql = require 'mariasql'
+moment = require 'moment'
 
 #JS utility libraries
 util = require 'util'
@@ -26,6 +27,7 @@ module.exports = (app) ->
 	app.util = util
 	app.vsprintf = vsprintf
 	app.bcrypt = bcrypt
+	app.moment = moment
 	
 	# Load helper functions
 	app.locals.helpers = require __dirname + '/../app/helpers'

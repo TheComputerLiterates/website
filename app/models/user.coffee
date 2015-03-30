@@ -155,24 +155,56 @@ module.exports = (app) ->
 		# Changes the role of a user
 		@setRole: (user_id, role_id)->
 			deferred = app.Q.defer()
-			sql = app.vsprintf 'UPDATE %s SET %s = "%s" WHERE %s = "%s" LIMIT 1'
+			if app.hvz.specialUserIds.indexOf(user_id) == -1
+				sql = app.vsprintf 'UPDATE %s SET %s = %i WHERE %s = %i LIMIT 1'
+				, [
+					TNAME
+					
+					COL.role_id
+					role_id
+					
+					COL.id
+					user_id
+				]
+
+				con = app.db.newCon()
+				con.query sql
+				.on 'result', (res)->
+					res.on 'end', (info)->
+						if info.affectedRows > 0
+							deferred.resolve()
+						else
+							deferred.reject 'No rows affected'
+				.on 'error', (err)->
+					console.log "> DB: Error on old threadId " + this.tId + " = " + err
+					deferred.reject err
+				con.end()
+			else
+				deferred.reject 'Cannot change role of special user'
+			return deferred.promise
+		
+		# Sets active state
+		@setActive: (user_id, active)->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'UPDATE %s SET %s = %s WHERE %s = %i LIMIT 1'
 			, [
 				TNAME
 				
-				COL.role_id
-				role_id
+				COL.active
+				active
 				
-				COL.user_id
+				COL.id
 				user_id
 			]
 			
 			con = app.db.newCon()
 			con.query sql
-			.on 'end', (info)->
-				if info.numRows
-					deferred.resolve()
-				else
-					deferred.reject 'Invalid user_id'
+			.on 'result', (res)->
+				res.on 'end', (info)->
+					if info.affectedRows > 0
+						deferred.resolve()
+					else
+						deferred.reject 'No rows affected'
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err
 				deferred.reject err

@@ -18,7 +18,7 @@ TODO
  */
 
 (function() {
-  var $iconLoading, $log, FADE_TIME, action, dtSettings, logEvent;
+  var $iconLoading, $log, FADE_TIME, dtSettings, logEvent, runAction;
 
   FADE_TIME = 100;
 
@@ -43,11 +43,7 @@ TODO
   });
 
   $('.btn-action').click(function() {
-    var act, userId;
-    act = $(this).attr('data-action');
-    userId = $(this).attr('data-userId');
-    console.log('BTN ' + act + ' FOR ' + userId);
-    action[act](userId, $(this));
+    runAction($(this));
   });
 
   $log = $('#log');
@@ -68,34 +64,38 @@ TODO
 
   logEvent('~~LOG START~~');
 
-  action = {
-    killUser: function(userId, $btn) {
-      $iconLoading.fadeTo(FADE_TIME, 1);
-      logEvent('action= killUser\nuserId= ' + userId);
-      return true;
-    },
-    reviveUser: function(userId, $btn) {
-      return logEvent('action= reviveUser\nuserId= ' + userId);
-    },
-    deleteUser: function(userId, $btn) {
-      return logEvent('action= deleteUser\nuserId= ' + userId);
-    },
-    activateUser: function(userId, $btn) {
-      return logEvent('action= activateUser\nuserId= ' + userId);
-    },
-    deactivateUser: function(userId, $btn) {
-      logEvent('action= deactivateUser\nuserId= ' + userId);
-      return $iconLoading.fadeTo(FADE_TIME, 0);
-    },
-    editUser: function(userId, $btn) {
-      return logEvent('action= editUser\nuserId= ' + userId);
-    },
-    flagUser: function(userId, $btn) {
-      return logEvent('action= flagUser\nuserId= ' + userId);
-    },
-    commentUser: function(userId, $btn) {
-      return logEvent('action= commentUser\nuserId= ' + userId);
+  runAction = function($btn) {
+    var data;
+    data = {
+      action: $btn.attr('data-action'),
+      userId: parseInt($btn.attr('data-userId'))
+    };
+    $('.btn-action[data-userId="' + data.userId + '"]').attr('disabled', true);
+    $btn.text('...');
+    switch (data.action) {
+      case 'changeRole':
+        data.roleId = parseInt($btn.attr('data-roleId'));
     }
+    logEvent('[ACTION_RUN] ' + JSON.stringify(data));
+    return $.ajax({
+      type: 'POST',
+      url: '/mod/users',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      success: function(res) {
+        if (res.success) {
+          logEvent('[ACTION_SUCCESS] action="' + data.action + '" userId=' + data.userId);
+          return $btn.text('SUCCESS!');
+        } else {
+          logEvent('[ACTION_ERROR] action="' + data.action + '" userId=' + data.userId + ' err="' + res.msg + '"');
+          $btn.text('ERROR!');
+        }
+      },
+      error: function(err) {
+        logEvent('[ACTION_ERROR_LOCAL] action="' + data.action + '" userId=' + data.userId + ' err="' + err + '"');
+        $btn.text('ERROR!');
+      }
+    });
   };
 
 }).call(this);

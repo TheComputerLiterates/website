@@ -4,15 +4,26 @@ module.exports = (app) ->
 			res.render 'mod/index',
 				title: 'Mod Tools - Home'
 		
-				
-		@game = (req, res) ->
-			res.render 'mod/game',
-				title: 'Mod Tools - Current Game'
-		
+
 		@info = (req, res) ->
 			res.render 'mod/info',
 				title: 'Mod Tools - Edit Info'
 		
+		@game = (req, res) ->
+			#Grab all missions DEBUG
+			p = app.models.Mission.getMissionsByGameRole 3, 4
+			p.then (missionData)->
+				console.log 'MD= ' + app.util.inspect missionData
+				
+			, (err)->
+			
+			res.render 'mod/game',
+				title: 'Mod Tools - Current Game'
+		
+		########################################################################
+		# USER MANAGEMENT
+		
+		# Main Page
 		@users = (req, res) ->
 			p = app.models.User.getAllBasic()
 			p.then (userData)->
@@ -49,13 +60,96 @@ module.exports = (app) ->
 					counts: counts
 			, (err)->
 				console.log 'Error getting users'
-			
+		
+		@users_submit = (req, res)->
+			console.log 'BODY= ' + app.util.inspect req.body
+			if req.body.action? &&
+			req.body.userId?
+				switch req.body.action
+					when 'changeRole'		#switch role to ad.roleId
+						if req.body.roleId?
+							p = app.models.User.setRole req.body.userId, req.body.roleId
+							p.then ()->
+								res.send
+									success: true
+							, (err)->
+								res.send
+									success: false
+									msg: 'Saving error: ' + err
+						else
+							res.send
+								success: false
+								msg: 'Invalid parameters'
+							
+					when 'activate'
+						p = app.models.User.setActive req.body.userId, true
+						p.then ()->
+							# TODO - Send email notification
+							res.send
+								success: true
+						, (err)->
+							res.send
+								success: false
+								msg: 'Saving error: ' + err
+					when 'deactivate'
+						p = app.models.User.setActive req.body.userId, false
+						p.then ()->
+							# Now reset back to user role
+							p = app.models.User.setRole req.body.userId, app.hvz.roles.USER.id
+							p.then ()->
+								res.send
+									success: true
+							, (err)->
+								res.send
+									success: false
+									msg: 'Saving error: ' + err
+						, (err)->
+							res.send
+								success: false
+								msg: 'Saving error: ' + err
+					when 'flag'				#set flag level to ad.flag
+						if req.body.flag?
+							res.send
+								success: false
+								msg: 'NOT IMPLEMENTED YET'
+						else
+							res.send
+								success: false
+								msg: 'Invalid parameters'
+					when 'comment'			#set comment to ad.comment
+						if req.body.comment?
+							res.send
+								success: false
+								msg: 'NOT IMPLEMENTED YET'
+						else
+							res.send
+								success: false
+								msg: 'Invalid parameters'
+					when 'edit'
+						res.send
+							success: false
+							msg: 'NOT IMPLEMENTED YET'
+					when 'delete'
+						res.send
+							success: false
+							msg: 'NOT IMPLEMENTED YET'
+					else
+						res.send
+							success: false
+							msg: 'Invalid action'
+			else
+				res.send
+					success: false
+					msg: 'Invalid parameters'
+		
 		########################################################################
 		# DEVELOPMENT
 		
 		# Main page
 		@dev = (req, res) ->
 			title = 'Mod Tools - Develop Games'
+			gDateFormat = 'MM/DD/YY'
+			mDateFormat = 'MM/DD/YY HH:mm a'
 			games = []
 			missions = []
 			
@@ -66,7 +160,8 @@ module.exports = (app) ->
 				
 				# Shorten description to 100 chars
 				for game in games
-					
+					game.startDate = game.startDate.format(gDateFormat)
+					game.endDate = game.endDate.format(gDateFormat)
 					# Shorten description
 					if game.description.length >= 100
 						game.description = game.description.substr 0, 100
@@ -83,7 +178,8 @@ module.exports = (app) ->
 					missions = missionData
 					
 					for mission in missions
-						
+						mission.startDate = mission.startDate.format(mDateFormat)
+						mission.endDate = mission.endDate.format(mDateFormat)
 						# Shorten description
 						if mission.description.length >= 100
 							mission.description = mission.description.substr 0, 100

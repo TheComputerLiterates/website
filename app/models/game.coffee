@@ -85,8 +85,8 @@ module.exports = (app) ->
 				res.on 'row', (row)->
 					result.push 
 						gameId: row.id
-						startDate: row.start_date
-						endDate: row.end_date
+						startDate: app.moment(row.start_date)
+						endDate: app.moment(row.end_date)
 						title: row.title
 						description: row.description
 						visible: (parseInt row.visible) == 0
@@ -130,4 +130,37 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
+		
+		@getCurrentGame: ()->
+			today = app.moment().format('YYYY-MM-DD')
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT * FROM %s WHERE %s <= %s AND %s => %s'
+			, [
+				TNAME
+				
+				COL.start_date
+				today
+				COL.end_date
+				today
+			]
 			
+			result = []
+			con = app.db.newCon()
+			con.query sql 
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					result.push 
+						gameId: row.id
+						title: row.title
+						description: row.description
+						startDate: app.moment(row.start_date)
+						endDate: app.moment(row.end_date)
+				res.on 'end', (info)->
+					console.log 'Got ' + info.numRows + ' rows from ' + TNAME
+					deferred.resolve result
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+			con.end()
+			
+			return deferred.promise
