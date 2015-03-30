@@ -116,9 +116,11 @@ module.exports = (app) ->
 	
 	
 	
-	# HvZ Config Constants
-	app.hvz = hvz
-	app.locals.hvz = hvz
+	# HvZ Config Constants/functions
+	app.hvz = hvz app
+	app.locals.hvz = app.hvz
+	
+	console.log 'HVZ= ' + app.util.inspect app.hvz
 
 	# Global Variables (Shown throughout the site)
 	app.global = global app
