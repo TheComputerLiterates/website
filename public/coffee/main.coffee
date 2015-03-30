@@ -9,17 +9,6 @@ Dependencies:
 
 ###
 
-# Initiate HVZApp Angular.js
-angular.module "HVZApp" , []
-
-HVZApp = angular.module "HVZApp"
-
-# Get Current Game Info for information bar
-HVZApp.controller "GameInfoBarControl", ($scope, $http) ->
-	$http.post "/data/currentgame", ''
-		.success (data) ->
-			$scope.data = data
-
 
 # Dropdown menu ease in and out on click
 

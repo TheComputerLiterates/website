@@ -1,6 +1,6 @@
 extend ../_layouts/baselayout
 block content
-	div(ng-controller = "ForumController")
+	div(ng-app = "Forum", ng-controller = "ForumController")
 		div.post(ng-repeat = "post in posts", ng-if = "post.parent == null")
 			h1 {{ post.title }}
 			p
@@ -8,4 +8,5 @@ block content
 
 
 block localJS
+	script(type="text/javascript", src='/bower_components/angularjs/angular.min.js')
 	script(type="text/javascript", src="/js/user/forum.js")

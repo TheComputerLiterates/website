@@ -117,4 +117,5 @@ module.exports = (app) ->
 	app.hvz = hvz
 	app.locals.hvz = 
 		roles: hvz.roles
+		currentGame: hvz.currentGame
 				

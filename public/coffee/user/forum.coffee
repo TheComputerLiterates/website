@@ -1,6 +1,6 @@
-HVZApp = angular.module "HVZApp"
+Forum = angular.module "Forum", []
 
-HVZApp.controller "ForumController", ($scope) ->
+Forum.controller "ForumController", ($scope) ->
 	$scope.posts = [
 		{
 			postID: 0,
