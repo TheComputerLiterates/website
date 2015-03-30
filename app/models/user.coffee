@@ -180,3 +180,30 @@ module.exports = (app) ->
 			
 			return deferred.promise
 			
+
+		@getRoleCount: (role_id) ->
+			count = null
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT COUNT(*) AS c FROM %s WHERE %s = %s'
+			, [
+				TNAME
+				COL.role_id
+				role_id
+			]
+
+			con = app.db.newCon()
+			con.query sql
+
+			.on 'result', (res)->
+				res.on 'row', (row) ->
+					count = row.c
+				res.on 'end', (info)->
+					deferred.resolve count
+					console.log count
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+
+			con.end()
+
+			return deferred.promise			

@@ -23,9 +23,3 @@ module.exports =
 		MODERATOR:
 			id: 5
 			name: 'Moderator'
-
-	currentGame:
-		active: true,
-		humans: 25,
-		zombies: 75
-

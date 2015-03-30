@@ -31,8 +31,8 @@ html(lang='en')
 			//- Display current game info if a game is currently being played
 			.divider
 				.row#gameStats
-					if hvz.currentGame.active == true
-						| Current Game Info |  Humans: #{ hvz.currentGame.humans } | Zombies : #{ hvz.currentGame.zombies }
+					if global.currentGame.active == true
+						| Current Game Info |  Humans: #{ global.currentGame.humans } | Zombies : #{ global.currentGame.zombies }
 					else
 						| No game currently being played
 

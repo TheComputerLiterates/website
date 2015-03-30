@@ -19,6 +19,7 @@ bcrypt = require 'bcrypt'
 
 #App specific
 hvz = require '../lib/hvz'
+global = require '../lib/global'
 
 # Configuration
 module.exports = (app) ->
@@ -115,7 +116,11 @@ module.exports = (app) ->
 	
 	# HvZ Config Constants
 	app.hvz = hvz
-	app.locals.hvz = 
-		roles: hvz.roles
-		currentGame: hvz.currentGame
+	app.locals.hvz = hvz
+
+	# Global Variables (Shown throughout the site)
+	app.global = global app
+	app.locals.global = app.global
+
+	console.log app.locals.global
 				
