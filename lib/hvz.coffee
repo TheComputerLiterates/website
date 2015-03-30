@@ -29,10 +29,14 @@ construct = (app)->
 		specialUserIds:	[0,1]							#cannot delete or change role
 	
 	hvz.getRoleById = (id)->
-		console.log 'RAWR'
 		for key, obj of hvz.roles
 			if obj.id == id
 				return obj.name
 		return '?'
+	
+	# Pulls from db to get short game status. TODO
+	hvz.getGameStatus = ()->
+		 return 'GameName | # Humans # Zombies '
+		
 		
 	return hvz

@@ -5,35 +5,42 @@ module.exports = (app) ->
 			title = 'Current Game'
 			gDateFormat = 'MMMM Do'
 			mDateFormat = 'ddd h:mma'
-						
+			
 			# Get current game information
 			p = app.models.Game.getCurrentGame()
 			p.then (gameData)->
 				if gameData.gameId?
-					#Grab all missions
-					p2 = app.models.Mission.getMissionsByGameRole gameData.gameId, 5
-					p2.then (missionData)->						
-						# Format data
-						gameData.startDate = gameData.startDate.format gDateFormat
-						gameData.endDate = gameData.endDate.format gDateFormat
-						
-						for m in missionData
-							m.startDate = m.startDate.format mDateFormat
-							m.endDate = m.endDate.format mDateFormat
-							m.roleName = app.hvz.getRoleById(m.roleId).toUpperCase()
-							
+					console.log 'USER= ' + app.util.inspect req.session
+					# Format game dates
+					gameData.startDate = gameData.startDate.format gDateFormat
+					gameData.endDate = gameData.endDate.format gDateFormat
+					
+					if req.session.user?
+						#Grab all missions
+						p2 = app.models.Mission.getMissionsByGameRole gameData.gameId, req.session.user.roleId 
+						p2.then (missionData)->						
+							#format mission data
+							for m in missionData
+								m.startDate = m.startDate.format mDateFormat
+								m.endDate = m.endDate.format mDateFormat
+								m.roleName = app.hvz.getRoleById(m.roleId).toUpperCase()
+								
+							res.render view, 
+								success: true
+								title: title
+								gameData: gameData
+								missionData: missionData
+								
+						, (err)->
+							res.render view, 
+								title: title
+								success: false
+								msg: 'Problem loading missions. ' + err
+					else
 						res.render view, 
-							success: true
 							title: title
 							gameData: gameData
-							missionData: missionData
-							
-					, (err)->
-						res.render view, 
-							title: title
-							success: false
-							msg: 'Problem loading missions. ' + err
-				
+							success: true
 				else 
 					res.render view, 
 						title: title

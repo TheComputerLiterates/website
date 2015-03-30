@@ -123,10 +123,10 @@ module.exports = (app) ->
 					#user found
 					passTemp = row.password
 					userData =
-						userId: row.user_id
+						userId: parseInt row.user_id
 						email: row.email
-						roleId: row.role_id
-						HVZID: row.HVZID
+						roleId: parseInt row.role_id
+						HVZID: parseInt row.HVZID
 						firstName: row.first_name
 						lastName: row.last_name
 

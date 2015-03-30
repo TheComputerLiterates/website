@@ -22,6 +22,8 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 				//- Always display
 				li(class = (title == 'Home'?'active':undefined))
 					a(href='/') Home
+				li(class = (title == 'Game - Home'?'active':undefined))
+					a(href='/game') Game
 				li(class = (title == 'Info'?'active':undefined))
 					a(href='/info') Info
 
@@ -30,22 +32,21 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 					li(class = (title == 'User - Forum'?'active':undefined))
 						a(href='/user/forum') Forum
 					//- Display if logged in as a player/Mod
-					if session.roleId >= hvz.roles.HUMAN.id
-						li
-							a(href='/user/logout') Log out
-						li(class='dropdown')
-							a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-expanded='false')
-								| Game 
-								span(class='caret')
-							ul(class='dropdown-menu', role='menu')
-								li(class = (title == 'Game - Home'?'active':undefined))
-									a(href='/game') Main
-								li(class = (title == 'Game - Report Kill'?'active':undefined))
-									a(href='/game/kill') Report Kill
-								li(class = (title == 'Game - Dynamic Map'?'active':undefined))
-									a(href='/game/map') Dynamic Map
-								li(class = (title == 'Game - Missions'?'active':undefined))
-									a(href='/game/missions') Missions
+					//- 
+						if session.user.roleId >= hvz.roles.HUMAN.id
+							li(class='dropdown')
+								a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-expanded='false')
+									| Game 
+									span(class='caret')
+								ul(class='dropdown-menu', role='menu')
+									li(class = (title == 'Game - Home'?'active':undefined))
+										a(href='/game') Main
+									li(class = (title == 'Game - Report Kill'?'active':undefined))
+										a(href='/game/kill') Report Kill
+									li(class = (title == 'Game - Dynamic Map'?'active':undefined))
+										a(href='/game/map') Dynamic Map
+									li(class = (title == 'Game - Missions'?'active':undefined))
+										a(href='/game/missions') Missions
 
 
 					//- Display id user is a mod

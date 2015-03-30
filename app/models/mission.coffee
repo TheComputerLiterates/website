@@ -115,7 +115,7 @@ module.exports = (app) ->
 			sql = app.vsprintf 'SELECT DISTINCT m.%s,m.%s,m.%s,m.%s,m.%s,m.%s,m.%s,m.%s FROM %s AS m ' +
 				' INNER JOIN %s AS rm ON %s=%s' +
 				' WHERE m.%s = %i' +
-				(if roleId < app.hvz.roles.MODERATOR then ' AND rm.%s = %i' else '') +
+				(if roleId < app.hvz.roles.MODERATOR.id then ' AND rm.%s = %i' else '') +
 				' ORDER BY m.'+COL.start_date+' DESC'
 			, [
 				COL.id
@@ -137,7 +137,7 @@ module.exports = (app) ->
 				COL.role_id
 				roleId
 			]
-			# console.log 'SQL=['+sql+']'
+			console.log 'SQL=['+sql+']'
 			result = []
 			con = app.db.newCon()
 			con.query sql 

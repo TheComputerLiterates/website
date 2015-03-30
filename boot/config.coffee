@@ -120,11 +120,7 @@ module.exports = (app) ->
 	app.hvz = hvz app
 	app.locals.hvz = app.hvz
 	
-	console.log 'HVZ= ' + app.util.inspect app.hvz
-
 	# Global Variables (Shown throughout the site)
 	app.global = global app
 	app.locals.global = app.global
-
-	console.log app.locals.global
 				

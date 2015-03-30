@@ -4,16 +4,19 @@ block content
 		h1.game-title #{gameData.title}
 		p.game-date #{gameData.startDate} - #{gameData.endDate}	
 		p.game-description #{gameData.description}
-		
 		br
-		h2 Missions
-		for mission in missionData
-			.mission-container
-				p.mission-assignedTo #{mission.roleName}
-				h3.mission-title #{mission.title}
-				p.mission-date #{mission.startDate} - #{mission.endDate}
-				p.mission-description #{mission.description}
-				hr
+
+		if session.user
+			h2 Missions
+			for mission in missionData
+				.mission-container
+					p.mission-assignedTo #{mission.roleName}
+					h3.mission-title #{mission.title}
+					p.mission-date #{mission.startDate} - #{mission.endDate}
+					p.mission-description #{mission.description}
+					hr
+		else
+			h2 You must log in to view your missions.
 						
 	else
 		h1 Oh no there was an error!
