@@ -267,7 +267,6 @@ module.exports = (app) ->
 					count = row.c
 				res.on 'end', (info)->
 					deferred.resolve count
-					console.log count
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err
 				deferred.reject err

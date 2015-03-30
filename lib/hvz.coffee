@@ -36,7 +36,18 @@ construct = (app)->
 	
 	# Pulls from db to get short game status. TODO
 	hvz.getGameStatus = ()->
-		 return 'GameName | # Humans # Zombies '
+		humans = null
+		zombies = null
+
+		# My little attempt at it
+		app.models.User.getRoleCount 2
+		.then (count) ->
+			humans = count
+		app.models.User.getRoleCount 3
+		.then (count) ->
+			zombies = count
+
+		return 'GameName | ' + humans + ' Humans ' + zombies + ' Zombies '
 		
 		
 	return hvz

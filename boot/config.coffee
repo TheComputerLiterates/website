@@ -121,6 +121,8 @@ module.exports = (app) ->
 	app.locals.hvz = app.hvz
 	
 	# Global Variables (Shown throughout the site)
+	###
 	app.global = global app
+
 	app.locals.global = app.global
-				
+	###

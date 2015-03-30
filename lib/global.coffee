@@ -3,6 +3,7 @@
 
 ###
 
+###
 module.exports = (app) ->
 	currentGame:
 		active: false
@@ -11,5 +12,6 @@ module.exports = (app) ->
 			app.global.currentGame.humans = count
 		zombies: app.models.User.getRoleCount 3
 		.then (count) ->
-			app.global.currentGame.zombies = count	
+			app.global.currentGame.zombies = count
+###
 	
