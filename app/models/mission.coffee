@@ -30,9 +30,10 @@ module.exports = (app) ->
 		# Creates a new mission in the database. Must have an accurate game_id
 		@createNew: (data) ->
 			def = app.Q.defer()
-			sql = app.vsprintf 'SELECT createNewMission(%i,"%s","%s","%s","%s") AS mission_id'
+			sql = app.vsprintf 'SELECT createNewMission(%i,%i,"%s","%s","%s","%s") AS mission_id'
 			, [
 				data.gameId # MUST BE ACCURATE
+				data.roleId # MUST BE ACCURATE
 				data.title
 				data.description
 				data.startDate
@@ -107,12 +108,25 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
-			
+		
+		# Returns all missions in a given game that a given role can see
 		@getMissionsByGameRole: (gameId,roleId)->
 			deferred = app.Q.defer()
-			sql = app.vsprintf 'SELECT * FROM %s AS m INNER JOIN %s AS rm ON %s=%s' +
-				' WHERE m.%s = %i AND rm.%s = %i ORDER BY m.%s DESC'
+			sql = app.vsprintf 'SELECT DISTINCT m.%s,m.%s,m.%s,m.%s,m.%s,m.%s,m.%s,m.%s FROM %s AS m ' +
+				' INNER JOIN %s AS rm ON %s=%s' +
+				' WHERE m.%s = %i' +
+				(if roleId < app.hvz.roles.MODERATOR then ' AND rm.%s = %i' else '') +
+				' ORDER BY m.'+COL.start_date+' DESC'
 			, [
+				COL.id
+				COL.role_id
+				COL.start_date
+				COL.end_date
+				COL.title
+				COL.description
+				COL.succeeded
+				COL.visible_to_players
+				
 				TNAME
 				TREL.roles_in_missions
 				COL.id
@@ -122,17 +136,16 @@ module.exports = (app) ->
 				gameId
 				COL.role_id
 				roleId
-				
-				COL.start_date
 			]
-			console.log 'SQL=['+sql+']'
+			# console.log 'SQL=['+sql+']'
 			result = []
 			con = app.db.newCon()
 			con.query sql 
 			.on 'result', (res)->
 				res.on 'row', (row)->
 					result.push
-						missionId: row.id
+						missionId: parseInt row.id
+						roleId: parseInt row.role_id
 						startDate: app.moment(row.start_date)
 						endDate: app.moment(row.end_date)
 						title: row.title

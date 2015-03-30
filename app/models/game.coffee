@@ -27,7 +27,6 @@ module.exports = (app) ->
 		geopoint:					app.models.C.TNAME.geopoint					# *->1
 		geofence: 					app.models.C.TNAME.geofence					# *->1
 	
-	
 	class app.models.Game
 		constructor: ()->	
 		
@@ -132,25 +131,25 @@ module.exports = (app) ->
 			return deferred.promise
 		
 		@getCurrentGame: ()->
-			today = app.moment().format('YYYY-MM-DD')
+			today = app.moment().format 'YYYY-MM-DD'
 			deferred = app.Q.defer()
-			sql = app.vsprintf 'SELECT * FROM %s WHERE %s <= %s AND %s => %s'
+			sql = app.vsprintf 'SELECT * FROM %s WHERE %s <= "%s" AND "%s" <= %s LIMIT 1'
 			, [
 				TNAME
 				
 				COL.start_date
 				today
-				COL.end_date
 				today
+				COL.end_date
 			]
-			
-			result = []
+			# console.log 'SQL= '+sql
+			result = {}
 			con = app.db.newCon()
 			con.query sql 
 			.on 'result', (res)->
 				res.on 'row', (row)->
-					result.push 
-						gameId: row.id
+					result =
+						gameId: parseInt row.id
 						title: row.title
 						description: row.description
 						startDate: app.moment(row.start_date)

@@ -12,6 +12,20 @@ block content
 						for game in games
 							option(value='#{game.gameId}') #{game.title}
 			.form-group
+				label.control-label.col-sm-2(for="assignedTo") Assignment
+				.radio.col-sm-3
+					label
+						input(type='radio' name='assignedTo' value='#{roles.HUMAN.id}' data-group='human')
+						| #{roles.HUMAN.name}
+				.radio.col-sm-3
+					label
+						input(type='radio' name='assignedTo' value='#{roles.ZOMBIE.id}' data-group='zombie')
+						| #{roles.ZOMBIE.name}
+				.radio.col-sm-3
+					label
+						input(type='radio' name='assignedTo' value='#{roles.OZ.id}' data-group='oz')
+						| #{roles.OZ.name}
+			.form-group
 				label.control-label.col-sm-2(for="visibility") Visibility
 				.checkbox.col-sm-3
 					label
@@ -23,7 +37,7 @@ block content
 						| #{roles.ZOMBIE.name}
 				.checkbox.col-sm-3
 					label
-						input(type='checkbox' name='visibility' value='#{roles.OZ.id}' data-group='oz')
+						input(type='checkbox' name='visibility' value='#{roles.OZ.id}' data-group='oz' checked)
 						| #{roles.OZ.name}
 					
 			br

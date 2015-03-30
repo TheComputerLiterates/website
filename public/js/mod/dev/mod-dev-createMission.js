@@ -41,7 +41,8 @@ Handles new game submission
         human: $('input[name="visibility"][data-group="human"]').is(':checked'),
         zombie: $('input[name="visibility"][data-group="zombie"]').is(':checked'),
         oz: $('input[name="visibility"][data-group="oz"]').is(':checked')
-      }
+      },
+      assignedTo: $('input[name="assignedTo"]:checked').val()
     };
     formValid = validateForm(formData);
     if (formValid !== true) {
@@ -76,12 +77,23 @@ Handles new game submission
     }
   });
 
+  $('input[name="assignedTo"]').click(function() {
+    var roleId;
+    roleId = $(this).val();
+    return $('input[name="visibility"][value="' + roleId + '"]').prop('checked', true);
+  });
+
   validateForm = function(fd) {
     var d1, d2, now;
     if (!fd.title) {
       return {
         "for": 'title',
         msg: 'Missing title!'
+      };
+    } else if (!fd.assignedTo) {
+      return {
+        "for": 'assignedTo',
+        msg: 'Must assign mission to a group!'
       };
     } else if (!fd.description) {
       return {
@@ -102,17 +114,29 @@ Handles new game submission
     if (!fd.visibility.human && !fd.visibility.zombie && !fd.visibility.oz) {
       return {
         "for": 'visibility',
-        msg: 'Must be visible to at least one group'
+        msg: 'Must be visible to at least one group!'
       };
+    } else if (!$('input[name="visibility"][value="' + fd.assignedTo + '"]').is(':checked')) {
+      return {
+        "for": 'visibility',
+        msg: 'Must be visible to the assigned group!'
+      };
+    } else if (fd.visibility.human && fd.visibility.zombie) {
+      if (!confirm('Are you sure you want to make this visible to both Humans and Zombies?')) {
+        return {
+          "for": 'visibility',
+          msg: 'Remove the Human and/or Zombie group!'
+        };
+      }
     } else if (!fd.visibility.human && !fd.visibility.zombie) {
-      if (!confirm('Are you sure you want to make this OZ only?')) {
+      if (!confirm('Are you sure you want to make this visible to OZ only?')) {
         return {
           "for": 'visibility',
           msg: 'Add the Human and/or Zombie group!'
         };
       }
     } else if (!fd.visibility.oz) {
-      if (!confirm('Are you sure you want to exclude the OZ group?')) {
+      if (!confirm('Are you sure you want to make this invisible to the OZ group?')) {
         return {
           "for": 'visibility',
           msg: 'Add the OZ group!'

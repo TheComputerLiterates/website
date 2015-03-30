@@ -1,28 +1,47 @@
 extend ../_layouts/baselayout
 block content
-	.col-md-7
-		.panel.panel-default
-			.panel-body.
-				HELLO Wizard/Witch! Welcome to the wizarding world of Harry Potter.
-				This game is based around the Harry Potter Series and as such....
+	if success == true
+		h1.game-title #{gameData.title}
+		p.game-date #{gameData.startDate} - #{gameData.endDate}	
+		p.game-description #{gameData.description}
+		
+		br
+		h2 Missions
+		for mission in missionData
+			.mission-container
+				p.mission-assignedTo #{mission.roleName}
+				h3.mission-title #{mission.title}
+				p.mission-date #{mission.startDate} - #{mission.endDate}
+				p.mission-description #{mission.description}
+				hr
+						
+	else
+		h1 Oh no there was an error!
+		h3 #{msg}
+	//- 
+		.col-md-7
+			.panel.panel-default
+				.panel-body.
+					HELLO Wizard/Witch! Welcome to the wizarding world of Harry Potter.
+					This game is based around the Harry Potter Series and as such....
 
-	.col-md-5
-		.panel.panel-default
-			.panel-heading
-					h3.panel-title Current Game Information
-			.panel-body
-				b Total Players: 
-				| #{playercount}
-			.panel-body
-				b Humans: 
-				| #{humancount}
-			.panel-body
-				b Zombies: 
-				| #{zombiecount}
+		.col-md-5
+			.panel.panel-default
+				.panel-heading
+						h3.panel-title Current Game Information
+				.panel-body
+					b Total Players: 
+					| #{playercount}
+				.panel-body
+					b Humans: 
+					| #{humancount}
+				.panel-body
+					b Zombies: 
+					| #{zombiecount}
 
-		.panel.panel-default
-			.panel-heading
-					h3.panel-title Current Mission
-			.panel-body.
-				This will have a brief overview of the mission<br/>
-				This will display content according to if the player is human or zombie
+			.panel.panel-default
+				.panel-heading
+						h3.panel-title Current Mission
+				.panel-body.
+					This will have a brief overview of the mission<br/>
+					This will display content according to if the player is human or zombie

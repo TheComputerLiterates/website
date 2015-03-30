@@ -10,13 +10,6 @@ module.exports = (app) ->
 				title: 'Mod Tools - Edit Info'
 		
 		@game = (req, res) ->
-			#Grab all missions DEBUG
-			p = app.models.Mission.getMissionsByGameRole 3, 4
-			p.then (missionData)->
-				console.log 'MD= ' + app.util.inspect missionData
-				
-			, (err)->
-			
 			res.render 'mod/game',
 				title: 'Mod Tools - Current Game'
 		
@@ -227,6 +220,7 @@ module.exports = (app) ->
 		@devCreateMission_submit = (req, res) ->
 			#TODO - form validation
 			if req.body.gameId? &&
+			req.body.assignedTo? &&
 			req.body.visibility? &&
 			req.body.title? &&
 			req.body.description? &&
@@ -234,6 +228,7 @@ module.exports = (app) ->
 			req.body.endDate?
 				missionData = 
 					gameId: req.body.gameId
+					roleId: req.body.assignedTo
 					visibility: req.body.visibility		#parsed in model
 					title: req.body.title
 					description: req.body.description

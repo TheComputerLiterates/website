@@ -35,7 +35,8 @@ $(FORM_ID).submit (e) ->
 			human: $('input[name="visibility"][data-group="human"]').is ':checked'
 			zombie: $('input[name="visibility"][data-group="zombie"]').is ':checked'
 			oz: $('input[name="visibility"][data-group="oz"]').is ':checked'
-	
+		assignedTo: $('input[name="assignedTo"]:checked').val()
+
 	formValid = validateForm formData
 	
 	if formValid != true
@@ -75,25 +76,37 @@ $(FORM_ID).submit (e) ->
 		
 	return
 
+#auto check visibilty for assigned to
+$('input[name="assignedTo"]').click ()->
+	roleId = $(this).val()
+	$('input[name="visibility"][value="'+roleId+'"]').prop 'checked', true
+
 
 #checks values for correct input, returns true or an error string
 validateForm = (fd) ->
 	
 	#required
 	if !fd.title						then return {for: 'title', 		msg: 'Missing title!'}
+	else if !fd.assignedTo			then return {for: 'assignedTo',	msg: 'Must assign mission to a group!'}
 	else if !fd.description			then return {for: 'description', msg: 'Missing description!'}
 	else if !fd.startDate			then return {for: 'startDate', 	msg: 'Missing start date!'}
 	else if !fd.endDate				then return {for: 'endDate', 		msg: 'Missing end date!'}
 	
 	#Check visibility
 	if !fd.visibility.human && !fd.visibility.zombie && !fd.visibility.oz
-		return {for: 'visibility', 		msg: 'Must be visible to at least one group'}
+		return {for: 'visibility', 		msg: 'Must be visible to at least one group!'}
+	else if !$('input[name="visibility"][value="'+fd.assignedTo+'"]').is ':checked'
+		return {for: 'visibility', 		msg: 'Must be visible to the assigned group!'}
+	else if fd.visibility.human && fd.visibility.zombie
+		if !confirm 'Are you sure you want to make this visible to both Humans and Zombies?'
+			return {for: 'visibility', 		msg: 'Remove the Human and/or Zombie group!'}
 	else if !fd.visibility.human && !fd.visibility.zombie
-		if !confirm 'Are you sure you want to make this OZ only?'
+		if !confirm 'Are you sure you want to make this visible to OZ only?'
 			return {for: 'visibility', 		msg: 'Add the Human and/or Zombie group!'}
 	else if !fd.visibility.oz
-		if !confirm 'Are you sure you want to exclude the OZ group?'
+		if !confirm 'Are you sure you want to make this invisible to the OZ group?'
 			return {for: 'visibility', 		msg: 'Add the OZ group!'}
+		
 			
 	#Create date objects
 	d1 = Date.parse fd.startDate
