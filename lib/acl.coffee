@@ -3,7 +3,7 @@
 	Blocks request if not allowed. Only checks for restriced paths
 ###
 
-roles = (require './hvz').roles
+roles = (require './constants').roles
 
 module.exports = acl = (req,res,next) ->	
 	isAllowedAccess = true

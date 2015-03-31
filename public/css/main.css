@@ -71,6 +71,35 @@ textarea {
 	resize: vertical;
 }
 
+.notice {
+	font-family: 'DarkSoulsBold'
+}
+
+/*****************************************************************************
+ * FONTS
+ */
+@font-face {
+	font-family: 'Zombie';
+	/*src: url('/fonts/Zombie_Holocaust.ttf');*/
+	src: url('/fonts/ZOMBIE.TTF');
+}
+@font-face {
+	font-family: 'DarkSouls';
+	src: url('/fonts/OptimusPrinceps.ttf');
+}
+@font-face {
+	font-family: 'DarkSoulsBold';
+	src: url('/fonts/OptimusPrincepsBold.ttf');
+}
+
+.font-zombie {
+	font-family: 'Zombie';
+}
+
+h1, h2 {
+	font-family: 'DarkSouls';
+}
+
 /*****************************************************************************
  * ICONS
  */

@@ -1,28 +1,32 @@
 extend ../_layouts/baselayout
 block content
-	.col-md-7
-		.panel.panel-default
-			.panel-body
-				| Main content
-				br
-				| Testing width: wer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwe rqwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qwer qw
-				br
-				br
-				
-	.col-md-5
-		.panel.panel-default
-			.panel-heading
-				h3.panel-title
-					b Activity Feed
-			#activity1.panel-body
-				b Activity 1
-				p.
-					This is the first activity content
-			#activity2.panel-body
-				b Activity 2
-				p.
-					These activities will become layouts
-			#activity3.panel-body
-				b Activity 3
-				p.
-					This is the max amount of activities. They will be loaded dynamically
+	h1.text-center Welcome to the new HvZ website
+	br
+	p Current site functionalty:
+		ul
+			li Guests
+				ul
+					li Check out the rules and stuff
+					li Create an account
+			li Users
+				ul
+					li Login and view your profile
+			li Players (Human/Zombie/OZ)
+				ul
+					li View the current game and available missions
+					li Report game kills
+			li Moderators
+				ul
+					li Manage user accounts
+					li Create games
+					li Create missions for games
+	
+	br
+	br
+	blockquote
+		h1.notice STILL IN BETA
+		p
+			| This site is usable for basic management/kills, but does not have the advanced functionalty we plan to add, nor is it actually designed. If you experience any crashes or odd errors, please message 
+			a(target='_blank' href='https://www.facebook.com/jared.bennett.9678') Jared 
+			|  on Facebook about it.
+		
