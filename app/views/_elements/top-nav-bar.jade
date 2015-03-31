@@ -29,6 +29,8 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 
 				//- - console.log('SESSION: ' + JSON.stringify(session, undefined, 2))
 				if session.user !== undefined && session.user.roleId >= hvz.roles.USER.id
+					li(class = (title == 'Game - Report Kill'?'active':undefined))
+						a(href='/game/kill') Report Kill
 					li(class = (title == 'User - Forum'?'active':undefined))
 						a(href='/user/forum') Forum
 					//- Display if logged in as a player/Mod

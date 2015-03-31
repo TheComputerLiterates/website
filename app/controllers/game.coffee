@@ -58,6 +58,24 @@ module.exports = (app) ->
 			res.render 'game/kill',
 				title: 'Game - Report Kill'
 		
+		@kill_submit = (req, res)->
+			console.log 'BODY= ' + app.util.inspect req.body
+			if req.body.HVZID?
+				p = app.models.PlayerKill.createNew req.session.user.userId, 
+					req.body.HVZID
+				p.then ()->
+					console.log 'SUCCESS!'
+					res.send
+						success: true
+				, (err)->
+					res.send
+						success: false
+						msg: 'DB Error: ' + err
+			else 
+				res.send
+					success: false
+					msg: 'Invalid parameters'
+	
 		@map = (req, res) ->
 			res.render 'game/map',
 				title: 'Game - Dynamic Map'
@@ -65,3 +83,5 @@ module.exports = (app) ->
 		@missions = (req, res) ->
 			res.render 'game/missions',
 				title: 'Game - Missions'
+		
+		

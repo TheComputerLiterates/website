@@ -33,7 +33,8 @@ module.exports = (app) ->
 		
 		# Routines
 		RNAME:
-			genUniqueHVZID: 'genUniqueHVZID'		#()
+			genUniqueHVZID: 'genUniqueHVZID'			#()
+			createPlayerKill: 'createPlayerKill'	#(killerId, victimHVZID)
 	
 		
 		

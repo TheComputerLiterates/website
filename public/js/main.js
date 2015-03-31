@@ -40,4 +40,26 @@ Dependencies:
     };
   })(jQuery);
 
+  $(document).ready(function() {
+    var $bar;
+    $bar = $('#gameStats');
+    $bar.text('Loading game stats..');
+    return $.ajax({
+      type: 'POST',
+      url: '/data/getGameStatus',
+      data: JSON.stringify({}),
+      contentType: 'application/json',
+      success: function(res) {
+        if (res.success) {
+          return $bar.text(res.data.gameTitle + ' | ' + res.data.hCount + ' Humans ' + res.data.zCount + ' Zombies');
+        } else {
+          $bar.text('Error loading game stats');
+        }
+      },
+      error: function() {
+        $bar.text('Unable to load game stats');
+      }
+    });
+  });
+
 }).call(this);

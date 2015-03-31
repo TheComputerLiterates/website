@@ -46,3 +46,27 @@ shake it sh-sh-shake it
 			theShakenOne.removeClass('shakeText')
 		return this
 ) jQuery
+
+
+# Loads game data for bar
+$(document).ready ()->
+	$bar = $('#gameStats')
+	$bar.text 'Loading game stats..'
+	
+	$.ajax
+		type: 'POST'
+		url: '/data/getGameStatus'
+		data: JSON.stringify {}
+		contentType: 'application/json'
+		success: (res) ->
+			if res.success
+				$bar.text res.data.gameTitle + ' | ' + 
+					res.data.hCount + ' Humans ' + 
+					res.data.zCount + ' Zombies'
+					
+			else
+				$bar.text 'Error loading game stats'
+				return
+		error: () ->
+			$bar.text 'Unable to load game stats'
+			return

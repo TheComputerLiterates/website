@@ -163,3 +163,31 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
+		
+		@getGameStatus: ()->
+			def = new app.Q.defer()
+			result = 
+				
+
+			app.models.User.getRoleCount 2
+			.then (hCount) ->				
+				app.models.User.getRoleCount 3
+				.then (zCount) ->					
+					app.models.Game.getCurrentGame()
+					.then (game)->
+						def.resolve
+							gameTitle: game.title
+							hCount: hCount
+							zCount: zCount
+						
+					, (err)->
+						console.log 'Error getting game title: ' + err
+						def.reject()	
+				, (err)->
+					console.log 'Error getting zombie count: ' + err
+					def.reject()
+			, (err)->
+				console.log 'Error getting human count: ' + err
+				def.reject()
+			
+			return def.promise

@@ -14,7 +14,7 @@ module.exports = (app) ->
 	urlencodedParser = bodyParser.urlencoded {extended: false}
 	
 	# Enforce ACL
-	# app.use acl
+	app.use acl
 	
 	
 	# PUBLIC PAGES ############################################################
@@ -59,8 +59,9 @@ module.exports = (app) ->
 	# Map
 	app.get '/game/map', app.GameController.map
 	
-	# Kill
+	# Report Kill
 	app.get '/game/kill', app.GameController.kill
+	app.post '/game/kill', jsonParser, app.GameController.kill_submit
 	
 	
 	# MOD PAGES ###############################################################
@@ -92,7 +93,7 @@ module.exports = (app) ->
 
 
 	# DATA ####################################################################
-	app.post '/data/currentgame', app.DataController.currentGame
+	app.post '/data/getGameStatus', app.DataController.getGameStatus
 	
 	# API #####################################################################
 

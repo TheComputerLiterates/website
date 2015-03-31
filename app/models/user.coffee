@@ -250,7 +250,8 @@ module.exports = (app) ->
 			return deferred.promise
 
 		@getRoleCount: (role_id) ->
-			count = null
+			count = 8
+			
 			deferred = app.Q.defer()
 			sql = app.vsprintf 'SELECT COUNT(*) AS c FROM %s WHERE %s = %s'
 			, [
@@ -264,7 +265,7 @@ module.exports = (app) ->
 
 			.on 'result', (res)->
 				res.on 'row', (row) ->
-					count = row.c
+					count = parseInt row.c
 				res.on 'end', (info)->
 					deferred.resolve count
 			.on 'error', (err)->

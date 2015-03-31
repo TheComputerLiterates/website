@@ -1,8 +1,12 @@
 module.exports = (app) ->
 	class app.DataController
-		@currentGame = (req, res)->
-			res.send
-				gameActive: true,
-				playercount: 100,
-				zombiecount: 70,
-				humancount: 25
+		@getGameStatus = (req, res)->
+			app.models.Game.getGameStatus()
+			.then (data)->
+				res.send
+					success: true
+					data: data 
+			, ()->
+				console.log 'Unable to get game status'
+				res.send
+					success: false
