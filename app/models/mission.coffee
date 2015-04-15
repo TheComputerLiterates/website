@@ -162,5 +162,44 @@ module.exports = (app) ->
 			
 			return deferred.promise
 		
+		# Returns all mission titles that a given role can see
+		@getTitlesByRole: (roleId)->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT DISTINCT m.%s,m.%s,m.%s,m.%s FROM %s AS m ' +
+				' INNER JOIN %s AS rm ON %s=%s' +
+				(if roleId < app.hvz.roles.MODERATOR.id then ' WHERE rm.%s = %i' else '') +
+				' ORDER BY m.'+COL.start_date+' DESC'
+			, [
+				COL.id
+				COL.title
+				COL.game_id
+				COL.role_id
+				
+				TNAME
+				TREL.roles_in_missions
+				COL.id
+				COL.mission_id
+				
+				COL.role_id
+				roleId
+			]
+			console.log 'SQL=['+sql+']'
+			result = []
+			con = app.db.newCon()
+			con.query sql 
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					result.push
+						gameId: parseInt row.game_id
+						missionId: parseInt row.id
+						roleId: parseInt row.role_id
+						title: row.title
+				res.on 'end', (info)->
+					console.log 'Got ' + info.numRows + ' rows from ' + TNAME
+					deferred.resolve result
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+			con.end()
 			
-		
+			return deferred.promise

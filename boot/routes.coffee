@@ -14,7 +14,7 @@ module.exports = (app) ->
 	urlencodedParser = bodyParser.urlencoded {extended: false}
 	
 	# Enforce ACL
-	app.use acl
+	# app.use acl
 	
 	
 	# PUBLIC PAGES ############################################################
@@ -48,6 +48,11 @@ module.exports = (app) ->
 	# Signout (redirects)
 	app.get '/user/logout', app.UserController.logout
 	
+	# Clarification request
+	app.get '/user/cRequestCreate', app.UserController.cRequestCreate
+	app.post '/user/cRequestCreate', jsonParser, app.UserController.cRequestCreate_submit
+	app.get '/user/cRequestView', app.UserController.cRequestView
+	app.post '/user/cRequestView', jsonParser, app.UserController.cRequestView_submit
 
 	# GAME (player) PAGES #####################################################
 	# Game home

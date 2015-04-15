@@ -26,6 +26,10 @@ module.exports = (app) ->
 	class app.models.Roles
 		constructor: ()->	
 		
+		# Returns all roles in memory. Can also access app.hvz.roles
+		@getAll: ()->
+			return app.hvz.roles
+		
 		# Creates new roles_in_missions
 		@createNewRM: (data) ->
 			def = app.Q.defer()

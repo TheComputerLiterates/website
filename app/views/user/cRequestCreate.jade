@@ -1,0 +1,55 @@
+extend ../_layouts/baselayout
+block content
+	h1 Create New Clarification Request
+	
+	.formResult
+	form#cRequestCreateForm.form-horizontal(role="form")
+		.form-group
+			label.control-label.col-sm-3(for="subject") Subject *
+			.col-sm-7
+				input.form-control(type="text" name="subject" placeholder="" maxlength='45' required)
+		.form-group
+			label.control-label.col-sm-3(for="description") Description *
+			.col-sm-7
+				textarea.form-control(rows='4' name="description" placeholder=""  maxlength='2000' required)
+		
+		//- TODO
+			if session.user.roleId >= hvz.roles.USER.id
+				//- is at least a player
+		
+		.form-group
+			label.control-label.col-sm-3(for="visibileToAll") Visibility *
+			.radio.col-sm-2
+				label
+					input(type='radio' name='visibileToAll' value="true" checked)
+					| Any user
+			.radio.col-sm-2
+				label
+					input(type='radio' name='visibileToAll' value="false")
+					| Mods only
+		
+		.form-group
+			label.control-label.col-sm-3(for='gameId' selected) Specific Game
+			.col-sm-7
+				select.form-control(name='gameId')
+					option.form-control(value='None' selected) None
+					for game in gameData
+						option.form-control(value='#{game.gameId}') #{game.title}
+			
+		.form-group
+			label.control-label.col-sm-3(for='missionId') Specific Mission
+			.col-sm-7
+				select.form-control(name='missionId' disabled)
+					option.form-control(for='missionId' value='None' selected) None
+					for mission in missionData
+						option.form-control(for='missionId' value='#{mission.missionId}' data-gameId='#{mission.gameId}') #{mission.title}
+	
+			
+		br
+		.form-group
+			.formError.col-sm-5.col-sm-offset-3
+			.col-sm-2.text-right
+				button#submit.btn.btn-default(type="submit") Submit
+
+block localJS
+	script(type='text/javascript' src='/js/user/cRequestCreate.js')

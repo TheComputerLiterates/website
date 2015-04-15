@@ -60,9 +60,12 @@ $(document).ready ()->
 		contentType: 'application/json'
 		success: (res) ->
 			if res.success
-				$bar.text res.data.gameTitle + ' | ' + 
-					res.data.hCount + ' Humans ' + 
-					res.data.zCount + ' Zombies'
+				if res.data.gameTitle?
+					$bar.text res.data.gameTitle + ' | ' + 
+						res.data.hCount + ' Humans ' + 
+						res.data.zCount + ' Zombies'
+				else
+					$bar.text "No game is being played"
 					
 			else
 				$bar.text 'Error loading game stats'
