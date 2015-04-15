@@ -96,10 +96,19 @@ module.exports = (app) ->
 	app.post '/data/getGameStatus', app.DataController.getGameStatus
 	
 	# API #####################################################################
+	app.post '/api/' + app.env.HVZ_API_KEY + '/login', jsonParser, app.APIController.login
+	app.post '/api/' + app.env.HVZ_API_KEY + '/profileinfo', jsonParser, app.APIController.profileInfo
 
 	
 	
 	# Page not found (404) ####################################################
 	# This should always be the LAST route specified
 	app.get '*', (req, res) ->
-		res.render 'public/404', title: 'Error 404'
+		res.status(app.errors.PAGE_NOT_FOUND).render 'public/404', title: 'Error 404'
+
+	app.post '*', (req, res) ->
+		res.status(app.errors.PAGE_NOT_FOUND).send 
+			success: false
+			body:
+				"error": "Page not found",
+				"code": app.errors.PAGE_NOT_FOUND

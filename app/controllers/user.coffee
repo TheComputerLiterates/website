@@ -1,21 +1,13 @@
 module.exports = (app) ->
 	class app.UserController
 		@profile = (req, res) ->
-
-			userRole
-
-			for roles, role of app.locals.hvz.roles
-				if role.id == parseInt req.session.user.roleId
-					userRole = role.name
-					break
-
 			res.render 'user/profile',
 				title: 'User - Profile'
 				firstname: req.session.user.firstName
 				lastname: req.session.user.lastName
 				email: req.session.user.email
 				hvzid: req.session.user.HVZID
-				role: userRole
+				role: app.hvz.getRoleById(req.session.user.roleId)
 				
 
 		@forum = (req, res) ->
