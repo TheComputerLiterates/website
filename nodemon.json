@@ -21,6 +21,6 @@
   "env": {
     "DEV_MODE": true
   },
-  "ext": "js json jade coffee",
+  "ext": "js json coffee",
   "delay": "2"
 }

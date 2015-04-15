@@ -13,7 +13,7 @@ FORM_ID = '#cRequestCreateForm'
 FORM_RESULT_CLASS = '.formResult'
 FORM_ERROR_CLASS = '.formError'
 POST_URL = '/user/cRequestCreate'
-DEBUG_MODE = true
+DEBUG_MODE = false
 RESULT_MESSAGES=
 	successTitle: 'Clarification request created!'
 	successSubtitle: '<a href="/user/cRequestView">Return</a>'

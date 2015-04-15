@@ -1,3 +1,10 @@
+/**
+ * Common theme colors
+ * 	Dark Brown = #2e2b21
+ * 	Pale Blue = #9cbebd
+ * 	Umbrella Red = #C1272D
+ */
+
 /* Globals*/
 body {
 	font-family: Tahoma;
@@ -7,11 +14,8 @@ body {
 	/*color: #000000;*/
 	padding-top: 5em;
 }
-a {text-decoration: none}
-a:link {color: #CC6600}
-a:visited {color: #CC6600}
-a:active {color: #CC6600}
-a:hover {color: #FFD700; text-decoration: underline}
+
+
 
 @media (min-width: 1200px) {
 	.container {
@@ -74,6 +78,39 @@ textarea {
 .notice {
 	font-family: 'DarkSoulsBold'
 }
+
+/*****************************************************************************
+ * LINKS
+ */
+a {text-decoration: none}
+a:link {color: #CC6600}
+a:visited {color: #CC6600}
+a:active {color: #CC6600}
+a:hover {color: #FFD700; text-decoration: underline}
+
+/* For no effect */
+.link-none, .link-none:link, .link-none:visited, .link-none:active, .link-none:hover {
+	color: inherit;
+	text-decoration: none;
+}
+
+
+/*****************************************************************************
+ * BUTTONS
+ * Need .btn
+ */
+.btn-action {
+	color: #FFF;
+	font-weight: bold;
+	background-color: #C1272D;
+	border: medium solid;
+	border-color: #C1272D;
+}
+.btn-action:hover {
+	background-color: #FFF;
+	color: #C1272D;
+}
+
 
 /*****************************************************************************
  * FONTS
@@ -223,4 +260,39 @@ h1, h2 {
 	80% { -webkit-transform:	translate(3px, 0px) rotate(0deg); transform:		translate(3px, 0px) rotate(0deg); }
 	90% { -webkit-transform:	translate(-1px, 0px) rotate(0deg); transform:	translate(-1px, 0px) rotate(0deg); }
 	100% { -webkit-transform:	translate(1px, 0px) rotate(0deg); transform:		translate(1px, 0px) rotate(0deg); }
+}
+
+/*****************************************************************************
+ * CLARIFICATION REQUESTS
+ */
+.cr-container {
+	border-top: thin solid;
+	border-color: #2e2b21;
+}
+.cr-header :first-child {
+	width: 1em;
+}
+.cr-header:hover {
+	background-color: #ECF0F1;
+	cursor: pointer;
+}
+.cr-content-container {
+
+}
+.cr-description {
+	font-size: large;
+	font-weight: bold;
+}
+.cr-comment-container {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.cr-comment {
+	margin-bottom: .25em;
+}
+.cr-comment-user {
+	font-weight: bold;
+}
+.cr-comment-text {
+	
 }
