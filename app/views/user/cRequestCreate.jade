@@ -18,14 +18,14 @@ block content
 				//- is at least a player
 		
 		.form-group
-			label.control-label.col-sm-3(for="visibileToAll") Visibility *
+			label.control-label.col-sm-3(for="personal") Visibility *
 			.radio.col-sm-2
 				label
-					input(type='radio' name='visibileToAll' value="true" checked)
+					input(type='radio' name='personal' value="false" checked)
 					| Any user
 			.radio.col-sm-2
 				label
-					input(type='radio' name='visibileToAll' value="false")
+					input(type='radio' name='personal' value="true")
 					| Mods only
 		
 		.form-group

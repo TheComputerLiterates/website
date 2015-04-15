@@ -10,4 +10,5 @@ module.exports =
 	
 	db:
 		CONNECTION: 9000
-		EXECUTION: 9001
+		EXECUTION: 9001		#sql problems
+		INPUT: 9002				#user input problems

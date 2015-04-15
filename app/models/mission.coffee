@@ -137,7 +137,7 @@ module.exports = (app) ->
 				COL.role_id
 				roleId
 			]
-			console.log 'SQL=['+sql+']'
+			# console.log 'SQL=['+sql+']'
 			result = []
 			con = app.db.newCon()
 			con.query sql 
@@ -183,7 +183,7 @@ module.exports = (app) ->
 				COL.role_id
 				roleId
 			]
-			console.log 'SQL=['+sql+']'
+			# console.log 'SQL=['+sql+']'
 			result = []
 			con = app.db.newCon()
 			con.query sql 

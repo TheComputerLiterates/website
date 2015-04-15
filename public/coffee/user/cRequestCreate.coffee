@@ -26,16 +26,14 @@ $(FORM_ID).submit (e) ->
 	formData =
 		subject: 		$("input[name='subject']").val().trim()
 		description: 	$("textarea[name='description']").val().trim()
-		visibileToAll: $('input[type="radio"][name="visibileToAll"]:checked').val() == 'true'
+		personal: 		$('input[type="radio"][name="personal"]:checked').val() == 'true'
 		gameId:			$('select[name="gameId"]').val()
 		missionId:		$('select[name="missionId"]').val()
 		
 	#Handle ids
 	formData.gameId = if isNaN(formData.gameId) then undefined else parseInt formData.gameId
 	formData.missionId = if isNaN(formData.missionId) then undefined else parseInt formData.missionId
-	
-	console.log JSON.stringify formData, undefined, 2
-	
+		
 	formValid = validateForm formData
 	
 	if formValid != true
@@ -53,20 +51,20 @@ $(FORM_ID).submit (e) ->
 		
 		console.log 'DATA= ' + JSON.stringify formData, undefined, 2
 		# submit via ajax
-		# $.ajax
-		# 	type: 'POST'
-		# 	url: POST_URL
-		# 	data: JSON.stringify formData
-		# 	contentType: 'application/json'
-		# 	success: (res) ->
-		# 		if res.success
-		# 			endInSuccess()
-		# 		else
-		# 			endInError(res.msg)
-		# 			return
-		# 	error: () ->
-		# 		endInError()
-		# 		return
+		$.ajax
+			type: 'POST'
+			url: POST_URL
+			data: JSON.stringify formData
+			contentType: 'application/json'
+			success: (res) ->
+				if res.success
+					endInSuccess()
+				else
+					endInError(res.body.error)
+					return
+			error: () ->
+				endInError()
+				return
 	return
 
 #checks values for correct input, returns true or an error string
@@ -151,7 +149,10 @@ displayEnd = (header, subtext) ->
 $gSelect = $('select[name="gameId"]')
 $mSelect = $('select[name="missionId"]')
 
+
 $mSelect.detachOptions('[for="missionId"]')
+$mSelect.attachOptions('[for="missionId"][value="None"]')
+$mSelect.val 'None'
 
 $gSelect.on 'change', ()->	
 	gameId = this.value

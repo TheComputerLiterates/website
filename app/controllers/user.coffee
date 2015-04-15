@@ -36,6 +36,7 @@ module.exports = (app) ->
 			title = 'User - Clarification Request Form'
 			view = 'user/cRequestCreate'
 			
+			# Construct the game + mission list if player
 			if req.session.user &&
 			req.session.user.roleId >= app.hvz.roles.HUMAN.id
 				# Construct them
@@ -70,10 +71,35 @@ module.exports = (app) ->
 					missionData: {}
 		
 		@cRequestCreate_submit = (req, res)->
-			res.send
-				success: true
-				body: {}	
-		
+			if req.body.subject? &&
+			req.body.description? &&
+			req.body.personal?
+				
+				app.models.ClarificationRequest.createNew 
+					subject: req.body.subject
+					description: req.body.description
+					personal: req.body.personal
+					gameId: req.body.gameId				#can be undefined
+					missionId: req.body.missionId		#can be undefined
+					openUserId: req.session.user.userId
+				.then ()->
+					res.send
+						success: true
+						body: {}	
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: err
+							code: app.errors.db.EXECUTION
+					
+			else
+				res.send
+					success: false
+					body:
+						error: 'Invalid input'
+						code: app.errors.db.INPUT
+						
 		@cRequestView = (req, res)->
 			title = 'User - Clarification Requests'
 			view = 'user/cRequestView'

@@ -10,6 +10,7 @@ module.exports = (app) ->
 			forum_post: 'forum_post'
 			forum_thread: 'forum_thread'
 			clarification_request: 'clarification_request'
+			clarification_request_comment: 'clarification_request_comment'
 			
 			geopoint: 'geopoint'
 			geofence: 'geofence'
@@ -25,6 +26,7 @@ module.exports = (app) ->
 			
 			android_instance: 'android_instance'
 			website_instance: 'website_instance'	# DEPRECATED
+			
 		
 		# Views
 		VNAME:
