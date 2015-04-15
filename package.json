@@ -1,7 +1,7 @@
 {
   "name": "hvzatfsu",
-  "url": "",
-  "version": "0.0.1",
+  "url": "http://fsuhvz.com/",
+  "version": "0.1.0",
   "description": "",
   "scripts": {
     "start": "node server.js"
@@ -10,7 +10,7 @@
   "license": "",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/TheComputerLiterates/www_hvzatfsu-nodejs/"
   },
   "dependencies": {
     "bcrypt": "~0.8.1",

@@ -12,6 +12,7 @@ dotenv = require 'dotenv'
 Q = require 'q'
 Mariasql = require 'mariasql'
 moment = require 'moment'
+errors = require '../lib/errors'
 
 #JS utility libraries
 util = require 'util'
@@ -29,7 +30,8 @@ module.exports = (app) ->
 	app.vsprintf = vsprintf
 	app.bcrypt = bcrypt
 	app.moment = moment
-	
+	app.errors = errors
+		
 	# Load helper functions
 	app.locals.helpers = require __dirname + '/../app/helpers'
 
@@ -43,7 +45,7 @@ module.exports = (app) ->
 	
 	# Configure app settings
 	env = app.env.NODE_ENV || 'development'
-	app.set 'port', app.env.PORT || 5001
+	app.set 'port', if app.env.DEV_MODE then app.env.PORT_DEV else app.env.PORT_LIVE
 	app.set 'views', __dirname + '/../app/views'
 	app.set 'view engine', 'jade'
 	app.use require('express').static __dirname + '/../public'
