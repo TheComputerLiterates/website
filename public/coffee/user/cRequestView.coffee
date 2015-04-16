@@ -38,6 +38,10 @@ loadComments = ($commentCont, crId)->
 							'</div>'
 					
 					$commentCont.html html
+					
+					# Clear formResult
+					$commentCont.parent().children('.cr-submitComment').children('.formResult').empty()
+					
 				else
 					$commentCont.append '<p class="text-center">No comments</p>'
 			else

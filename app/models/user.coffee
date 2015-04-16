@@ -275,3 +275,50 @@ module.exports = (app) ->
 			con.end()
 
 			return deferred.promise			
+
+
+		@getProfileByID: (user_id) ->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT %s AS %s, %s AS %s, %s AS %s, %s, %s AS %s, %s AS %s, %s FROM %s WHERE %s = %s'
+			, [
+				COL.id, 'userId'
+				COL.role_id, 'roleId'
+				COL.email, 'email'
+				COL.HVZID
+				COL.first_name, 'firstName'
+				COL.last_name, 'lastName'
+				COL.active
+				
+				TNAME
+
+				COL.id, user_id
+			]
+
+			console.log sql
+
+			userData = {}
+
+			con = app.db.newCon()
+			con.query sql
+
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					userData =
+						userId: parseInt row.userId
+						email: row.email
+						roleId: parseInt row.roleId
+						HVZID: parseInt row.HVZID
+						firstName: row.firstName
+						lastName: row.lastName
+						active: parseInt row.active
+
+				res.on 'end', (info)->
+					deferred.resolve userData
+
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				deferred.reject err
+
+			con.end()
+
+			return deferred.promise		
