@@ -239,7 +239,7 @@ module.exports = (app) ->
 				data.comment
 				'NOW()'	
 			]
-			console.log sql
+			# console.log sql
 			
 			con = app.db.newCon()
 			con.query sql
@@ -255,21 +255,23 @@ module.exports = (app) ->
 		# Returns all comments for a given CR.id
 		@getAllComments: (crId)->
 			deferred = app.Q.defer()
-			sql = app.vsprintf 'SELECT c.*, u.%s, u.%s ' +
-				'FROM %s AS c INNER JOIN %s AS u ON c.%s = u.%s' +
-				'WHERE %s = %i ' + 
-				'ORDER BY c.%s DESC'
+			sql = app.vsprintf 'SELECT DISTINCT c.*, u.%s, u.%s ' +
+				'FROM %s AS c ' + 
+				'INNER JOIN %s AS u ON c.%s = u.%s ' +
+				'WHERE c.%s = %i ' + 
+				'ORDER BY c.%s ASC'
 			, [
 				COL.first_name
 				COL.last_name
 				
-				TNAME, TREL.user
-				COL.user_id, COL.id
+				TREL.clarification_request_comment
+				TREL.user, COL.user_id, COL.id
 				
 				COL.clarification_request_id, crId
 				
 				COL.created_at
 			]
+			# console.log sql
 			
 			result = []
 			con = app.db.newCon()
@@ -283,7 +285,7 @@ module.exports = (app) ->
 						userName: row.first_name + ' ' + row.last_name
 						createdAt: app.locals.helpers.momentMariadbRelative app.moment, row.created_at
 				res.on 'end', (info)->
-					console.log 'Got ' + info.numRows + ' rows from ' + TNAME
+					console.log 'Got ' + info.numRows + ' rows from ' + TREL.clarification_request_comment
 					deferred.resolve result
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err

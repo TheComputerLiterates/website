@@ -120,7 +120,7 @@ module.exports = (app) ->
 				success: true
 				body: {}	
 		
-		@cRequestView_comment = (req, res)->
+		@cRequestView_commentCreate = (req, res)->
 			if req.body.crId? &&
 			req.body.comment?
 				
@@ -132,6 +132,27 @@ module.exports = (app) ->
 					res.send
 						success: true
 						body: {}	
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: err
+							code: app.errors.db.EXECUTION
+			else
+				res.send
+					success: false
+					body:
+						error: 'Invalid input'
+						code: app.errors.db.INPUT
+		
+		@cRequestView_commentGet = (req, res)->
+			if req.body.crId?
+				app.models.ClarificationRequest.getAllComments req.body.crId
+				.then (comments)->
+					res.send
+						success: true
+						body: 
+							comments: comments
 				, (err)->
 					res.send
 						success: false

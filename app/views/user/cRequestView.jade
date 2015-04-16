@@ -16,7 +16,7 @@ block content
 				th R
 				th Updated
 		for cRequest in cRequests
-			tbody.cr-container(data-crId='#{cRequest.crId}')
+			tbody.cr-container
 				tr.cr-header
 					td: span.glyphicon.glyphicon-menu-right
 					td #{cRequest.subject}
@@ -25,13 +25,14 @@ block content
 					td #{(cRequest.closed)? 'Closed' : 'Open'}
 					td #{cRequest.replies}
 					td #{cRequest.updatedAt}
-				tr.cr-content
+				tr.cr-content(data-crId='#{cRequest.crId}')
 					td
 					td.cr-content-container(colspan=5)
-						span.cr-comment-user #{cRequest.userName}
-						span.cr-comment-date #{cRequest.createdAt}
-						br
-						span.cr-description #{cRequest.description}
+						blockquote
+							span.cr-comment-user #{cRequest.userName}
+							span.cr-comment-date #{cRequest.createdAt}
+							br
+							span.cr-description #{cRequest.description}
 						.cr-comment-container
 							//- for comment in cRequest.comments
 							//- 	.cr-comment
@@ -40,10 +41,11 @@ block content
 							//- 		br
 							//- 		span.cr-comment-text #{comment.text}
 						form.cr-submitComment
+							.formResult
 							.col-xs-10
 								textarea.form-control(rows='2' name='newComment' placeholder="Write a comment..." maxlength='2000' required)
 							.col-xs-2.text-left
-								button.btn.btn-default(type="submit") Submit
+								button.btn.btn-default(type="submit") Send
 		
 			
 block localJS

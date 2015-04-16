@@ -141,6 +141,8 @@ h1, h2 {
  * ICONS
  */
 .icon-loading {
+	margin: auto;
+	display: block;
 	background-position: center center;
 	background-repeat: no-repeat;
 	border-radius: 50%;
@@ -297,7 +299,7 @@ h1, h2 {
 	margin-bottom: .25em;
 }
 .cr-comment-user {
-	font-size: large;
+	/*font-size: large;*/
 	font-weight: bold;
 }
 .cr-comment-date {

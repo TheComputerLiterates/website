@@ -53,6 +53,8 @@ module.exports = (app) ->
 	app.post '/user/cRequestCreate', jsonParser, app.UserController.cRequestCreate_submit
 	app.get '/user/cRequestView', app.UserController.cRequestView
 	app.post '/user/cRequestView', jsonParser, app.UserController.cRequestView_submit
+	app.post '/user/cRequestView_commentCreate', jsonParser, app.UserController.cRequestView_commentCreate
+	app.post '/user/cRequestView_commentGet', jsonParser, app.UserController.cRequestView_commentGet
 
 	# GAME (player) PAGES #####################################################
 	# Game home
