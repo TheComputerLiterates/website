@@ -14,7 +14,7 @@ module.exports = (app) ->
 	urlencodedParser = bodyParser.urlencoded {extended: false}
 	
 	# Enforce ACL
-	# app.use acl
+	app.use acl
 	
 	
 	# PUBLIC PAGES ############################################################

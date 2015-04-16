@@ -15,4 +15,15 @@ exports.getParseError = (error, body) ->
 		else 'Error ' + body.code + ': ' + body.error 
 	
 	return msg
+
+# Returns time of day or date from a mariadb DATETIME object
+exports.momentMariadbRelative = (moment, mariaDate)->
+	now = moment()
+	date = moment(mariaDate)
+	if (now.diff date, 'days') < 1
+		return date.format 'h:mm A'
+	else
+		return date.format 'M/D/YY'
+	
+	
 	

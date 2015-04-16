@@ -104,8 +104,16 @@ module.exports = (app) ->
 			title = 'User - Clarification Requests'
 			view = 'user/cRequestView'
 			
-			res.render view,
-				title: title
+			app.models.ClarificationRequest.getAllByUserIdRoleId req.session.user.userId, 
+			req.session.user.roleId
+			.then (cRequests)->
+				res.render view,
+					title: title
+					cRequests: cRequests
+			, (err)->
+				res.render view,
+					title: title
+					cRequests: {}
 		
 		@cRequestView_submit = (req, res)->
 			res.send

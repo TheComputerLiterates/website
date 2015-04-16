@@ -30,6 +30,13 @@ COL =
 	position: 'position'												#INT
 	#created_at															#DATETIME
 	
+	#Game/mission
+	title: 'title'
+	
+	#User
+	first_name: 'first_name'
+	last_name: 'last_name'
+	
 module.exports = (app) ->
 	TNAME = app.models.C.TNAME.clarification_request
 	#Related tables, Foreign-This
@@ -74,7 +81,7 @@ module.exports = (app) ->
 				data.subject
 				data.description
 				if data.personal then 1 else 0
-				1 #true
+				0 #false
 				'NOW()'
 				'NOW()'
 				0 #false
@@ -94,19 +101,107 @@ module.exports = (app) ->
 			
 			return def.promise
 		
-		# gets all games
-		@getAll: ()->
+		# Returns all CRs visible by userId with roleId
+		@getAllByUserIdRoleId: (userId, roleId)->
 			deferred = app.Q.defer()
-			sql = app.vsprintf 'SELECT %s,%s,%s,%s,%s,%s FROM %s'
-			, [
-				COL.id
-				COL.start_date
-				COL.end_date
-				COL.title
-				COL.description
-				COL.visible
+			
+			complete = (sql)->
+				result = []
+				con = app.db.newCon()
+				con.query sql 
+				.on 'result', (res)->
+					res.on 'row', (row)->
+						result.push 
+							crId: parseInt row.id
+							openUserId: parseInt row.open_user_id
+							closeUserId: parseInt row.close_user_id
+							closed: row.closed == '1'
+							subject: row.subject
+							gameTitle: row.gameTitle
+							replies: row.replies
+							missionTitle: row.missionTitle
+							userName: row.first_name + ' ' + row.last_name
+							createdAt: app.locals.helpers.momentMariadbRelative app.moment, row.created_at
+							updatedAt: app.locals.helpers.momentMariadbRelative app.moment, row.updated_at
+					res.on 'end', (info)->
+						console.log 'Got ' + info.numRows + ' rows from ' + TNAME
+						deferred.resolve result
+				.on 'error', (err)->
+					console.log "> DB: Error on old threadId " + this.tId + " = " + err
+					deferred.reject err
+				con.end()
 				
-				TNAME
+			# Generate correct sql
+			if roleId < app.hvz.roles.MODERATOR.id
+				#Have to check userId, gameId, then missionId
+				# app.models.Game.getCurrentGame()
+				# .then (currGame)->
+				# 	def.resolve app.vsprintf 'SELECT cr.* FROM %s AS cr ' +
+				# 		'LEFT JOIN %s AS g ON cr.%s = g.%s' +
+				# 		'LEFT JOIN %s AS m ON cr.%s = m.%s' +
+				# 		'WHERE '
+				# 	, [
+				# 		TNAME
+				# 		TREL.user
+				# 		TREL.mission
+						
+				# 		COL.game_id
+				# 		COL.id
+				# 		COL.mission_id
+				# 		COL.id
+						
+				# 	]
+				# , (err)->
+				# 	def.reject err
+			else
+				sql = app.vsprintf 'SELECT cr.*, g.%s AS %s, m.%s AS %s, ' +
+					'u.%s, u.%s ' +
+					'FROM %s AS cr ' +
+					'INNER JOIN %s AS u ON cr.%s = u.%s ' +
+					'LEFT JOIN %s AS g ON cr.%s = g.%s ' +
+					'LEFT JOIN %s AS m ON cr.%s = m.%s ' +
+					'ORDER BY cr.%s DESC'
+				, [
+					COL.title, 'gameTitle'
+					COL.title, 'missionTitle'
+					COL.first_name
+					COL.last_name
+					
+					TNAME
+					TREL.user, COL.open_user_id, COL.id
+					TREL.game, COL.game_id, COL.id
+					TREL.mission, COL.mission_id, COL.id
+					
+					COL.game_id, COL.id
+					COL.mission_id, COL.id
+					
+					COL.created_at
+					
+				]
+				# console.log sql
+				complete sql
+			
+				
+			return deferred.promise
+		
+		
+		# Returns all comments for a given CR.id
+		@getAllComments: (crId)->
+			deferred = app.Q.defer()
+			sql = app.vsprintf 'SELECT c.*, u.%s, u.%s ' +
+				'FROM %s AS c INNER JOIN %s AS u ON c.%s = u.%s' +
+				'WHERE %s = %i ' + 
+				'ORDER BY c.%s DESC'
+			, [
+				COL.first_name
+				COL.last_name
+				
+				TNAME, TREL.user
+				COL.user_id, COL.id
+				
+				COL.clarification_request_id, crId
+				
+				COL.created_at
 			]
 			
 			result = []
@@ -115,12 +210,11 @@ module.exports = (app) ->
 			.on 'result', (res)->
 				res.on 'row', (row)->
 					result.push 
-						gameId: row.id
-						startDate: app.moment(row.start_date)
-						endDate: app.moment(row.end_date)
-						title: row.title
-						description: row.description
-						visible: (parseInt row.visible) == 0
+						commentId: parseInt row.id
+						crId: parseInt row.clarification_request_id
+						text: row.comment
+						userName: row.first_name + ' ' + row.last_name
+						createdAt: app.locals.helpers.momentMariadbRelative app.moment, row.created_at
 				res.on 'end', (info)->
 					console.log 'Got ' + info.numRows + ' rows from ' + TNAME
 					deferred.resolve result
@@ -130,4 +224,3 @@ module.exports = (app) ->
 			con.end()
 			
 			return deferred.promise
-		

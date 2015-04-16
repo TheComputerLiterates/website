@@ -3,69 +3,48 @@ block content
 	h1 Clarification Requests
 	
 	p
-		a.link-none(href='/user/cRequestCreate') 
-			.btn.btn-default Create New
-	
+		a.link-none.btn.btn-default(href='/user/cRequestCreate') Create New
 	
 	table.table
 		thead
 			tr
 				th 
 				th Subject
-				th User
-				th Replies
+				th Game
+				th Mission
 				th Status
-				th Date
-		tbody.cr-container(data-crId=0)
-			tr.cr-header
-				td: span.glyphicon.glyphicon-menu-right
-				//- td: span.glyphicon.glyphicon-menu-down
-				td Hurr durr durr
-				td Jared
-				td 2
-				td Open
-				td 10 minutes ago
-			tr.cr-content
-				td
-				td.cr-content-container(colspan=5)
-					.cr-description Sed turpidghs nisi, rhoncus id maximus id, condimentum nec odio. Sed sodales dui in purus varius fringilla. Suspendisse tristique tincidunt est id scelerisque.
-					.cr-comment-container
-						.cr-comment
-							span.cr-comment-user SomeMod: 
-							span.cr-comment-text In ex nisi, commodo a lectus in, accumsan viverra purus. Ut sed est eget odio mattis porta. Vestibulum quis faucibus mauris. Suspendisse potenti.
-						.cr-comment
-							span.cr-comment-user OtherPerson: 
-							span.cr-comment-text Donec porta odio eget nisi euismod iaculis. Nulla molestie nisi lacus, a bibendum diam scelerisque vel. Integer dignissim tellus in tincidunt tincidunt.
-					form.cr-submitComment
-						.col-xs-10
-							textarea.form-control(rows='2' name='newComment' placeholder="Write a comment..." maxlength='2000' required)
-						.col-xs-2.text-left
-							button.btn.btn-default(type="submit") Submit
-		tbody.cr-container(data-crId=0)
-			tr.cr-header
-				td: span.glyphicon.glyphicon-menu-right
-				//- td: span.glyphicon.glyphicon-menu-down
-				td Hurr durr durr
-				td Jared
-				td 2
-				td Open
-				td 10 minutes ago
-			tr.cr-content
-				td
-				td.cr-content-container(colspan=5)
-					.cr-description Sed turpidghs nisi, rhoncus id maximus id, condimentum nec odio. Sed sodales dui in purus varius fringilla. Suspendisse tristique tincidunt est id scelerisque.
-					.cr-comment-container
-						.cr-comment
-							span.cr-comment-user SomeMod: 
-							span.cr-comment-text In ex nisi, commodo a lectus in, accumsan viverra purus. Ut sed est eget odio mattis porta. Vestibulum quis faucibus mauris. Suspendisse potenti.
-						.cr-comment
-							span.cr-comment-user OtherPerson: 
-							span.cr-comment-text Donec porta odio eget nisi euismod iaculis. Nulla molestie nisi lacus, a bibendum diam scelerisque vel. Integer dignissim tellus in tincidunt tincidunt.
-					form.cr-submitComment
-						.col-xs-10
-							textarea.form-control(rows='2' name='newComment' placeholder="Write a comment..." maxlength='2000' required)
-						.col-xs-2.text-left
-							button.btn.btn-default(type="submit") Submit
+				th R
+				th Updated
+		for cRequest in cRequests
+			tbody.cr-container(data-crId='#{cRequest.crId}')
+				tr.cr-header
+					td: span.glyphicon.glyphicon-menu-right
+					td #{cRequest.subject}
+					td #{(cRequest.gameTitle !== null)? cRequest.gameTitle : '-'}
+					td #{(cRequest.missionTitle !== null)? cRequest.missionTitle : '-'}
+					td #{(cRequest.closed)? 'Closed' : 'Open'}
+					td #{cRequest.replies}
+					td #{cRequest.updatedAt}
+				tr.cr-content
+					td
+					td.cr-content-container(colspan=5)
+						span.cr-comment-user #{cRequest.userName}
+						span.cr-comment-date #{cRequest.createdAt}
+						br
+						span.cr-description Sed turpidghs nisi, rhoncus id maximus id, condimentum nec odio. Sed sodales dui in purus varius fringilla. Suspendisse tristique tincidunt est id scelerisque.
+						.cr-comment-container
+							//- for comment in cRequest.comments
+							//- 	.cr-comment
+							//- 		span.cr-comment-user #{comment.userName}
+							//- 		span.cr-comment-date #{comment.date}
+							//- 		br
+							//- 		span.cr-comment-text #{comment.text}
+						form.cr-submitComment
+							.col-xs-10
+								textarea.form-control(rows='2' name='newComment' placeholder="Write a comment..." maxlength='2000' required)
+							.col-xs-2.text-left
+								button.btn.btn-default(type="submit") Submit
+		
 			
 block localJS
 	script(type='text/javascript' src='/js/user/cRequestView.js')

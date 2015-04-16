@@ -88,7 +88,7 @@ endInSuccess = () ->
 		sub.text 'Success!'
 		sub.attr 'disabled', 'true'
 		sub.fadeIn(500, ()->)
-		displayEnd 'Signup Complete!', 'Redirecting...', true
+		displayEnd 'Login successful!', 'Redirecting...', true
 	return
 displayEnd = (header, subtext, hide) ->
 	#create message

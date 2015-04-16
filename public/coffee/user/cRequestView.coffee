@@ -12,11 +12,8 @@
 
 TOGGLE_SPEED = 500
 
-#Hide all conent
-$('.cr-content').toggle false
-
+#Make content togggleable
 $('.cr-header').click ()->
-	console.log $(this).parent().size()
 	$(this).parent().children('.cr-content').toggle()
 	
 	$icon = $(this).find('.glyphicon')

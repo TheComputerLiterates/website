@@ -87,14 +87,14 @@ module.exports = (app) ->
 			con.connect app.db.setup
 			con.on 'connect', ()->
 				this.tId = this.threadId #so it isnt deleted
-				console.log '> DB: New connection established with threadId ' + this.tId
+				# console.log '> DB: New connection established with threadId ' + this.tId
 			.on 'error', (err)->
 				console.log '> DB: Error on threadId ' + this.tId + '= ' + err
 			.on 'close', (hadError)->
 				if hadError
 					console.log '> DB: Connection closed with old threadId ' + this.tId + ' WITH ERROR!'
 				else
-					console.log '> DB: Connection closed with old threadId ' + this.tId + ' without error'
+					# console.log '> DB: Connection closed with old threadId ' + this.tId + ' without error'
 			return con
 	# app.db.con = app.db.newCon(); #global, persistent connection, others can be made later
 	# app.db.con.on 'connect', ()->
