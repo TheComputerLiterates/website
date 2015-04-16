@@ -119,3 +119,28 @@ module.exports = (app) ->
 			res.send
 				success: true
 				body: {}	
+		
+		@cRequestView_comment = (req, res)->
+			if req.body.crId? &&
+			req.body.comment?
+				
+				app.models.ClarificationRequest.addComment
+					crId: req.body.crId
+					comment: req.body.comment
+					userId: req.session.user.userId
+				.then ()->
+					res.send
+						success: true
+						body: {}	
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: err
+							code: app.errors.db.EXECUTION
+			else
+				res.send
+					success: false
+					body:
+						error: 'Invalid input'
+						code: app.errors.db.INPUT

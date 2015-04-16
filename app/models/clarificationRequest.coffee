@@ -32,6 +32,7 @@ COL =
 	
 	#Game/mission
 	title: 'title'
+	role_id: 'role_id'
 	
 	#User
 	first_name: 'first_name'
@@ -45,14 +46,13 @@ module.exports = (app) ->
 		game: app.models.C.TNAME.game
 		mission: app.models.C.TNAME.mission
 		clarification_request_comment: app.models.C.TNAME.clarification_request_comment
+		roles_in_missions:  app.models.C.TNAME.roles_in_missions
 	
 	
 	class app.models.ClarificationRequest
 		constructor: ()->	
 		
-		@createNew: (data) ->
-			console.log app.util.inspect data
-			
+		@createNew: (data) ->			
 			def = app.Q.defer()
 			sql = app.vsprintf 'INSERT INTO %s ' +
 				'(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (%i,%s,' +
@@ -118,8 +118,9 @@ module.exports = (app) ->
 							closed: row.closed == '1'
 							subject: row.subject
 							gameTitle: row.gameTitle
+							description: row.description
 							replies: row.replies
-							missionTitle: row.missionTitle
+							missionTitle: if row.missionTitle? then app.hvz.getRoleById(parseInt row.role_id) + ' - ' + row.missionTitle else undefined
 							userName: row.first_name + ' ' + row.last_name
 							createdAt: app.locals.helpers.momentMariadbRelative app.moment, row.created_at
 							updatedAt: app.locals.helpers.momentMariadbRelative app.moment, row.updated_at
@@ -130,32 +131,71 @@ module.exports = (app) ->
 					console.log "> DB: Error on old threadId " + this.tId + " = " + err
 					deferred.reject err
 				con.end()
-				
+			
+			currGame = 
+				gameId: 3
+			
+			
+			
 			# Generate correct sql
 			if roleId < app.hvz.roles.MODERATOR.id
-				#Have to check userId, gameId, then missionId
-				# app.models.Game.getCurrentGame()
-				# .then (currGame)->
-				# 	def.resolve app.vsprintf 'SELECT cr.* FROM %s AS cr ' +
-				# 		'LEFT JOIN %s AS g ON cr.%s = g.%s' +
-				# 		'LEFT JOIN %s AS m ON cr.%s = m.%s' +
-				# 		'WHERE '
-				# 	, [
-				# 		TNAME
-				# 		TREL.user
-				# 		TREL.mission
+				console.log 'IS NON MOD'
+				# Have to check userId, gameId, then missionId for valid visiblity
+				app.models.Game.getCurrentGame()
+				.then (currGame)->
+					if !currGame.gameId?
+						currGame.gameId = null
+					
+					sql = app.vsprintf 'SELECT DISTINCT cr.*, g.%s AS %s, m.%s AS %s, ' +
+						'm.%s, u.%s, u.%s ' +
+						'FROM %s AS cr ' +
+						'INNER JOIN %s AS u ON cr.%s = u.%s ' +
+						'LEFT JOIN %s AS g ON cr.%s = g.%s ' +
+						'LEFT JOIN %s AS m ON cr.%s = m.%s ' +
+						'WHERE cr.%s = %i OR ' +
+						'(' +
+						'(cr.%s = %s) AND ' +
+						'(cr.%s = %s OR g.%s != %i OR %s) AND ' +
+						'(cr.%s = %s OR m.%s != %i OR EXISTS(SELECT * FROM %s WHERE %s = cr.%s AND %s = %i)) ' +
+						') ' +
+						'ORDER BY %s DESC'
+					, [
+						COL.title, 'gameTitle'
+						COL.title, 'missionTitle'
+						COL.role_id
+						COL.first_name
+						COL.last_name
 						
-				# 		COL.game_id
-				# 		COL.id
-				# 		COL.mission_id
-				# 		COL.id
+						TNAME
+						TREL.user, COL.open_user_id, COL.id
+						TREL.game, COL.game_id, COL.id
+						TREL.mission, COL.mission_id, COL.id
 						
-				# 	]
-				# , (err)->
-				# 	def.reject err
+						COL.open_user_id, userId
+						
+						COL.personal, 'FALSE'
+						
+						COL.game_id, 'NULL'
+						COL.id, currGame.gameId
+						if app.hvz.roles.USER.id < roleId then 'TRUE' else 'FALSE'
+						
+						COL.mission_id, 'NULL'
+						COL.game_id, currGame.gameId
+						
+						TREL.roles_in_missions 
+						COL.mission_id, COL.mission_id
+						COL.role_id, roleId
+
+						COL.updated_at, COL.updated_at
+						
+					]
+					# console.log sql
+					complete sql
+				, (err)->
+					deferred.reject err
 			else
-				sql = app.vsprintf 'SELECT cr.*, g.%s AS %s, m.%s AS %s, ' +
-					'u.%s, u.%s ' +
+				sql = app.vsprintf 'SELECT DISTINCT cr.*, g.%s AS %s, m.%s AS %s, ' +
+					'm.%s, u.%s, u.%s ' +
 					'FROM %s AS cr ' +
 					'INNER JOIN %s AS u ON cr.%s = u.%s ' +
 					'LEFT JOIN %s AS g ON cr.%s = g.%s ' +
@@ -164,6 +204,7 @@ module.exports = (app) ->
 				, [
 					COL.title, 'gameTitle'
 					COL.title, 'missionTitle'
+					COL.role_id
 					COL.first_name
 					COL.last_name
 					
@@ -172,11 +213,7 @@ module.exports = (app) ->
 					TREL.game, COL.game_id, COL.id
 					TREL.mission, COL.mission_id, COL.id
 					
-					COL.game_id, COL.id
-					COL.mission_id, COL.id
-					
-					COL.created_at
-					
+					COL.updated_at
 				]
 				# console.log sql
 				complete sql
@@ -184,6 +221,36 @@ module.exports = (app) ->
 				
 			return deferred.promise
 		
+		#Creates a new comment (CR updated_at done via trigger)
+		@addComment: (data)->
+			def = app.Q.defer()
+			sql = app.vsprintf 'INSERT INTO %s ' +
+				'(%s,%s,%s,%s) VALUES (%i,%i,"%s",%s)'
+			, [
+				TREL.clarification_request_comment
+				
+				COL.clarification_request_id
+				COL.user_id
+				COL.comment
+				COL.created_at
+				
+				data.crId
+				data.userId
+				data.comment
+				'NOW()'	
+			]
+			console.log sql
+			
+			con = app.db.newCon()
+			con.query sql
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				def.reject err
+			.on 'end', ()->
+				def.resolve()
+			con.end()
+			
+			return def.promise
 		
 		# Returns all comments for a given CR.id
 		@getAllComments: (crId)->
