@@ -105,7 +105,7 @@ module.exports = (app) ->
 	# API #####################################################################
 	app.post '/api/' + app.env.HVZ_API_KEY + '/login', jsonParser, app.APIController.login
 	app.post '/api/' + app.env.HVZ_API_KEY + '/profileinfo', jsonParser, app.APIController.profileInfo
-
+	app.post '/api/' + app.env.HVZ_API_KEY + '/test', urlencodedParser, app.APIController.test
 	
 	
 	# Page not found (404) ####################################################
