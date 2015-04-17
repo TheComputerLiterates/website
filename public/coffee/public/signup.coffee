@@ -55,8 +55,8 @@ $(FORM_ID).submit (e) ->
 		formData.passwordConfirm = undefined
 		
 		#Encrypt password (1st encryption. 2nd is server-side)
-		formData.password = CryptoJS.SHA3 formData.password, {outputLength: 512}
-			.toString CryptoJS.enc.Hex
+		#formData.password = CryptoJS.SHA3 formData.password, {outputLength: 512}
+		#	.toString CryptoJS.enc.Hex
 		
 		#submit via ajax
 		$.ajax

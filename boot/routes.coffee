@@ -102,10 +102,11 @@ module.exports = (app) ->
 	# DATA ####################################################################
 	app.post '/data/getGameStatus', app.DataController.getGameStatus
 	
-	# API #####################################################################
-	app.post '/api/' + app.env.HVZ_API_KEY + '/login', jsonParser, app.APIController.login
-	app.post '/api/' + app.env.HVZ_API_KEY + '/profileinfo', jsonParser, app.APIController.profileInfo
 
+	# API #####################################################################
+	app.post '/api/' + app.env.HVZ_API_KEY + '/login', urlencodedParser, app.APIController.login
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/profile', urlencodedParser, app.APIController.profile
+	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.kill_submit
 	
 	
 	# Page not found (404) ####################################################
