@@ -359,6 +359,51 @@ module.exports = (app) ->
 					success: false
 					body:
 						error: app.errors.INVALID_PARAMETERS_TEXT,
+						code: app.errors.INVALID_HVZID
+						
+						
+		#######################################################################
+		# GPS
+		
+		# Saving user gps points
+		@map_userGeopointCreate = (req,res)->
+			if req.body.userId? &&
+			req.body.longitude? &&
+			req.body.latitude?
+				app.models.UserGeopoint.createNew
+					userId: req.body.userId
+					longitude: parseFloat req.body.longitude
+					latitude: parseFloat req.body.latitude
+				.then ()->
+					res.send
+						success: true
+						body: {}
+				, (err)->
+					res.send
+						success: false
+						body: 
+							error: err
+							code: app.errors.db.EXECUTION
+			else
+				res.send
+					success: false
+					body:
+						error: 'Invalid Parameters',
 						code: app.errors.INVALID_PARAMETERS
 						expected: 'roleId (int)'
 						received: req.body
+		
+		# Recieve all points
+		@map_userGeopointGetRefreshed = (req,res)->
+			app.models.UserGeopoint.getAllRefreshed()
+			.then (pts)->
+				res.send
+					success: true
+					body:
+						pts: pts
+			, (err)->
+				res.send
+					success: false
+					body:
+						error: err
+						code: app.errors.db.EXECUTION

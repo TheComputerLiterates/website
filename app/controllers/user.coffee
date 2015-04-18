@@ -107,11 +107,6 @@ module.exports = (app) ->
 					title: title
 					cRequests: {}
 		
-		@cRequestView_submit = (req, res)->
-			res.send
-				success: true
-				body: {}	
-		
 		@cRequestView_commentCreate = (req, res)->
 			if req.body.crId? &&
 			req.body.comment?
