@@ -14,7 +14,7 @@ module.exports = (app) ->
 		# PUBLIC: /
 
 		# POST: /login
-		# Requires: email, password
+		# Requires: email (string), password (string)
 		# Login
 		@login = (req, res) ->
 			# console.log app.util.inspect req.body
@@ -52,7 +52,7 @@ module.exports = (app) ->
 				res.send
 					success: false
 					body:
-						error: 'Invalid Parameters',
+						error: app.errors.INVALID_PARAMETERS_TEXT,
 						code: app.errors.INVALID_PARAMETERS
 						expected: 'email (string), password (string)'
 						received: req.body
@@ -63,7 +63,7 @@ module.exports = (app) ->
 		# USER: /user
 
 		# POST: /user/profile
-		# Requires: userId
+		# Requires: userId (int)
 		# Get the information of the profile by ID
 		@user_profile = (req, res) ->
 			if req.body.userId?
@@ -91,9 +91,182 @@ module.exports = (app) ->
 				res.send
 					success: false
 					body:
-						error: 'Invalid Parameters',
+						error: app.errors.INVALID_PARAMETERS_TEXT,
 						code: app.errors.INVALID_PARAMETERS
 						expected: 'userId (int)'
+						received: req.body
+
+
+
+		############################################################################
+		# CLARIFICATION REQUESTS: /user/cRequest...
+
+		# POST: /user/cRequestCreate
+		# Requires: roleId (int)
+		# Get the availavle options for creating the Clarification Request
+		@user_cRequestCreate = (req, res) ->
+			if req.body.roleId?
+				if req.body.roleId >= app.hvz.roles.USER.id
+					# Construct them
+					app.models.Game.getAllTitles()
+					.then (games)->
+						app.models.Mission.getTitlesByRole parseInt(req.body.roleId)
+						.then (missions)->						
+							# Add role name befor each title
+							for mission in missions
+								mission.title = app.hvz.getRoleById(mission.roleId) +
+									" - " + mission.title
+							res.send
+								success: true
+								body:
+									gameData: games
+									missionData: missions
+						, (err)->
+							success: true
+							body:
+								gameData: games
+								missionData: {}
+					, (err)->
+						success: true
+						body:
+							gameData: {}
+							missionData: {}
+				else
+					success: true
+					body:
+						gameData: {}
+						missionData: {}
+
+			else
+				res.send
+					success: false
+					body:
+						error: app.errors.INVALID_PARAMETERS_TEXT,
+						code: app.errors.INVALID_PARAMETERS
+						expected: 'roleId (int)'
+						received: req.body
+
+		# POST: /user/cRequestCreate_submit
+		# Requires: userId (int), subject (string), description (string), personal (boolean)
+		# Submit the clarification request
+		@user_cRequestCreate_submit = (req, res)->
+			if req.body.userId? &&
+			req.body.subject? &&
+			req.body.description? &&
+			req.body.personal?
+				
+				app.models.ClarificationRequest.createNew 
+					subject: req.body.subject
+					description: req.body.description
+					personal: req.body.personal == 'true'
+					gameId: req.body.gameId				#can be undefined
+					missionId: req.body.missionId		#can be undefined
+					openUserId: parseInt req.body.userId
+				.then ()->
+					res.send
+						success: true
+						body: {}	
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: err
+							code: app.errors.db.EXECUTION
+
+			else
+				res.send
+					success: false
+					body:
+						error: app.errors.INVALID_PARAMETERS_TEXT,
+						code: app.errors.INVALID_PARAMETERS
+						expected: 'userId (int), subject (string), description (string), personal (true/false)'
+						received: req.body
+
+		# POST: /user/cRequestView
+		# Requires: userId (int), roleId (int)
+		# View the clarification requests
+		@user_cRequestView = (req, res)->
+			if req.body.userId? &&
+			req.body.roleId?
+				app.models.ClarificationRequest.getAllByUserIdRoleId req.body.userId, 
+				req.body.roleId
+				.then (cRequests)->
+					res.send
+						success: true
+						body: 
+							cRequests: cRequests
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: 'Clarification Requests not found',
+							code: app.errors.CR_NOT_FOUND
+
+			else
+				res.send
+					success: false
+					body:
+						error: app.errors.INVALID_PARAMETERS_TEXT,
+						code: app.errors.INVALID_PARAMETERS
+						expected: 'userId (int), roleId (int)'
+						received: req.body
+
+		# POST: /user/cRequestView_commentCreate
+		# Requires: userId (int), crId (int), comment (string)
+		# Create a comment in the Clarification Request
+		@user_cRequestView_commentCreate = (req, res)->
+			if req.body.crId? &&
+			req.body.comment? &&
+			req.body.userId
+
+				app.models.ClarificationRequest.addComment
+					crId: req.body.crId
+					comment: req.body.comment
+					userId: req.body.userId
+				.then ()->
+					res.send
+						success: true
+						body: {}	
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: err
+							code: app.errors.db.EXECUTION
+			else
+				res.send
+					success: false
+					body:
+						error: app.errors.INVALID_PARAMETERS_TEXT,
+						code: app.errors.INVALID_PARAMETERS
+						expected: 'userId (int), crId (int), comment (string)'
+						received: req.body
+
+
+		# POST: /user/cRequestView_commentGet
+		# Requires: crId (int)
+		# Get comments of Clarification Request
+		@user_cRequestView_commentGet = (req, res)->
+			if req.body.crId?
+				app.models.ClarificationRequest.getAllComments req.body.crId
+				.then (comments)->
+					res.send
+						success: true
+						body: 
+							comments: comments
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: err
+							code: app.errors.db.EXECUTION
+			else
+				res.send
+					success: false
+					body:
+						error: app.errors.INVALID_PARAMETERS_TEXT,
+						code: app.errors.INVALID_PARAMETERS
+						expected: 'crId (int)'
 						received: req.body
 
 
@@ -111,6 +284,7 @@ module.exports = (app) ->
 				p.then ()->
 					res.send
 						success: true
+						body: {}
 							
 				, (err)->
 					res.send
@@ -123,13 +297,13 @@ module.exports = (app) ->
 				res.send
 					success: false
 					body:
-						error: 'Invalid Parameters',
+						error: app.errors.INVALID_PARAMETERS_TEXT,
 						code: app.errors.INVALID_PARAMETERS
 						expected: 'userId (int), HVZID (int)'
 						received: req.body
 
 		# POST: /game
-		# Requires: roleId
+		# Requires: roleId (int)
 		# Get Current game information
 		@game = (req, res) ->
 			if req.body.roleId?
@@ -184,7 +358,7 @@ module.exports = (app) ->
 				res.send
 					success: false
 					body:
-						error: 'Invalid Parameters',
+						error: app.errors.INVALID_PARAMETERS_TEXT,
 						code: app.errors.INVALID_PARAMETERS
 						expected: 'roleId (int)'
 						received: req.body

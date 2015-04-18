@@ -15,10 +15,14 @@ module.exports =
 	GET_MISSION_ERROR: 1102
 	MISSION_NOT_FOUND: 1103
 
+	CR_NOT_FOUND: 1200
+	
+
 	db:
 		CONNECTION: 9000
 		EXECUTION: 9001		#sql problems
 		INPUT: 9002				#user input problems
 
 	INVALID_PARAMETERS: 8000
+	INVALID_PARAMETERS_TEXT: 'Invalid Parameters'
 	

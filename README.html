@@ -1059,7 +1059,7 @@ body .markdown-body
 </ul>
 <h4 id="android-api"><a name="user-content-android-api" href="#android-api" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Android API</h4>
 <p>The Android API sends and receives JSON objects.<br />
-The API Routes section will display the route and what to send (shown as a JSON objects but will be form-data).</p>
+The API Routes section will display the route and what to send (shown as a JSON objects but will be form-data). Any more variables than the required that are sent will be ignored.</p>
 <p>There are two basic formats for all returns:<br />
 <pre><code class="javascript">Success:
 {
@@ -1101,6 +1101,34 @@ Failure (expected and received are input errors):
 <h6 id="user_1"><a name="user-content-user_1" href="#user_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>User</h6>
 <p><code>/api/API_KEY/user/profile</code> &ndash; User Profile<br />
 <pre><code class="javascript">{    userId: &quot;userId (int)&quot;    }
+</code></pre></p>
+<h6 id="clarification-requests"><a name="user-content-clarification-requests" href="#clarification-requests" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Clarification Requests</h6>
+<p><code>/api/API_KEY/user/cRequestCreate</code> &ndash; Get the availavle options for creating the Clarification Request<br />
+<pre><code class="javascript">{    roleId: &quot;roleId (int)&quot;    }
+</code></pre></p>
+<p><code>/api/API_KEY/user/cRequestCreate_submit</code> &ndash; Submit the clarification request<br />
+<pre><code class="javascript">{
+    userId: &quot;userId (int)&quot;,
+    subject: &quot;subject (string)&quot;,
+    description: &quot;description (string)&quot;,
+    personal: &quot;true / false&quot;
+}
+</code></pre></p>
+<p><code>/api/API_KEY/user/cRequestView</code> &ndash; View the clarification requests<br />
+<pre><code class="javascript">{
+    userId: &quot;userId (int)&quot;,
+    roleId: &quot;roleId (int)&quot;
+}
+</code></pre></p>
+<p><code>/api/API_KEY/user/cRequestView_commentCreate</code> &ndash; Create a comment in the Clarification Request<br />
+<pre><code class="javascript">{
+    userId: &quot;userId (int)&quot;,
+    crId: &quot;ClarificationRequestId (int)&quot;,
+    comment: &quot;comment (string)&quot;
+}
+</code></pre></p>
+<p><code>/api/API_KEY/user/cRequestView_commentGet</code> &ndash; Get comments of Clarification Request<br />
+<pre><code class="javascript">{    crId: &quot;ClarificationRequestId (int)&quot;    }
 </code></pre></p>
 <h6 id="game"><a name="user-content-game" href="#game" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Game</h6>
 <p><code>/api/API_KEY/game</code> &ndash; Current game info<br />

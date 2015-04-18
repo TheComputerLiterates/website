@@ -45,7 +45,7 @@ The remake of hvzatfsu.com for the Human vs. Zombies club at FSU.
 
 #### Android API
 The Android API sends and receives JSON objects.
-The API Routes section will display the route and what to send (shown as a JSON objects but will be form-data).
+The API Routes section will display the route and what to send (shown as a JSON objects but will be form-data). Any more variables than the required that are sent will be ignored.
 
 There are two basic formats for all returns:
 ```javascript
@@ -93,6 +93,44 @@ Failure (expected and received are input errors):
 `/api/API_KEY/user/profile` -- User Profile
 ```javascript
 {    userId: "userId (int)"    }
+```
+
+###### Clarification Requests
+`/api/API_KEY/user/cRequestCreate` -- Get the availavle options for creating the Clarification Request
+```javascript
+{    roleId: "roleId (int)"    }
+```
+
+`/api/API_KEY/user/cRequestCreate_submit` -- Submit the clarification request
+```javascript
+{
+    userId: "userId (int)",
+    subject: "subject (string)",
+    description: "description (string)",
+    personal: "true / false"
+}
+```
+
+`/api/API_KEY/user/cRequestView` -- View the clarification requests
+```javascript
+{
+    userId: "userId (int)",
+    roleId: "roleId (int)"
+}
+```
+
+`/api/API_KEY/user/cRequestView_commentCreate` -- Create a comment in the Clarification Request
+```javascript
+{
+    userId: "userId (int)",
+    crId: "ClarificationRequestId (int)",
+    comment: "comment (string)"
+}
+```
+
+`/api/API_KEY/user/cRequestView_commentGet` -- Get comments of Clarification Request
+```javascript
+{    crId: "ClarificationRequestId (int)"    }
 ```
 
 ###### Game

@@ -32,7 +32,7 @@ loadComments = ($commentCont, crId)->
 					html = ''
 					for com in res.body.comments
 						html += '<div class="cr-comment">' +
-							'<span class="cr-comment-user">' + com.userName + '</span>' +
+							'<span class="cr-comment-user">' + com.userName + '</span> - ' +
 							'<span class="cr-comment-date">' + com.createdAt + '</span>' +
 							'<br><span class="cr-comment-text">' + com.text + '</span>' +
 							'</div>'
