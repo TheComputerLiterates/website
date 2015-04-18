@@ -52,7 +52,6 @@ module.exports = (app) ->
 	app.get '/user/cRequestCreate', app.UserController.cRequestCreate
 	app.post '/user/cRequestCreate', jsonParser, app.UserController.cRequestCreate_submit
 	app.get '/user/cRequestView', app.UserController.cRequestView
-	app.post '/user/cRequestView', jsonParser, app.UserController.cRequestView_submit
 	app.post '/user/cRequestView_commentCreate', jsonParser, app.UserController.cRequestView_commentCreate
 	app.post '/user/cRequestView_commentGet', jsonParser, app.UserController.cRequestView_commentGet
 
@@ -107,8 +106,9 @@ module.exports = (app) ->
 	app.post '/api/' + app.env.HVZ_API_KEY + '/login', urlencodedParser, app.APIController.login
 	app.post '/api/' + app.env.HVZ_API_KEY + '/user/profile', urlencodedParser, app.APIController.profile
 	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.kill_submit
-	
-	
+	app.post '/api/' + app.env.HVZ_API_KEY + '/map/userGeopointCreate', urlencodedParser, app.APIController.map_userGeopointCreate
+	app.post '/api/' + app.env.HVZ_API_KEY + '/map/userGeopointGetRefreshed', urlencodedParser, app.APIController.map_userGeopointGetRefreshed
+
 	# Page not found (404) ####################################################
 	# This should always be the LAST route specified
 	app.get '*', (req, res) ->

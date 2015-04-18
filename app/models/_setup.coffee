@@ -14,6 +14,7 @@ module.exports = (app) ->
 			
 			geopoint: 'geopoint'
 			geofence: 'geofence'
+			user_geopoint: 'user_geopoint'
 			roles_seeing_geopoints: 'roles_seeing_geopoints'
 			roles_affecting_geofences: 'roles_affecting_geofences'
 			
