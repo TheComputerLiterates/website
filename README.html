@@ -1063,24 +1063,29 @@ The API Routes section will display the route and what to send (shown as a JSON 
 <p>There are two basic formats for all returns:<br />
 <pre><code class="javascript">Success:
 {
-    &quot;success&quot;: true,
-    &quot;body&quot;: [
-        &quot;data1&quot;: &quot;Obey?&quot;,
-        &quot;data2&quot;: &quot;OBEY!&quot;,
-        &quot;data3&quot;: [
-            &quot;minion1&quot;: &quot;OK...&quot;,
-            &quot;minion2&quot;: &quot;REBEL!!!&quot;,
-            &quot;minion3&quot;: &quot;meh...&quot;,
+    success: true,
+    body: [
+        data1: &quot;Obey?&quot;,
+        data2: &quot;OBEY!&quot;,
+        data3: [
+            minion1: &quot;OK...&quot;,
+            minion2: &quot;REBEL!!!&quot;,
+            minion3: &quot;meh...&quot;,
         ]
     ]
 }
 
-Failure:
+Failure (expected and received are input errors):
 {
-    &quot;success&quot;: false,
-    &quot;body&quot;: [
-        &quot;error&quot;: &quot;&lt;error-message&gt;&quot;,
-        &quot;code&quot;: &lt;error-code&gt;
+    success: false,
+    body: [
+        error: &quot;&lt;error-message&gt;&quot;,
+        code: &quot;&lt;error-code&gt;&quot;,
+        expected: &quot;expected, variables&quot;
+        received: [
+            received1: &quot;hi&quot;,
+            received2: &quot;hello&quot;
+        ]
     ]
 }
 
@@ -1089,13 +1094,23 @@ Failure:
 <h6 id="public_1"><a name="user-content-public_1" href="#public_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Public</h6>
 <p><code>/api/API_KEY/login</code> &ndash; User Login<br />
 <pre><code class="javascript">{
-    email: &quot;some@email.com&quot;,
-    password: &quot;P@$$word!&quot;
+    email: &quot;some@email.com (string)&quot;,
+    password: &quot;P@$$word! (string)&quot;
 }
 </code></pre></p>
 <h6 id="user_1"><a name="user-content-user_1" href="#user_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>User</h6>
 <p><code>/api/API_KEY/user/profile</code> &ndash; User Profile<br />
-<pre><code class="javascript">{    id: &quot;userId&quot;    }
+<pre><code class="javascript">{    userId: &quot;userId (int)&quot;    }
+</code></pre></p>
+<h6 id="game"><a name="user-content-game" href="#game" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Game</h6>
+<p><code>/api/API_KEY/game</code> &ndash; Current game info<br />
+<pre><code class="javascript">{    roleId: &quot;roleId (int)&quot;    }
+</code></pre></p>
+<p><code>/api/API_KEY/game/kill</code> &ndash; Submit a kill<br />
+<pre><code class="javascript">{
+    userId: &quot;Zombie (int)&quot;,
+    HVZID: &quot;Converted Human (int)&quot;
+}
 </code></pre></p>
 <h4 id="things-to-remember"><a name="user-content-things-to-remember" href="#things-to-remember" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Things to remember</h4>
 <ul>

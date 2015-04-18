@@ -105,8 +105,11 @@ module.exports = (app) ->
 
 	# API #####################################################################
 	app.post '/api/' + app.env.HVZ_API_KEY + '/login', urlencodedParser, app.APIController.login
-	app.post '/api/' + app.env.HVZ_API_KEY + '/user/profile', urlencodedParser, app.APIController.profile
-	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.kill_submit
+
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/profile', urlencodedParser, app.APIController.user_profile
+
+	app.post '/api/' + app.env.HVZ_API_KEY + '/game/', urlencodedParser, app.APIController.game
+	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.game_kill_submit
 	
 	
 	# Page not found (404) ####################################################
