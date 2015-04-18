@@ -51,24 +51,29 @@ There are two basic formats for all returns:
 ```javascript
 Success:
 {
-	"success": true,
-    "body": [
-        "data1": "Obey?",
-        "data2": "OBEY!",
-        "data3": [
-            "minion1": "OK...",
-            "minion2": "REBEL!!!",
-            "minion3": "meh...",
+	success: true,
+    body: [
+        data1: "Obey?",
+        data2: "OBEY!",
+        data3: [
+            minion1: "OK...",
+            minion2: "REBEL!!!",
+            minion3: "meh...",
         ]
     ]
 }
 
-Failure:
+Failure (expected and received are input errors):
 {
-	"success": false,
-    "body": [
-    	"error": "<error-message>",
-		"code": <error-code>
+	success: false,
+    body: [
+    	error: "<error-message>",
+		code: "<error-code>",
+        expected: "expected, variables"
+        received: [
+            received1: "hi",
+            received2: "hello"
+        ]
     ]
 }
 
@@ -79,23 +84,28 @@ Failure:
 `/api/API_KEY/login` -- User Login
 ```javascript
 {
-    email: "some@email.com",
-    password: "P@$$word!"
+    email: "some@email.com (string)",
+    password: "P@$$word! (string)"
 }
 ```
 
 ###### User
 `/api/API_KEY/user/profile` -- User Profile
 ```javascript
-{    id: "userId"    }
+{    userId: "userId (int)"    }
 ```
 
 ###### Game
+`/api/API_KEY/game` -- Current game info
+```javascript
+{    roleId: "roleId (int)"    }
+```
+
 `/api/API_KEY/game/kill` -- Submit a kill
 ```javascript
 {
-    id: "Zombie",
-    HVZID: "Converted Human"
+    userId: "Zombie (int)",
+    HVZID: "Converted Human (int)"
 }
 ```
 
