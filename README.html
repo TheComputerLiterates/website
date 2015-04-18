@@ -1140,6 +1140,15 @@ Failure (expected and received are input errors):
     HVZID: &quot;Converted Human (int)&quot;
 }
 </code></pre></p>
+<h6 id="map"><a name="user-content-map" href="#map" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Map</h6>
+<p><code>/api/API_KEY/map/userGeopointCreate</code> &ndash; Saving user gps points<br />
+<pre><code class="javascript">{
+    userId: &quot;userId (int)&quot;,
+    latitude: &quot;latitude (double)&quot;,
+    longitude: &quot;longitude (double)&quot;
+}
+</code></pre></p>
+<p><code>/api/API_KEY/map/userGeopointGetRefreshed</code> &ndash; Recieve all points (No Parameters)</p>
 <h4 id="things-to-remember"><a name="user-content-things-to-remember" href="#things-to-remember" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Things to remember</h4>
 <ul>
 <li>If you are adding a dependency with bower or npm, include the <code>--save</code> flag in order to automatically add it to the dependency list.</li>

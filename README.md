@@ -147,6 +147,19 @@ Failure (expected and received are input errors):
 }
 ```
 
+###### Map
+`/api/API_KEY/map/userGeopointCreate` -- Saving user gps points
+```javascript
+{
+    userId: "userId (int)",
+    latitude: "latitude (double)",
+    longitude: "longitude (double)"
+}
+```
+
+`/api/API_KEY/map/userGeopointGetRefreshed` -- Recieve all points (No Parameters)
+
+
 
 #### Things to remember
 * If you are adding a dependency with bower or npm, include the `--save` flag in order to automatically add it to the dependency list.

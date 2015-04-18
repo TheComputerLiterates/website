@@ -123,9 +123,15 @@ module.exports = (app) ->
 							success: false
 							msg: 'NOT IMPLEMENTED YET'
 					when 'delete'
-						res.send
-							success: false
-							msg: 'NOT IMPLEMENTED YET'
+						p = app.models.User.delete req.body.userId
+						p.then (success) ->
+							res.send
+								success: success
+						, (err) ->
+							res.send
+								success: false
+								msg: err
+
 					else
 						res.send
 							success: false
