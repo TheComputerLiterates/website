@@ -43,6 +43,72 @@ The remake of hvzatfsu.com for the Human vs. Zombies club at FSU.
 * `/mod/dev` -- game/mission creation/deletion/management
 * `/mod/info` -- website general info management + documentation
 
+#### Android API
+The Android API sends and receives JSON objects.
+The API Routes section will display the route and what to send (shown as a JSON objects but will be form-data).
+
+There are two basic formats for all returns:
+```javascript
+Success:
+{
+	success: true,
+    body: [
+        data1: "Obey?",
+        data2: "OBEY!",
+        data3: [
+            minion1: "OK...",
+            minion2: "REBEL!!!",
+            minion3: "meh...",
+        ]
+    ]
+}
+
+Failure (expected and received are input errors):
+{
+	success: false,
+    body: [
+    	error: "<error-message>",
+		code: "<error-code>",
+        expected: "expected, variables"
+        received: [
+            received1: "hi",
+            received2: "hello"
+        ]
+    ]
+}
+
+```
+
+##### API Routes
+###### Public
+`/api/API_KEY/login` -- User Login
+```javascript
+{
+    email: "some@email.com (string)",
+    password: "P@$$word! (string)"
+}
+```
+
+###### User
+`/api/API_KEY/user/profile` -- User Profile
+```javascript
+{    userId: "userId (int)"    }
+```
+
+###### Game
+`/api/API_KEY/game` -- Current game info
+```javascript
+{    roleId: "roleId (int)"    }
+```
+
+`/api/API_KEY/game/kill` -- Submit a kill
+```javascript
+{
+    userId: "Zombie (int)",
+    HVZID: "Converted Human (int)"
+}
+```
+
 
 #### Things to remember
 * If you are adding a dependency with bower or npm, include the `--save` flag in order to automatically add it to the dependency list.

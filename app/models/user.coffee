@@ -277,9 +277,9 @@ module.exports = (app) ->
 			return deferred.promise			
 
 
-		@getProfileByID: (user_id) ->
+		@getProfileByUserId: (user_id) ->
 			deferred = app.Q.defer()
-			sql = app.vsprintf 'SELECT %s AS %s, %s AS %s, %s AS %s, %s, %s AS %s, %s AS %s, %s FROM %s WHERE %s = %s'
+			sql = app.vsprintf 'SELECT %s AS %s, %s AS %s, %s AS %s, %s, %s AS %s, %s AS %s, %s FROM %s WHERE %s = %i'
 			, [
 				COL.id, 'userId'
 				COL.role_id, 'roleId'
@@ -313,7 +313,10 @@ module.exports = (app) ->
 						active: parseInt row.active
 
 				res.on 'end', (info)->
-					deferred.resolve userData
+					if info.numRows > 0
+						deferred.resolve userData
+					else
+						deferred.reject "User ID not found"
 
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err

@@ -52,7 +52,6 @@ module.exports = (app) ->
 	app.get '/user/cRequestCreate', app.UserController.cRequestCreate
 	app.post '/user/cRequestCreate', jsonParser, app.UserController.cRequestCreate_submit
 	app.get '/user/cRequestView', app.UserController.cRequestView
-	app.post '/user/cRequestView', jsonParser, app.UserController.cRequestView_submit
 	app.post '/user/cRequestView_commentCreate', jsonParser, app.UserController.cRequestView_commentCreate
 	app.post '/user/cRequestView_commentGet', jsonParser, app.UserController.cRequestView_commentGet
 
@@ -103,9 +102,12 @@ module.exports = (app) ->
 	app.post '/data/getGameStatus', app.DataController.getGameStatus
 	
 	# API #####################################################################
-	app.post '/api/' + app.env.HVZ_API_KEY + '/login', jsonParser, app.APIController.login
-	app.post '/api/' + app.env.HVZ_API_KEY + '/profileinfo', jsonParser, app.APIController.profileInfo
-	app.post '/api/' + app.env.HVZ_API_KEY + '/test', urlencodedParser, app.APIController.test
+	app.post '/api/' + app.env.HVZ_API_KEY + '/login', urlencodedParser, app.APIController.login
+	app.post '/api/' + app.env.HVZ_API_KEY + '/map/userGeopointCreate', urlencodedParser, app.APIController.map_userGeopointCreate
+	app.post '/api/' + app.env.HVZ_API_KEY + '/map/userGeopointGetRefreshed', urlencodedParser, app.APIController.map_userGeopointGetRefreshed
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/profile', urlencodedParser, app.APIController.user_profile
+	app.post '/api/' + app.env.HVZ_API_KEY + '/game/', urlencodedParser, app.APIController.game
+	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.game_kill_submit
 	
 	
 	# Page not found (404) ####################################################

@@ -16,10 +16,10 @@ module.exports = (app) ->
 					gameData.endDate = gameData.endDate.format gDateFormat
 					
 					if req.session.user?
-						#Grab all missions
+						# Grab all missions
 						p2 = app.models.Mission.getMissionsByGameRole gameData.gameId, req.session.user.roleId 
 						p2.then (missionData)->						
-							#format mission data
+							# Format mission data
 							for m in missionData
 								m.startDate = m.startDate.format mDateFormat
 								m.endDate = m.endDate.format mDateFormat
