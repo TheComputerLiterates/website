@@ -103,4 +103,46 @@ module.exports = (app) ->
 				res.send
 					success: false
 					msg: 'Invalid parameters'
+					
+		########################################################################
+		# Dynamic Map
+		@map = (req, res)->
+			title = 'Dynamic Game Map'
+			view = 'public/map'
+			
+			# Load map data
+			geopoints = [
+				{
+					label: 'UNION'
+					latitude: 30.444362
+					longetude: -84.297201
+				}
+				{
+					label: 'INTEGRATION'
+					latitude: 30.443850
+					longetude: -84.298045
+				}
+			]
+			
+			geofences = [
+				{
+					label: 'DEATH ZONE'
+					latitude: 30.443850
+					longetude: -84.298045
+					color: '#000000'
+					radius: 5
+				}
+				{
+					label: 'HAPPY ZONE'
+					latitude: 30.443850
+					longetude: -84.298045
+					color: '#000000'
+					radius: 5
+				}
+			]
+			
+			res.render view,
+				title: title
+				geopoints: geopoints
+				geofences: geofences
 			

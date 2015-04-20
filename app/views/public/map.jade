@@ -1,0 +1,14 @@
+extend ../_layouts/baselayout
+block content
+	h1 Dynamic Game Map
+		
+	script.
+		var geopoints = JSON.parse(!{JSON.stringify(geopoints)});
+		var geofences = JSON.parse(!{JSON.stringify(geofences)});
+		
+	#map-canvas
+		
+	
+block localJS
+	script(type='text/javascript' src='https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=drawing')
+	script(type='text/javascript' src='/js/public/map.js')

@@ -34,6 +34,9 @@ module.exports = (app) ->
 	# Info
 	app.get '/info', app.PublicController.info
 	
+	# Map
+	app.get '/map', app.PublicController.map
+	
 	# USER PAGES ##############################################################
 	# Profile
 	app.get '/user/', app.UserController.profile
