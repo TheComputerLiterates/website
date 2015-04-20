@@ -51,9 +51,6 @@
       $('#submit').text('Submitting...');
       formData.emailConfirm = void 0;
       formData.passwordConfirm = void 0;
-      formData.password = CryptoJS.SHA3(formData.password, {
-        outputLength: 512
-      }).toString(CryptoJS.enc.Hex);
       $.ajax({
         type: 'POST',
         url: '/signup',

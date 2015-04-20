@@ -51,7 +51,11 @@ Dependencies:
       contentType: 'application/json',
       success: function(res) {
         if (res.success) {
-          return $bar.text(res.data.gameTitle + ' | ' + res.data.hCount + ' Humans ' + res.data.zCount + ' Zombies');
+          if (res.data.gameTitle != null) {
+            return $bar.text(res.data.gameTitle + ' | ' + res.data.hCount + ' Humans ' + res.data.zCount + ' Zombies');
+          } else {
+            return $bar.text("No game is being played");
+          }
         } else {
           $bar.text('Error loading game stats');
         }

@@ -6,16 +6,17 @@
  */
 
 /* Globals*/
+html, body {
+	height: 100%;
+}
 body {
 	font-family: Tahoma;
 	font-size: 11.5pt;
 	background-image: url("../img/bodyGridBackground.png");
 	background-repeat: repeat-x|repeat-y;
 	/*color: #000000;*/
-	padding-top: 5em;
+	padding-top: 3em;
 }
-
-
 
 @media (min-width: 1200px) {
 	.container {
@@ -23,9 +24,28 @@ body {
 	}
 }
 
+/* Navbar */
+.navbar-brand{
+	padding: 0.5em 1em;
+}
+.navbar-inverse {
+	background-color: #2e2b21;
+}
+
+
 /* Base layout*/
 #content {
 	background-color: #FFFFFF;
+	padding-bottom: 0px;
+	padding-left: 50px;
+	padding-right: 50px;
+	min-height: 100%;
+	padding-bottom: 10em; /* footer */
+}
+.footer {
+	margin-top: -5em;
+	height: 5em;
+	background-color: #2e2b21;
 }
 #banner {
 	padding: 1em;
@@ -47,14 +67,6 @@ div.divider {
 
 }
 
-
-/* Navbar */
-.navbar-brand{
-	padding: 0.5em 1em;
-}
-.navbar-inverse {
-	background-color: #2e2b21;
-}
 
 
 .panel {
@@ -140,16 +152,40 @@ h1, h2 {
 /*****************************************************************************
  * ICONS
  */
-.icon-loading {
+ .icon-loading {
+ 	margin: auto;
+ 	display: inline-block;
+ 	background-position: center center;
+ 	background-repeat: no-repeat;
+ 	border-radius: 50%;
+ 	opacity: .7;
+ 	width: 48px;
+ 	height: 48px;
+ 	background-image: url('/img/icons/loading.gif');
+ }
+ 
+.icon {
 	margin: auto;
-	display: block;
+	display: inline-block;
 	background-position: center center;
 	background-repeat: no-repeat;
 	border-radius: 50%;
 	opacity: .7;
-	width: 48px;
-	height: 48px;
-	background-image: url('/img/icons/loading.gif');
+	margin: 3px;
+}
+.icon:hover {
+	opacity: 1.0;
+}
+.icon-github {
+	width: 36px;
+	height: 36px;
+	background-image: url('/img/icons/GitHub-Mark-32px.png');
+	background-color: #FFFFFF;
+}
+.icon-nito {
+	width: 36px;
+	height: 36px;
+	background-image: url('/img/icons/nitosUmbrella-32.png');
 }
 
 

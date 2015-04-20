@@ -50,7 +50,7 @@ module.exports = (app) ->
 	app.set 'view engine', 'jade'
 	app.use require('express').static __dirname + '/../public'
 	app.use validator()
-
+	
 	# Development settings
 	if (env == 'development')
 		app.locals.pretty = true

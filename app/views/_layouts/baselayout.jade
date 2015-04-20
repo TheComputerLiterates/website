@@ -29,23 +29,16 @@ html(lang='en')
 			.divider
 				.row#gameStats
 					| Loading game status...
-					//- 
-						if global.currentGame.active == true
-							| Current Game Info |  Humans: #{ global.currentGame.humans } | Zombies : #{ global.currentGame.zombies }
-						else
-							| No game currently being played
 
 			.flashOutput
-				//- TODO
-
-			//- Uncomment when posting, comment when working
-			//- center: h3: b.
-				THIS SITE IS UNDER CONSTRUCTION (and does not work!)
-					
 			#pageContent.container-fluid
 				block content
 				
-		.footer
+		.footer.container
+			br
+			.row.text-center
+				a.icon.icon-nito(target="_blank" href="http://jrdbnntt.github.io/")
+				a.icon.icon-github(target="_blank" href="http://github.com/TheComputerLiterates/www_hvzatfsu-nodejs")
 
 
 		//- External Javascript

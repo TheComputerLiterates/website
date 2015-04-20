@@ -1,0 +1,20 @@
+extend ../layout
+block content
+	.intro Hello #{firstName} #{lastName}!
+	br
+	br
+		
+	.message
+		| Your password has been reset.
+		| 
+		| New password: #{password}
+		| 
+		| You can log in 
+		a(target="_blank" href="http://fsuhvz.com/login") here
+		| .
+	
+	br
+	br
+	.signature
+		span Sincerly,
+		span The Nito's Umbrella System

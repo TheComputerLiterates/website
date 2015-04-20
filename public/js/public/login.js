@@ -42,9 +42,6 @@
       $('#submit').shakeIt();
     } else {
       $('#submit').text('Submitting...');
-      formData.password = CryptoJS.SHA3(formData.password, {
-        outputLength: 512
-      }).toString(CryptoJS.enc.Hex);
       $.ajax({
         type: 'POST',
         url: '/login',
@@ -97,7 +94,7 @@
       sub.text('Success!');
       sub.attr('disabled', 'true');
       sub.fadeIn(500, function() {});
-      return displayEnd('Signup Complete!', 'Redirecting...', true);
+      return displayEnd('Login successful!', 'Redirecting...', true);
     });
   };
 
