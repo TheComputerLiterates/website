@@ -18,6 +18,7 @@ TODO
 
 FADE_TIME = 100
 $iconLoading = $('.icon-loading')
+$iconLoading.toggle false
 
 dtSettings =
 	order: [[0, 'asc']]
@@ -64,6 +65,8 @@ logEvent '~~LOG START~~'
 
 
 runAction = ($btn)->
+	$iconLoading.toggle true
+	
 	data =
 		action: $btn.attr 'data-action'
 		userId: parseInt $btn.attr 'data-userId'
@@ -86,6 +89,7 @@ runAction = ($btn)->
 		data: JSON.stringify data
 		contentType: 'application/json'
 		success: (res) ->
+			$iconLoading.toggle false
 			if res.success
 				logEvent '[ACTION_SUCCESS] action="'+data.action+'" userId='+data.userId
 				$btn.text 'SUCCESS!'
@@ -94,6 +98,7 @@ runAction = ($btn)->
 				$btn.text 'ERROR!'
 				return
 		error: (err) ->
+			$iconLoading.toggle false
 			logEvent '[ACTION_ERROR_LOCAL] action="'+data.action+'" userId='+data.userId+' err="'+err+'"'
 			$btn.text 'ERROR!'
 			return

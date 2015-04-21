@@ -282,10 +282,10 @@ module.exports = (app) ->
 			app.models.Map.geofence.getFull.all()
 			.then (geofences)->
 				console.log 'yay'
-					res.send
-						success: true
-						body:
-							geofences: geofences
+				res.send
+					success: true
+					body:
+						geofences: geofences
 			, (err)->
 				res.send
 					success: false

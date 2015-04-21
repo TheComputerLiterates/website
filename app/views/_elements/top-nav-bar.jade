@@ -20,21 +20,25 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 			ul(class='nav navbar-nav navbar-right')
 				
 				//- Always display
-				li(class = (title == 'Home'?'active':undefined))
-					a(href='/') Home
-				li(class = (title == 'Game - Home'?'active':undefined))
-					a(href='/game') Game
+				//- li(class = (title == 'Home'?'active':undefined))
+				//- 	a(href='/') Home
+				
 				li(class = (title == 'Dynamic Game Map'?'active':undefined))
 					a(href='/map') Map
 				li(class = (title == 'Info'?'active':undefined))
-					a(href='/info') Info
+					a(href='/info') About
 
 				//- - console.log('SESSION: ' + JSON.stringify(session, undefined, 2))
 				if session.user !== undefined && session.user.roleId >= hvz.roles.USER.id
-					li(class = (title == 'Game - Report Kill'?'active':undefined))
-						a(href='/game/kill') Report Kill
+					li(class = (title == 'Game - Home'?'active':undefined))
+						a(href='/user/game') Game
 					li(class = (title == 'User - Clarification Requests'?'active':undefined))
 						a(href='/user/cRequestView') Clarifications
+						
+					if session.user.roleId > hvz.roles.USER.id
+						li(class = (title == 'Game - Report Kill'?'active':undefined))
+							a(href='/game/kill') Report Kill
+						
 					//- 
 						li(class = (title == 'User - Forum'?'active':undefined))
 							a(href='/user/forum') Forum
@@ -69,8 +73,8 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 									a(href='/mod/dev') Develop Games
 								li(class = (title == 'Mod Tools - Current Game'?'active':undefined))
 									a(href='/mod/game') Current Game
-								li(class = (title == 'Mod Tools - Edit Info'?'active':undefined))
-									a(href='/mod/info') Edit Info
+								//- li(class = (title == 'Mod Tools - Edit Info'?'active':undefined))
+								//- 	a(href='/mod/info') Edit Info
 								li(class = (title == 'Mod Tools - Manage Users'?'active':undefined))
 									a(href='/mod/users') Manage Users
 							
@@ -78,13 +82,13 @@ header(class='navbar navbar-inverse navbar-fixed-top', role='banner')
 					//- Display user controlls (is logged in)
 					li(class='dropdown')
 						a(href='#', class='dropdown-toggle', data-toggle='dropdown', role='button', aria-expanded='false')
-							| Profile
+							| #{session.user.firstName}
 							span(class='caret')
 						ul(class='dropdown-menu', role='menu')
 							li(class = (title == 'User - Profile'?'active':undefined))
-								a(href='/user/profile') View/Edit
-							li(class = (title == 'User - Statistics'?'active':undefined))
-								a(href='/user/stats') Statistics
+								a(href='/user/profile') Profile
+							//- li(class = (title == 'User - Statistics'?'active':undefined))
+							//- 	a(href='/user/stats') Statistics
 							li()
 								a(href='/user/logout') Log Out
 				else

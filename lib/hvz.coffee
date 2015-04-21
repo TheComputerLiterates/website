@@ -10,6 +10,7 @@ module.exports = (app) ->
 construct = (app)->
 	hvz = 
 		roles: roles
+		specialUserIds: [0,1] 
 	
 	hvz.getRoleById = (id)->
 		for key, obj of hvz.roles

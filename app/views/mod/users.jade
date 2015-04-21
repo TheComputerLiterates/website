@@ -38,24 +38,24 @@ block content
 						//- TODO= Make roleIds dynamic
 						if user.active == 'Y'
 							if user.role == 'U'
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=2) Humanize
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=3) Zombify
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=4) OZ
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=5) Mod
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=2) Humanize
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=3) Zombify
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=4) OZ
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=5) Mod
 							else if user.role == 'H'
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=3) Kill
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=3) Kill
 							else if user.role == 'Z'
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=2) Revive
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=2) Revive
 							else if user.role == 'O'
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=3) Kill
-								button.btn.btn-action(data-userId='#{user.userId}' data-action='changeRole' data-roleId=2) Revive
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=3) Kill
+								button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='changeRole' data-roleId=2) Revive
 							
-							button.btn.btn-action(data-userId='#{user.userId}' data-action='deactivate') Deactivate
+							button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='deactivate') Deactivate
 						else
-							button.btn.btn-action(data-userId='#{user.userId}' data-action='activate') Activate
+							button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='activate') Activate
 								
-						button.btn.btn-action(data-userId='#{user.userId}' data-action='edit') Edit
-						button.btn.btn-action(data-userId='#{user.userId}' data-action='delete') Delete
+						//- button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='edit') Edit
+						button.btn.btn-action.btn-xs(data-userId='#{user.userId}' data-action='delete') Delete
 
 		tfoot
 			tr
