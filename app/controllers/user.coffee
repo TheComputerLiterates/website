@@ -30,7 +30,7 @@ module.exports = (app) ->
 			
 			# Construct the game + mission list if player
 			if req.session.user &&
-			req.session.user.roleId >= app.hvz.roles.HUMAN.id
+			req.session.user.roleId >= app.hvz.roles.USER.id
 				# Construct them
 				app.models.Game.getAllTitles()
 				.then (games)->

@@ -108,9 +108,17 @@ module.exports = (app) ->
 	
 	# API #####################################################################
 	app.post '/api/' + app.env.HVZ_API_KEY + '/login', urlencodedParser, app.APIController.login
+
 	app.post '/api/' + app.env.HVZ_API_KEY + '/map/userGeopointCreate', urlencodedParser, app.APIController.map_userGeopointCreate
 	app.post '/api/' + app.env.HVZ_API_KEY + '/map/userGeopointGetRefreshed', urlencodedParser, app.APIController.map_userGeopointGetRefreshed
+	
 	app.post '/api/' + app.env.HVZ_API_KEY + '/user/profile', urlencodedParser, app.APIController.user_profile
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/cRequestCreate', urlencodedParser, app.APIController.user_cRequestCreate
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/cRequestCreate_submit', urlencodedParser, app.APIController.user_cRequestCreate_submit
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/cRequestView', urlencodedParser, app.APIController.user_cRequestView
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/cRequestView_commentCreate', urlencodedParser, app.APIController.user_cRequestView_commentCreate
+	app.post '/api/' + app.env.HVZ_API_KEY + '/user/cRequestView_commentGet', urlencodedParser, app.APIController.user_cRequestView_commentGet
+
 	app.post '/api/' + app.env.HVZ_API_KEY + '/game/', urlencodedParser, app.APIController.game
 	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.game_kill_submit
 	app.post '/api/' + app.env.HVZ_API_KEY + '/map/create/geofence', urlencodedParser, app.APIController.map_create_geofence
