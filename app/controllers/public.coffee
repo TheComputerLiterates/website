@@ -137,7 +137,8 @@ module.exports = (app) ->
 					title: title
 					geopoints: []
 					geofences: []
-				
+		
+		
 			
 			
 			

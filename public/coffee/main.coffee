@@ -62,8 +62,8 @@ $(document).ready ()->
 			if res.success
 				if res.data.gameTitle?
 					$bar.text res.data.gameTitle + ' | ' + 
-						res.data.hCount + ' Humans ' + 
-						res.data.zCount + ' Zombies'
+						res.data.hCount + (if res.data.hCount > 1 then ' Humans ' else ' Human ') + 
+						res.data.zCount + (if res.data.zCount > 1 then ' Zombies' else ' Zombie ')
 				else
 					$bar.text "No game is being played"
 					

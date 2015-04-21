@@ -36,6 +36,7 @@ module.exports = (app) ->
 	
 	# Map
 	app.get '/map', app.PublicController.map
+	app.post '/map/reload', jsonParser, app.APIController.map_get_geofence_all
 	
 	# USER PAGES ##############################################################
 	# Profile

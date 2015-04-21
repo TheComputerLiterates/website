@@ -13,8 +13,43 @@ console.log geofences
 # http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html?utm_medium=twitter
 
 ID_MAP_CANVAS = 'map-canvas'
+geopointIcon = 'img/icons/mapLocation-small.png'
 
 pt_fsu =  new google.maps.LatLng(30.442795, -84.298563)
+map = null
+mapCircles = []
+mapMarkers = []
+
+# Uses current state of geopoints and geofences
+placeMapData = ()->
+	# Delete any old ones
+	i = 0
+	console.log mapCircles.toString()
+	for c in mapCircles
+		c.setMap null
+	for m in mapMarkers
+		m.setMap null
+		
+	mapCircles = []
+	mapMarkers = []
+	mapCircles.toString()
+	console.log '---------------------'
+	for gp in geopoints
+		console.log 'GP=' + JSON.stringify gp
+		mapMarkers.push new google.maps.Marker
+				position: new google.maps.LatLng gp.latitude, gp.longitude
+				map: map
+				icon: geopointIcon
+	for gf in geofences
+		console.log 'GF=' + JSON.stringify gf
+		mapCircles.push new google.maps.Circle
+			strokeColor: gf.color
+			strokeWeight: 0
+			fillColor: gf.color
+			fillOpacity: 0.35
+			center: new google.maps.LatLng gf.latitude, gf.longitude
+			radius: gf.radius
+			map: map
 
 initMap = ()->
 	CUSTOM_MAPTYPE_ID = 'custom_style'
@@ -67,51 +102,33 @@ initMap = ()->
 	map.mapTypes.set CUSTOM_MAPTYPE_ID, customMapType
 	map.setMapTypeId CUSTOM_MAPTYPE_ID
 	
-	# Drawing
-	# drawingManager = new google.maps.drawing.DrawingManager
-	# 	drawingMode: google.maps.drawing.OverlayType.MARKER
-	# 	drawingControl: true,
-	# 	drawingControlOptions:
-	# 		position: google.maps.ControlPosition.TOP_CENTER
-	# 		drawingModes: [
-	# 			google.maps.drawing.OverlayType.MARKER
-	# 			google.maps.drawing.OverlayType.CIRCLE
-	# 			google.maps.drawing.OverlayType.POLYGON
-	# 			google.maps.drawing.OverlayType.POLYLINE
-	# 			google.maps.drawing.OverlayType.RECTANGLE
-	# 		]
-	# 	markerOptions:
-	# 		icon: 'img/icons/mapLocation-small.png'
-	# 	circleOptions: 
-	# 		fillColor: 'ffff00'
-	# 		fillOpacity: .5
-	# 		strokeWeight: 1
-	# 		clickable: false
-	# 		editable: true
-	# 		zIndex: 1
-			
-	# drawingManager.setMap map
-	
 	# Place geopoints
-	geopointIcon = 'img/icons/mapLocation-small.png'
-	for gp in geopoints
-		console.log 'GP=' + JSON.stringify gp
-		point = new google.maps.Marker
-			position: new google.maps.LatLng gp.latitude, gp.longitude
-			map: map
-			icon: geopointIcon
-	for gf in geofences
-		console.log 'GF=' + JSON.stringify gf
-		fence = new google.maps.Circle
-			strokeColor: gf.color
-			strokeWeight: 0
-			fillColor: gf.color
-			fillOpacity: 0.35
-			center: new google.maps.LatLng gf.latitude, gf.longitude
-			radius: gf.radius
-			map: map
-			
+	placeMapData()
 
 
 google.maps.event.addDomListener(window, 'load', initMap);
 
+
+reloadData = ()->
+	console.log 'Reloading...'
+	$.ajax
+		type: 'POST'
+		url: '/map/reload'
+		data: JSON.stringify {}
+		contentType: 'x-www-form-urlencoded'
+		success: (res) ->
+			if res.success
+				geofences = res.body.geofences
+				geopoints = res.body.geopoints
+				placeMapData()
+				console.log 'Reload success!'
+			else
+				console.log 'Error loading data: ' + res.body.error
+				return
+		error: () ->
+			console.log 'Error asking for data'
+			return
+
+setInterval ()->
+	reloadData()
+, 30000 #60000 = 1m
