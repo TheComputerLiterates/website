@@ -23,6 +23,7 @@ COL =
 	score: 'score'
 	triggers_on: 'triggers_on'
 	color: 'color'
+	radius: 'radius'
 	
 	source_user_id: 'source_user_id'
 	longitude: 'longitude'
@@ -38,13 +39,16 @@ COL =
 module.exports = (app) ->
 	class app.models.Map
 		constructor: ()->	
+			
+		@intToColorHex: (c)->
+			return app.vsprintf '#%06x', [c]
 		
 		# Creates a new game in the database. Also creates RoGs w/ trigger
 		@createNewGeofence: (data) ->
-			# console.log app.util.inspect data
+			console.log app.util.inspect data
 			def = app.Q.defer()
-			sql = app.vsprintf 'INSERT INTO %s (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) '+
-				'VALUES (%i,%i,%f,%f,"%s",%i,%i,%i,%i,%i)'
+			sql = app.vsprintf 'INSERT INTO %s (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) '+
+				'VALUES (%i,%i,%f,%f,"%s",%i,%i,%i,%i,%i,%i)'
 			, [
 				TNAME.geofence
 				
@@ -58,6 +62,7 @@ module.exports = (app) ->
 				COL.score
 				COL.triggers_on
 				COL.color
+				COL.radius
 				
 				data.gameId
 				data.missionId
@@ -69,6 +74,7 @@ module.exports = (app) ->
 				0
 				1
 				data.color
+				data.radius
 			]
 			# console.log sql
 			
@@ -111,7 +117,7 @@ module.exports = (app) ->
 						def.reject 'No rows affected'
 			.on 'error', (err)->
 				console.log "> DB: Error on old threadId " + this.tId + " = " + err
-				def.reject err
+				def.reject '' + err
 			.on 'end', ()->
 				def.resolve()
 			con.end()
@@ -129,6 +135,7 @@ module.exports = (app) ->
 				longitude: data.longitude
 				latitude: data.latitude
 				color: data.color
+				radius: data.radius
 			.then ()->
 				
 				app.models.Map.updateRolesGeofences
@@ -149,47 +156,60 @@ module.exports = (app) ->
 							def.resolve()
 							
 						, (err)->
-							def.reject err
+							def.reject '' + err
 					, (err)->
-						def.reject err
+						def.reject '' + err
 				, (err)->
-					def.reject err
+					def.reject '' + err
 			, (err)->
-				def.reject err
+				def.reject '' + err
 			return def.promise
 				
 		
-		# gets all points
-		@getAllGeofences: ()->
-			deferred = app.Q.defer()
-			sql = app.vsprintf 'SELECT %s,%s,%s FROM %s'
-			, [
-				COL.user_id
-				COL.longitude
-				COL.latitude
-				
-				TNAME
-				COL.user_id
-			]
-			# console.log sql
-			result = []
-			con = app.db.newCon()
-			con.query sql 
-			.on 'result', (res)->
-				res.on 'row', (row)->
-					result.push 
-						userId: row.user_id
-						longitude: row.longitude
-						latitude: row.latitude
-				res.on 'end', (info)->
-					console.log 'Got ' + info.numRows + ' rows from ' + TNAME
-					deferred.resolve result
-			.on 'error', (err)->
-				console.log "> DB: Error on old threadId " + this.tId + " = " + err
-				deferred.reject err
-			con.end()
+		@geofence:
+			getSimple:
+				all: ()->
+					
+				byRoleId: (roleId)->
+					
+				byMissionId: (missionId)->
+					
 			
-			return deferred.promise
-		
-		
-		
+			getFull:
+				all: ()->
+					def = app.Q.defer()
+					sql = app.vsprintf 'SELECT * FROM %s'
+					, [
+						TNAME.geofence
+					]
+					# console.log sql
+					result = []
+					con = app.db.newCon()
+					con.query sql 
+					.on 'result', (res)->
+						res.on 'row', (row)->
+							result.push 
+								geofenceId: parseInt row.id
+								gameId: parseInt row.mission_id
+								missionId: parseInt row.game_id
+								latitude: parseFloat row.latitude
+								longitude: parseFloat row.longitude
+								description: row.description
+								triggerRate: parseInt row.trigger_rate
+								visible: row.visible == '1'
+								score: parseInt row.score
+								triggersOn: row.triggers_on == '1'
+								color: app.models.Map.intToColorHex parseInt row.color
+								radius: parseInt row.radius
+						res.on 'end', (info)->
+							console.log 'Got ' + info.numRows + ' rows from ' + TNAME.geofence
+							def.resolve result
+					.on 'error', (err)->
+						console.log "> DB: Error on old threadId " + this.tId + " = " + err
+						def.reject '' + err
+					con.end()
+					
+					return def.promise
+				byRoleId: (roleId)->
+					
+				byMissionId: (missionId)->

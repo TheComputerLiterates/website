@@ -115,34 +115,30 @@ module.exports = (app) ->
 				{
 					label: 'UNION'
 					latitude: 30.444362
-					longetude: -84.297201
+					longitude: -84.297201
 				}
 				{
 					label: 'INTEGRATION'
 					latitude: 30.443850
-					longetude: -84.298045
+					longitude: -84.298045
 				}
 			]
 			
-			geofences = [
-				{
-					label: 'DEATH ZONE'
-					latitude: 30.443850
-					longetude: -84.298045
-					color: '#000000'
-					radius: 5
-				}
-				{
-					label: 'HAPPY ZONE'
-					latitude: 30.443850
-					longetude: -84.298045
-					color: '#000000'
-					radius: 5
-				}
-			]
 			
-			res.render view,
-				title: title
-				geopoints: geopoints
-				geofences: geofences
+			app.models.Map.geofence.getFull.all()
+			.then (geofences)->
+				res.render view,
+					title: title
+					geopoints: geopoints
+					geofences: geofences
+				
+			, (err)->
+				res.render view,
+					title: title
+					geopoints: []
+					geofences: []
+				
+			
+			
+			
 			

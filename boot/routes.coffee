@@ -112,6 +112,10 @@ module.exports = (app) ->
 	app.post '/api/' + app.env.HVZ_API_KEY + '/game/', urlencodedParser, app.APIController.game
 	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.game_kill_submit
 	app.post '/api/' + app.env.HVZ_API_KEY + '/map/create/geofence', urlencodedParser, app.APIController.map_create_geofence
+	app.post '/api/' + app.env.HVZ_API_KEY + '/map/create/geopoint', urlencodedParser, app.APIController.map_create_geopoint
+	app.post '/api/' + app.env.HVZ_API_KEY + '/map/get/geofence/all', urlencodedParser, app.APIController.map_get_geofence_all
+	
+	
 	
 	# Page not found (404) ####################################################
 	# This should always be the LAST route specified
