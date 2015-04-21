@@ -233,3 +233,47 @@ module.exports = (app) ->
 					body:
 						error: err
 						code: app.errors.db.EXECUTION
+		
+		@map_create_geofence = (req,res) ->
+			# console.log 'BODY=' + app.util.inspect req.body
+			if req.body.gameId? &&
+			req.body.missionId? &&
+			req.body.human? &&
+			req.body.zombie? &&
+			req.body.oz? &&
+			req.body.color? &&
+			req.body.latitude? &&
+			req.body.longitude? &&
+			req.body.radius? &&
+			req.body.description?
+				app.models.Map.saveGeofence
+					gameId: parseInt req.body.gameId
+					missionId: parseInt req.body.missionId
+					human: parseInt req.body.human
+					oz: parseInt req.body.oz
+					zombie: parseInt req.body.zombie
+					color: parseInt req.body.color
+					latitude: parseFloat req.body.latitude
+					longitude: parseFloat req.body.longitude
+					radius: parseInt req.body.radius
+					description: req.body.description
+				.then ()->
+					console.log 'yay'
+					res.send
+						success: true
+						body: {}
+				, (err)->
+					res.send
+						success: false
+						body:
+							error: err
+							code: app.errors.db.EXECUTION
+			else
+				res.send
+					success: false
+					body:
+						error: 'Invalid Parameters',
+						code: app.errors.INVALID_PARAMETERS
+						expected: 'roleId (int)'
+						received: JSON.stringify req.body
+			

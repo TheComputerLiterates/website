@@ -43,10 +43,10 @@ module.exports = (app) ->
 	app.get '/user/profile', app.UserController.profile
 	
 	# Forum
-	app.get '/user/forum', app.UserController.forum
+	# app.get '/user/forum', app.UserController.forum
 	
 	# Stats
-	app.get '/user/stats', app.UserController.stats
+	# app.get '/user/stats', app.UserController.stats
 	
 	# Signout (redirects)
 	app.get '/user/logout', app.UserController.logout
@@ -66,7 +66,7 @@ module.exports = (app) ->
 	app.get '/game/missions', app.GameController.missions
 	
 	# Map
-	app.get '/game/map', app.GameController.map
+	# app.get '/game/map', app.GameController.map
 	
 	# Report Kill
 	app.get '/game/kill', app.GameController.kill
@@ -98,7 +98,7 @@ module.exports = (app) ->
 	app.post '/mod/dev/edit/game/', jsonParser, app.ModController.devEditGame_submit
 	
 	# Information edit/docs
-	app.get '/mod/info', app.ModController.info
+	# app.get '/mod/info', app.ModController.info
 
 
 	# DATA ####################################################################
@@ -111,7 +111,7 @@ module.exports = (app) ->
 	app.post '/api/' + app.env.HVZ_API_KEY + '/user/profile', urlencodedParser, app.APIController.user_profile
 	app.post '/api/' + app.env.HVZ_API_KEY + '/game/', urlencodedParser, app.APIController.game
 	app.post '/api/' + app.env.HVZ_API_KEY + '/game/kill', urlencodedParser, app.APIController.game_kill_submit
-	
+	app.post '/api/' + app.env.HVZ_API_KEY + '/map/create/geofence', urlencodedParser, app.APIController.map_create_geofence
 	
 	# Page not found (404) ####################################################
 	# This should always be the LAST route specified
@@ -119,6 +119,7 @@ module.exports = (app) ->
 		res.status(app.errors.PAGE_NOT_FOUND).render 'public/404', title: 'Error 404'
 
 	app.post '*', (req, res) ->
+		console.log 'POST 404: ' + req.originalUrl
 		res.status(app.errors.PAGE_NOT_FOUND).send 
 			success: false
 			body:
