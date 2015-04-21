@@ -55,16 +55,22 @@ placeMapData = ()->
 	console.log '---------------------'
 	for gp in geopoints
 		console.log 'GP=' + JSON.stringify gp
+		desc2 = '' + gp.description
 		marker = new google.maps.Marker
 				position: new google.maps.LatLng gp.latitude, gp.longitude
 				map: map
 				icon: geopointIcon
-		google.maps.event.addListener marker, 'mouseover', ()->
-			setInfo gp.description
+		start = (d)->
+			google.maps.event.addListener marker, 'mouseover', ()->
+				setInfo d
+		start(desc2)
 		
 		mapMarkers.push marker
+		
 	for gf in geofences
+		`var desc, circle;`
 		console.log 'GF=' + JSON.stringify gf
+		desc = '' + gf.description
 		circle = new google.maps.Circle
 			strokeColor: gf.color
 			strokeWeight: 0
@@ -73,9 +79,12 @@ placeMapData = ()->
 			center: new google.maps.LatLng gf.latitude, gf.longitude
 			radius: gf.radius
 			map: map
-		google.maps.event.addListener circle, 'mouseover', ()->
-			setInfo gf.description
+		start2 = (d,c)->
+			google.maps.event.addListener circle, 'mouseover', (e)->
+				setInfo d, c
+		start2(desc,gf.color)
 		mapCircles.push circle
+		
 		
 	$(ID_STATUS + ' .geopoints').text 'Active Geopoints: ' + geopoints.length 
 	$(ID_STATUS + ' .geofences').text 'Active Geofences: ' + geofences.length
