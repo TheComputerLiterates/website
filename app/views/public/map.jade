@@ -3,8 +3,13 @@ block content
 	h1 Dynamic Game Map
 		
 	script.
-		var geopoints = JSON.parse(!{JSON.stringify(geopoints)});
-		var geofences = JSON.parse(!{JSON.stringify(geofences)});
+		var o1,o2 = null;
+		json = !{JSON.stringify(geopoints)};
+		window.geopoints = json;
+		json = !{JSON.stringify(geofences)};
+		window.geofences = json;
+		
+		console.log('SAVED');
 		
 	#map-canvas
 		
