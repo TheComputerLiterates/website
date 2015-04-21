@@ -190,8 +190,8 @@ module.exports = (app) ->
 						res.on 'row', (row)->
 							result.push 
 								geofenceId: parseInt row.id
-								gameId: parseInt row.mission_id
-								missionId: parseInt row.game_id
+								gameId: parseInt row.game_id
+								missionId: parseInt row.mission_id
 								latitude: parseFloat row.latitude
 								longitude: parseFloat row.longitude
 								description: row.description
@@ -213,3 +213,50 @@ module.exports = (app) ->
 				byRoleId: (roleId)->
 					
 				byMissionId: (missionId)->
+					
+		
+		@geopoint:
+			getSimple:
+				all: ()->
+					
+				byRoleId: (roleId)->
+					
+				byMissionId: (missionId)->
+					
+			
+			getFull:
+				all: ()->
+					def = app.Q.defer()
+					sql = app.vsprintf 'SELECT * FROM %s'
+					, [
+						TNAME.geopoint
+					]
+					# console.log sql
+					result = []
+					con = app.db.newCon()
+					con.query sql 
+					.on 'result', (res)->
+						res.on 'row', (row)->
+							result.push 
+								geopointId: parseInt row.id
+								souceUserId: parseInt row.source_user_id
+								gameId: parseInt row.game_id
+								missionId: parseInt row.missionId
+								latitude: parseFloat row.latitude
+								longitude: parseFloat row.longitude
+								description: row.description
+								visible: row.visible == '1'
+								player: row.player == '1'
+						res.on 'end', (info)->
+							console.log 'Got ' + info.numRows + ' rows from ' + TNAME.geofence
+							def.resolve result
+					.on 'error', (err)->
+						console.log "> DB: Error on old threadId " + this.tId + " = " + err
+						def.reject '' + err
+					con.end()
+					
+					return def.promise
+				byRoleId: (roleId)->
+					
+				byMissionId: (missionId)->
+

@@ -110,35 +110,46 @@ module.exports = (app) ->
 			title = 'Dynamic Game Map'
 			view = 'public/map'
 			
-			# Load map data
-			geopoints = [
-				{
-					label: 'UNION'
-					latitude: 30.444362
-					longitude: -84.297201
-				}
-				{
-					label: 'INTEGRATION'
-					latitude: 30.443850
-					longitude: -84.298045
-				}
-			]
-			
-			
 			app.models.Map.geofence.getFull.all()
 			.then (geofences)->
-				res.render view,
-					title: title
-					geopoints: geopoints
-					geofences: geofences
-				
+				app.models.Map.geopoint.getFull.all()
+				.then (geopoints)->
+					res.render view,
+						title: title
+						geopoints: geopoints
+						geofences: geofences
+				, (err)->
+					res.render view,
+						title: title
+						geopoints: []
+						geofences: geofences
 			, (err)->
 				res.render view,
 					title: title
 					geopoints: []
 					geofences: []
 		
-		
+		@map_reload = (req, res)->
+			app.models.Map.geofence.getFull.all()
+			.then (geofences)->
+				app.models.Map.geopoint.getFull.all()
+				.then (geopoints)->
+					res.send
+						success: true
+						body:
+							geopoints: geopoints
+							geofences: geofences
+					, (err)->
+						success: false
+						body:
+							geopoints: []
+							geofences: geofences
+			, (err)->
+				success: false
+				body:
+					geopoints: []
+					geofences: []
+			
 			
 			
 			

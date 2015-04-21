@@ -11,6 +11,21 @@ console.log geofences
 $iconLoading = $('.icon-loading')
 .toggle false
 
+$info = $('#info')
+
+resetInfo = ()->
+	$info.empty
+	$info.html '<tr><td colspan="2" class="text-center"><i>Hover over an element to see its description</i></td></tr>'
+setInfo = (description, color)->
+	$info.empty()
+	$info.html '
+		<tr>
+			<td class="col-xs-2" '+(if color? then 'style="background-color:'+color+';"')+'></td>
+			<td class="col-xs-10">
+				'+description+'
+			</td>
+		</tr>'
+
 ##############################################################################
 # Displaying the map
 # http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html?utm_medium=twitter
@@ -23,7 +38,7 @@ geopointIcon = 'img/icons/mapLocation-small.png'
 pt_fsu =  new google.maps.LatLng(30.442795, -84.298563)
 map = null
 mapCircles = []
-mapMarkers = []
+mapMarkers = []	
 
 # Uses current state of geopoints and geofences
 placeMapData = ()->
@@ -40,13 +55,17 @@ placeMapData = ()->
 	console.log '---------------------'
 	for gp in geopoints
 		console.log 'GP=' + JSON.stringify gp
-		mapMarkers.push new google.maps.Marker
+		marker = new google.maps.Marker
 				position: new google.maps.LatLng gp.latitude, gp.longitude
 				map: map
 				icon: geopointIcon
+		google.maps.event.addListener marker, 'mouseover', ()->
+			setInfo gp.description
+		
+		mapMarkers.push marker
 	for gf in geofences
 		console.log 'GF=' + JSON.stringify gf
-		mapCircles.push new google.maps.Circle
+		circle = new google.maps.Circle
 			strokeColor: gf.color
 			strokeWeight: 0
 			fillColor: gf.color
@@ -54,9 +73,13 @@ placeMapData = ()->
 			center: new google.maps.LatLng gf.latitude, gf.longitude
 			radius: gf.radius
 			map: map
-	
+		google.maps.event.addListener circle, 'mouseover', ()->
+			setInfo gf.description
+		mapCircles.push circle
+		
 	$(ID_STATUS + ' .geopoints').text 'Active Geopoints: ' + geopoints.length 
 	$(ID_STATUS + ' .geofences').text 'Active Geofences: ' + geofences.length
+
 initMap = ()->
 	CUSTOM_MAPTYPE_ID = 'custom_style'
 	featureOpts = [
@@ -110,7 +133,9 @@ initMap = ()->
 	
 	# Place geopoints
 	placeMapData()
-
+	
+	google.maps.event.addListener map, 'mouseout', ()->
+		resetInfo()
 
 google.maps.event.addDomListener(window, 'load', initMap);
 
@@ -140,4 +165,4 @@ reloadData = ()->
 
 setInterval ()->
 	reloadData()
-, 5000 #30000 #60000 = 1m
+, 30000 #60000 = 1m

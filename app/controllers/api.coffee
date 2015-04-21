@@ -258,7 +258,7 @@ module.exports = (app) ->
 					radius: parseInt req.body.radius
 					description: req.body.description
 				.then ()->
-					console.log 'yay'
+					# console.log 'yay'
 					res.send
 						success: true
 						body: {}
@@ -281,11 +281,25 @@ module.exports = (app) ->
 		@map_get_geofence_all = (req,res)->
 			app.models.Map.geofence.getFull.all()
 			.then (geofences)->
-				console.log 'yay'
+				# console.log 'yay'
 				res.send
 					success: true
 					body:
 						geofences: geofences
+			, (err)->
+				res.send
+					success: false
+					body:
+						error: err
+						code: app.errors.db.EXECUTION
+		
+		@map_get_geopoint_all = (req,res)->
+			app.models.Map.geopoint.getFull.all()
+			.then (geopoints)->
+				res.send
+					success: true
+					body:
+						geopoints: geopoints
 			, (err)->
 				res.send
 					success: false
