@@ -8,9 +8,14 @@
 console.log geopoints
 console.log geofences
 
+$iconLoading = $('.icon-loading')
+.toggle false
+
 ##############################################################################
 # Displaying the map
 # http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html?utm_medium=twitter
+
+ID_STATUS = '#status'
 
 ID_MAP_CANVAS = 'map-canvas'
 geopointIcon = 'img/icons/mapLocation-small.png'
@@ -24,7 +29,6 @@ mapMarkers = []
 placeMapData = ()->
 	# Delete any old ones
 	i = 0
-	console.log mapCircles.toString()
 	for c in mapCircles
 		c.setMap null
 	for m in mapMarkers
@@ -32,7 +36,7 @@ placeMapData = ()->
 		
 	mapCircles = []
 	mapMarkers = []
-	mapCircles.toString()
+	
 	console.log '---------------------'
 	for gp in geopoints
 		console.log 'GP=' + JSON.stringify gp
@@ -50,7 +54,9 @@ placeMapData = ()->
 			center: new google.maps.LatLng gf.latitude, gf.longitude
 			radius: gf.radius
 			map: map
-
+	
+	$(ID_STATUS + ' .geopoints').text 'Active Geopoints: ' + geopoints.length 
+	$(ID_STATUS + ' .geofences').text 'Active Geofences: ' + geofences.length
 initMap = ()->
 	CUSTOM_MAPTYPE_ID = 'custom_style'
 	featureOpts = [
@@ -111,12 +117,14 @@ google.maps.event.addDomListener(window, 'load', initMap);
 
 reloadData = ()->
 	console.log 'Reloading...'
+	$iconLoading.toggle true
 	$.ajax
 		type: 'POST'
 		url: '/map/reload'
 		data: JSON.stringify {}
 		contentType: 'x-www-form-urlencoded'
 		success: (res) ->
+			$iconLoading.toggle false
 			if res.success
 				geofences = res.body.geofences
 				geopoints = res.body.geopoints
@@ -126,9 +134,10 @@ reloadData = ()->
 				console.log 'Error loading data: ' + res.body.error
 				return
 		error: () ->
+			$iconLoading.toggle false
 			console.log 'Error asking for data'
 			return
 
 setInterval ()->
 	reloadData()
-, 30000 #60000 = 1m
+, 5000 #30000 #60000 = 1m

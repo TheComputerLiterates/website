@@ -1,7 +1,13 @@
 extend ../_layouts/baselayout
 block content
 	h1 Dynamic Game Map
-		
+	#status.row.text-center
+		.col-sm-5.geopoints
+			| Active Geopoints: 
+		.col-sm-5.geofences
+			| Active Geofences: 
+		.col-sm-2
+			.icon-loading
 	script.
 		var o1,o2 = null;
 		json = !{JSON.stringify(geopoints)};
