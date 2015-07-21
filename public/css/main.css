@@ -88,7 +88,8 @@ textarea {
 }
 
 .notice {
-	font-family: 'DarkSoulsBold'
+	font-family: 'DarkSouls';
+	font-weight: bold;
 }
 
 /*****************************************************************************
@@ -127,6 +128,20 @@ a:hover {color: #FFD700; text-decoration: underline}
 /*****************************************************************************
  * FONTS
  */
+@font-face {
+	font-family: 'Tahoma';
+	src: local('Tahoma'),
+		local('Tahoma Regular'),
+		url('/fonts/tahoma.ttf')
+}
+@font-face {
+	font-family: 'Tahoma';
+	src: local('Tahoma Bold'),
+		url('/fonts/tahomabd.ttf');
+	font-weight: bold;
+}
+
+
 /*@font-face {
 	font-family: 'Zombie';
 	src: url('/fonts/Zombie_Holocaust.ttf');
@@ -137,8 +152,9 @@ a:hover {color: #FFD700; text-decoration: underline}
 	src: url('/fonts/OptimusPrinceps.ttf');
 }
 @font-face {
-	font-family: 'DarkSoulsBold';
+	font-family: 'DarkSouls';
 	src: url('/fonts/OptimusPrincepsSemiBold.ttf');
+	font-weight: bold;
 }
 
 .font-zombie {
