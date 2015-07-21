@@ -176,6 +176,36 @@ module.exports = (app) ->
 			con.end()
 			return def.promise
 		
+		# Updates the roleId + HVZID of the user
+		# TODO: make this use the web session table
+		@updateSession: (userId) ->
+			def = app.Q.defer()
+			sql = app.vsprintf 'SELECT %s,%s FROM %s WHERE %s = "%s"'
+			, [
+				COL.role_id
+				COL.HVZID
+				
+				TNAME
+				COL.id
+				userId
+			]
+			
+			con = app.db.newCon()
+			con.query sql
+			.on 'result', (res)->
+				res.on 'row', (row)->
+					def.resolve
+						roleId: parseInt row.role_id
+						HVZID: parseInt row.HVZID
+			.on 'error', (err)->
+				console.log "> DB: Error on old threadId " + this.tId + " = " + err
+				def.reject err
+				
+			con.end()
+			
+			return def.promise
+			
+		
 		# Changes the role of a user
 		@setRole: (user_id, role_id)->
 			deferred = app.Q.defer()

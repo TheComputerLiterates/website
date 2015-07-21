@@ -14,6 +14,7 @@ module.exports = (app) ->
 	urlencodedParser = bodyParser.urlencoded {extended: false}
 	
 	# Enforce ACL
+	require('../lib/refreshSession')(app)
 	app.use acl
 	
 	
