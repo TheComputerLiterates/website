@@ -127,22 +127,22 @@ a:hover {color: #FFD700; text-decoration: underline}
 /*****************************************************************************
  * FONTS
  */
-@font-face {
+/*@font-face {
 	font-family: 'Zombie';
-	/*src: url('/fonts/Zombie_Holocaust.ttf');*/
+	src: url('/fonts/Zombie_Holocaust.ttf');
 	src: url('/fonts/ZOMBIE.TTF');
-}
+}*/
 @font-face {
 	font-family: 'DarkSouls';
 	src: url('/fonts/OptimusPrinceps.ttf');
 }
 @font-face {
 	font-family: 'DarkSoulsBold';
-	src: url('/fonts/OptimusPrincepsBold.ttf');
+	src: url('/fonts/OptimusPrincepsSemiBold.ttf');
 }
 
 .font-zombie {
-	font-family: 'Zombie';
+	/*font-family: 'Zombie';*/
 }
 
 h1, h2 {
