@@ -45,6 +45,8 @@ module.exports = (app) ->
 					else
 						++counts.active
 						user.active = 'Y'
+						
+					user.HVZID = app.locals.helpers.formatHVZID(user.HVZID)
 					
 						
 				res.render 'mod/users',

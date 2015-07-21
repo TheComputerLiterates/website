@@ -65,7 +65,7 @@ module.exports = (app) ->
 	app.get '/user/game', app.GameController.index
 	
 	# Missions
-	app.get '/game/missions', app.GameController.missions
+	# app.get '/game/missions', app.GameController.missions
 	
 	# Map
 	# app.get '/game/map', app.GameController.map

@@ -6,7 +6,7 @@ module.exports = (app) ->
 				firstname: req.session.user.firstName
 				lastname: req.session.user.lastName
 				email: req.session.user.email
-				hvzid: req.session.user.HVZID
+				hvzid: app.locals.helpers.formatHVZID(req.session.user.HVZID)
 				role: app.hvz.getRoleById(req.session.user.roleId)
 				
 

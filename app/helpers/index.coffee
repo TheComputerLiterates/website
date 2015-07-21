@@ -24,6 +24,11 @@ exports.momentMariadbRelative = (moment, mariaDate)->
 		return date.format 'h:mm A'
 	else
 		return date.format 'M/D/YY'
-	
+
+exports.formatHVZID = (id) ->
+	id = id.toString()
+	while id.length < 9
+		id = '0' + id
+	return id
 	
 	
