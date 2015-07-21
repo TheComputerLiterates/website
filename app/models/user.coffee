@@ -77,6 +77,30 @@ module.exports = (app) ->
 					con.end()
 			
 			return def.promise
+
+		# Delete user from the database.
+		@delete: (userId) ->
+			def = app.Q.defer()
+
+			sql = app.vsprintf 'DELETE FROM %s WHERE %s = %i'
+			, [
+				TNAME
+				COL.id, userId
+			]
+
+			con = app.db.newCon()
+			con.query sql
+			.on 'result', (res) ->
+				res.on 'end', (info)->
+					console.log app.util.inspect info
+					def.resolve info.affectedRows != 0
+			.on 'error', (err)->
+				def.reject err
+			con.end()
+
+			return def.promise
+
+
 		
 		# Checks if this email belongs to a user. Returns true/false in promise
 		@checkEmailUsed: (email) ->

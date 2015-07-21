@@ -10,7 +10,7 @@
 module.exports = (app) ->
 	class app.APIController		
 
-		############################################################################
+		#######################################################################
 		# PUBLIC: /
 
 		# POST: /login
@@ -59,7 +59,7 @@ module.exports = (app) ->
 
 
 
-		############################################################################
+		#######################################################################
 		# USER: /user
 
 		# POST: /user/profile
@@ -98,7 +98,7 @@ module.exports = (app) ->
 
 
 
-		############################################################################
+		#######################################################################
 		# CLARIFICATION REQUESTS: /user/cRequest...
 
 		# POST: /user/cRequestCreate
@@ -270,7 +270,7 @@ module.exports = (app) ->
 						received: req.body
 
 
-		############################################################################
+		#######################################################################
 		# GAME: /game
 
 		# POST: /game/kill
@@ -363,10 +363,12 @@ module.exports = (app) ->
 						
 						
 		#######################################################################
-		# GPS
+		# MAP: /map
 		
+		# POST: /map/userGeopointCreate
+		# Requires: userId (int), longitude (double), latitude (double)
 		# Saving user gps points
-		@map_userGeopointCreate = (req,res)->
+		@map_userGeopointCreate = (req, res) ->
 			if req.body.userId? &&
 			req.body.longitude? &&
 			req.body.latitude?
@@ -388,13 +390,15 @@ module.exports = (app) ->
 				res.send
 					success: false
 					body:
-						error: 'Invalid Parameters',
+						error: app.errors.INVALID_PARAMETERS_TEXT,
 						code: app.errors.INVALID_PARAMETERS
-						expected: 'roleId (int)'
+						expected: 'userId (int), longitude (double), latitude (double)'
 						received: req.body
 		
+		# POST: /map/userGeopointGetRefreshed
+		# Requires: NULL
 		# Recieve all points
-		@map_userGeopointGetRefreshed = (req,res)->
+		@map_userGeopointGetRefreshed = (req, res) ->
 			app.models.UserGeopoint.getAllRefreshed()
 			.then (pts)->
 				res.send

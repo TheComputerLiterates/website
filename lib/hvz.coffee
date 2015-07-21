@@ -4,14 +4,15 @@ hvz specific constants/config vars
 ###
 
 roles = (require './constants').roles
+specialUserIds = (require './constants').specialUserIds
 
 module.exports = (app) ->
 	return construct app
 construct = (app)->
 	hvz = 
 		roles: roles
-		specialUserIds: [0,1] 
-	
+		specialUserIds: specialUserIds
+			
 	hvz.getRoleById = (id)->
 		for key, obj of hvz.roles
 			if obj.id == id
