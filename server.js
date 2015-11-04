@@ -3,7 +3,7 @@
  */
 
 //load coffeescript
-require('coffee-script/register')
+require('coffee-script').register();
 
 //run boot scripts
-require('./boot')
+require('./boot');

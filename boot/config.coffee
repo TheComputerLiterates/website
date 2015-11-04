@@ -13,6 +13,7 @@ Q = require 'q'
 Mariasql = require 'mariasql'
 moment = require 'moment'
 errors = require '../lib/errors'
+morgan = require 'morgan'
 
 #JS utility libraries
 util = require 'util'
@@ -54,6 +55,7 @@ module.exports = (app) ->
 	# Development settings
 	if (env == 'development')
 		app.locals.pretty = true
+		app.use morgan 'dev'
 		
 	#Session settings
 	app.use session 
